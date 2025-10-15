@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>dmb projects</title>
+  <link rel="icon" type="image/x-icon" href="../images/logo_favi.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: "Impact", "Arial Black", sans-serif;
+      background: url("images/doom_bg.jpg") no-repeat center center fixed;
+      background-size: cover;
+      color: #f2f2f2;
+      padding-top: 70px;
+
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: linear-gradient(180deg, #1a1a1a, #000);
+      border-bottom: 2px solid #800000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+      z-index: 1000;
+      padding: 10px 0;
+    }
+
+    .nav-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-logo {
+      font-size: 1.8rem;
+      color: #ff0000;
+      text-shadow: 0 0 10px #ff1a1a, 2px 2px 4px #000;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      display: inline-block;
+    }
+
+    .nav-links a {
+      color: #f2f2f2;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: 0.3s;
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+
+    .nav-links a:hover {
+      color: #ff2222;
+      text-shadow: 0 0 10px #ff4444;
+    }
+
+    /*  Aktív */
+    .nav-links a.active {
+      color: #ff0000;
+      font-weight: bold;
+      border-bottom: 2px solid #ff0000;
+      text-shadow: 0 0 15px #ff3333;
+    }
+
+    .nav-logo img {
+      height: 32px;
+      width: auto;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.8rem;
+      color: #ff0000;
+      text-shadow: 0 0 10px #ff1a1a, 2px 2px 4px #000;
+      text-decoration: none;
+    }
+
+
+    #kosz {
+      opacity: 0.9;
+      border: 3px solid #800000;
+      border-radius: 6px;
+      margin: 20px auto;
+      height: 300px;
+      max-width: 800px;
+      background: linear-gradient(180deg, #1a1a1a, #000);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    #kosz1 {
+      opacity: 0.9;
+      border: 3px solid blueviolet;
+      border-radius: 6px;
+      margin: 20px auto;
+      height: 300px;
+      max-width: 800px;
+      background: linear-gradient(180deg, #1a1a1a, #000);
+      box-shadow: 0 0 25px blueviolet;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    #koszb {
+      opacity: 0.9;
+      border: 3px solid #f1c40f;
+      border-radius: 6px;
+      margin: 20px auto;
+      height: 300px;
+      max-width: 800px;
+      background: linear-gradient(180deg, #1a1a1a, #000);
+      box-shadow: 0 0 25px #f1c40f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    #koszj {
+      opacity: 0.9;
+      border: 3px solid #28ba00;
+      border-radius: 6px;
+      margin: 20px auto;
+      height: 300px;
+      max-width: 800px;
+      background: linear-gradient(180deg, #0b2a00, #001100);
+      box-shadow: 0 0 25px #28ba00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    #doom {
+      font-size: 3rem;
+      color: #ff0000;
+      text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+
+    }
+
+    #koszsz {
+      font-size: 3rem;
+      color: blueviolet;
+      text-shadow: 0 0 15px blueviolet, 2px 2px 4px #000;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+
+    }
+
+    #feliratb {
+      font-size: 3rem;
+      color: #f1c40f;
+      text-shadow: 0 0 15px #f1c40f, 2px 2px 4px #000;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+
+    }
+
+    #felirat {
+      font-size: 3rem;
+      color: #f1c40f;
+      text-shadow: 0 0 15px #f1c40f, 2px 2px 4px #000;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+
+    }
+
+    #feliratj {
+      font-size: 3rem;
+      color: #28ba00;
+      text-shadow: 0 0 15px #28ba00, 2px 2px 4px #000;
+      margin: 0;
+      animation: pulse 1.5s infinite alternate;
+
+    }
+
+    .tartalomd {
+      position: relative;
+      opacity: 1;
+      border-radius: 6px;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 1000px;
+      background: rgba(20, 20, 20, 0.6);
+      border: 2px solid #ff0000;
+      box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0, 0, 0, 0.8);
+      color: #ddd;
+      min-height: 400px;
+
+
+      /* GIF háttér */
+      background-image: url("../images/doom_back_gif.gif");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .tartalom1 {
+      opacity: 0.95;
+      border-radius: 6px;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 1000px;
+      background: rgba(20, 20, 20, 0.9);
+      border: 2px solid blueviolet;
+      box-shadow: inset 0 0 20px blueviolet, 0 0 15px rgba(0, 0, 0, 0.8);
+      color: #ddd;
+      min-height: 400px;
+
+    }
+
+    .tartalomb {
+      opacity: 0.95;
+      border-radius: 6px;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 1000px;
+      background: rgba(20, 20, 20, 0.9);
+      border: 2px solid #f1c40f;
+      box-shadow: inset 0 0 20px #f1c40f, 0 0 15px rgba(0, 0, 0, 0.8);
+      color: #ddd;
+      min-height: 400px;
+
+    }
+
+    .tartalomj {
+      opacity: 0.95;
+      border-radius: 6px;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 1000px;
+      background: linear-gradient(180deg, rgba(2, 30, 0, 0.95), rgba(6, 60, 10, 0.85));
+      border: 2px solid #28ba00;
+      box-shadow: inset 0 0 20px #28ba00, 0 0 15px rgba(0, 0, 0, 0.8);
+      color: #e6ffe6;
+      min-height: 400px;
+    }
+
+    .elvalaszto {
+      width: 100%;
+      height: 50px;
+      background-color: #1a1a1a;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+      color: #ff0000;
+      text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000;
+      animation: pulse 1.5s infinite alternate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+
+    .elvalaszto h3 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    h2,
+    h3,
+    p {
+      font-family: "Impact", "Arial Black", sans-serif;
+    }
+
+    a {
+      color: #ff4444;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+      color: #ff2222;
+    }
+
+    @keyframes pulse {
+      from {
+        text-shadow: 0 0 10px #ff0000;
+      }
+
+      to {
+        text-shadow: 0 0 25px #ff5555;
+      }
+    }
+
+    #bejelent {
+      background-color: blueviolet;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      cursor: default;
+    }
+
+    #bejelent:hover {
+      background-color: indigo;
+      color: #fff;
+    }
+
+    footer {
+      background-color: #1a1a1a;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px;
+      border-top: 2px solid #800000;
+      box-shadow: 0 -2px 10px rgba(255, 0, 0, 0.4);
+    }
+
+    .footerContainer {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .socialIcons a {
+      color: #ff0000;
+      font-size: 50px;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .socialIcons a:hover {
+      color: #ff5555;
+      text-shadow: 0 0 10px #ff5555;
+    }
+    #fel{
+      color: #ff0000;
+      margin: 0 10px;
+      transition: 0.3s;
+      font-size: 15px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a class="nav-logo" href="index.html">
+        <img src="../images/logo_favi.png" alt="Logo">
+        The Pixel Realms
+      </a>
+      <ul class="nav-links">
+        <li><a href="#" class="active">Kezdőlap</a></li>
+        <li><a href="karakterek.html">Karakterek</a></li>
+        <li><a href="#">Fegyverek</a></li>
+        <li><a id="bejelent" onclick="Bejelentkez()">BEJELENTKEZÉS</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div id="kosz1">
+    <h2 id="koszsz">Üdvözlet a The Pixel Realms világában</h2>
+  </div>
+
+  <div class="tartalom1">
+    <h3></h3>
+    <p>A karakter kinézetét pályától függetlenül mindig változtathatod! <a href="karakterek.html">Skinek megtekintése
+        →</a></p>
+    <p></p>
+    <p>A pályákra bármilyen karakter kinézettel beléphetsz. A pályákon különféle képességeid vannak, minden pályán más.
+    </p>
+  </div>
+
+  <div class="elvalaszto">
+    <h3>dmb projects</h3>
+  </div>
+
+  <!-- Doom tartalom -->
+  <div id="kosz">
+    <h2 id="doom">KÖSZÖNTÜNK A POKOLBAN!</h2>
+  </div>
+
+  <div class="tartalomd">
+    <h3>Üdvözlet a DOOM világában</h3>
+    <p>Itt csak a legerősebbek maradnak életben. Fegyverezd fel magad, mert a démonok mindenhol ott vannak!</p>
+  </div>
+
+  <div class="elvalaszto">
+    <h3>dmb projects</h3>
+  </div>
+
+  <!-- Batman tartalom -->
+  <div id="koszb">
+    <h2 id="feliratb">KÖSZÖNTÜNK BATMAN VILÁGÁBAN!</h2>
+  </div>
+  <div class="tartalomb">
+    <h3>Üdv Gotham City sötét utcáin</h3>
+    <p>Ebben a világban a félelem az árnyékok között rejtőzik. Batman mindig ott van, hogy megvédje a várost a
+      bűnözőktől.</p>
+    <p>Használd a sötét oldal erejét és Batman legendás felszereléseit, hogy szembeszállj a gonosszal.</p>
+  </div>
+
+  <div class="elvalaszto">
+    <h3>dmb projects</h3>
+  </div>
+  <!-- Jurassic tartalom -->
+  <div id="koszj">
+    <h2 id="feliratj">KÖSZÖNTÜNK A JURASSIC PARKBAN!</h2>
+  </div>
+  <div class="tartalomj">
+    <h3>Üdv a Dínók Világában</h3>
+    <p>Ez a pálya a visszahozott őslények otthona: óriási erdők, mocsarak és elszórt kutatóállomások várnak. Figyelj a
+      környezetre — a dínók viselkedése változatos és veszélyes lehet.</p>
+    <p><strong>Mit érdemes tudni:</strong></p>
+    <ul>
+      <li><strong>Hallgatólagos veszély:</strong> néhány faj csendben közelít; ne hagyd, hogy a kíváncsiságod túl
+        messzire vigyen!</li>
+      <li><strong>Falkák:</strong> a közepes-nagy ragadozók csoportosan vadászhatnak — keress menedéket, ha több hüllő
+        közeledik.</li>
+      <li><strong>Biztonsági pontok:</strong> kutatóállomásoknál és kerítéseknél találhatsz fegyvereket, ellátmányt és
+        menekülési útvonalakat.</li>
+    </ul>
+    <p>Ha szeretnéd, böngészhetsz a <a href="karakterek.html">karakterek kinézetei</a> között, vagy térj be a
+      küldetésekhez, ahol speciális triggerek és események várnak.</p>
+    <p style="margin-top:16px;"><em>Jó túlélést — és ne feledd: itt az erős túléli a gyengét.</em></p>
+  </div>
+  <script>
+    function Bejelentkez() {
+      window.location.href = "bejelentkez.html";
+    }
+
+
+  </script>
+
+  <footer>
+    <div class="footerContainer">
+      <div class="socialIcons">
+        <a href=""><i class="fa-brands fa-facebook"></i></a>
+        <a href=""><i class="fa-brands fa-instagram"></i></a>
+        <p>dmb projects©</p>
+        <a id="fel" href="#kosz1">vissza a tetejére</a>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
