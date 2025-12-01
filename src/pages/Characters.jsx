@@ -3,9 +3,9 @@ import CharacterCard from "../components/CharacterCard";
 
 const Characters = () => {
   const characters = [
-    { name: "DOOM SLAYER", img: "/assets/images/doomslayer_gif.jpg" },
-    { name: "BATMAN", img: "/assets/images/batman_gif.gif", type: "batman" },
-    { name: "SCORPION", img: "/assets/images/mortal_k_gif.gif", type: "scorpion" },
+    { name: "DOOM SLAYER", img: "public/assets/gifs/doomslyer_gif.jpg"},
+    { name: "BATMAN", img: "/public/assets/gifs/batman_gif.gif", type: "batman" },
+    { name: "SCORPION", img: "/public/assets/gifs/mortal_k_gif.gif", type: "scorpion" },
   ];
 
   return (
