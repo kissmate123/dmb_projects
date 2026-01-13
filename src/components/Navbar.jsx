@@ -8,12 +8,12 @@ const Navbar = () => {
 
         <Link className="nav-logo" to="/">
           <img 
-            src="/assets/images/logo.jpg"   // <-- NINCS import, public-ból jön
+            src="/assets/images/logo.jpg"   
             alt="Logo"
             className="logo-image"
-            style={{ width: "35px", marginRight: "8px", borderRadius: "5px" }}
+            style={{ width: "40px", marginRight: "8px", borderRadius: "5px" }}
           />
-          Logo
+          The Pixel Realms
         </Link>
 
         <ul className="nav-links">

@@ -5,6 +5,7 @@ const TabForm = () => {
 
   return (
     <div className="tartalom">
+      Ha nincs még fikókod regisztrálj egyet!
       <div className="tab-buttons">
         <button
           className={activeTab === "login" ? "active" : ""}
