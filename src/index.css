@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: "Impact", "Arial Black", sans-serif;
-  background: url("/assets/images/doom_bg.jpg") no-repeat center center fixed;
+  background: url("/public/assets/images/page_back.png") no-repeat center center fixed;
   background-size: cover;
   color: #f2f2f2;
   padding-top: 70px;
@@ -81,20 +81,8 @@ footer {
 }
 
 .footerContainer {
-  max-width: 1000px;
+  max-width: 100%;
   margin: 0 auto;
-}
-
-.socialIcons a {
-  color: #ff0000;
-  font-size: 50px;
-  margin: 0 10px;
-  transition: 0.3s;
-}
-
-.socialIcons a:hover {
-  color: #ff5555;
-  text-shadow: 0 0 10px #ff5555;
 }
 
 #fel {
@@ -110,24 +98,81 @@ footer {
   text-decoration: underline;
 }
 
-/* ------------------ TARTALOM ------------------ */
-.tartalom, .tartalom1, .tartalomb, .tartalomj, .tartalomd {
+/* ------------------- TARTALOM ------------------- */
+.tartalom1 {
   position: relative;
   border-radius: 6px;
   margin: 20px auto;
   padding: 20px;
-  max-width: 1000px;
+  max-width: 900px;
   background: rgba(20, 20, 20, 0.9);
-  color: #ddd;
-  min-height: 300px;
+  min-height: 150px;
   box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
+  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.9rem;
+  line-height: 0.8rem;
+  color: #eaeaea;
 }
 
-/* Speciális színek */
-.tartalom1 { border: 2px solid blueviolet; box-shadow: inset 0 0 20px blueviolet, 0 0 15px rgba(0,0,0,0.8); }
-.tartalomb { border: 2px solid #f1c40f; box-shadow: inset 0 0 20px #f1c40f, 0 0 15px rgba(0,0,0,0.8); }
-.tartalomj { border: 2px solid #28ba00; box-shadow: inset 0 0 20px #28ba00, 0 0 15px rgba(0,0,0,0.8); color: #e6ffe6; }
-.tartalomd { border: 2px solid #ff0000; box-shadow: inset 0 0 20px rgba(255,0,0,0.6), 0 0 15px rgba(0,0,0,0.8); background-image: url("/assets/gifs/doom_back_gif.gif"); background-size: cover; background-position: center; background-repeat: no-repeat; }
+.tartalom-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 30px;
+  max-width: 1600px;
+  margin: 40px;
+}
+
+/* Cím a tartalomban */
+.tartalom1 h2 {
+  font-size: 1.5rem;
+  margin-bottom: 28px;
+  color: #c77dff;
+  text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
+}
+
+/* Bekezdések */
+.tartalom1 p {
+  margin-bottom: 18px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
+
+/* Kiemelések */
+.tartalom1 strong {
+  color: #ffd966;
+}
+
+/* Tutorial badge */
+.tartalom1 .tutorial {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background: rgba(138, 43, 226, 0.25);
+  color: #f3e8ff;
+  text-shadow: none;
+}
+
+/* Drámai rész */
+.tartalom1 .dramatic {
+  font-style: italic;
+  color: #f5e6ff;
+  border-left: 4px solid #a855f7;
+  padding-left: 16px;
+  margin: 28px 0;
+  background: rgba(138, 43, 226, 0.08);
+}
+
+/* Fejezet vége */
+.tartalom1 .end {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #f0c9ff;
+  text-shadow: none;
+}
 
 /* ------------------ ELVÁLASZTÓ ------------------ */
 .elvalaszto {
@@ -150,8 +195,8 @@ footer {
 }
 
 /* ------------------ KOSZ BLOKKOK ------------------ */
-#kosz, #kosz1, #koszb, #koszj {
-  opacity: 0.9;
+#kosz1 {
+  opacity: 1;
   border-radius: 6px;
   margin: 20px auto;
   height: 300px;
@@ -161,10 +206,7 @@ footer {
   justify-content: center;
 }
 
-#kosz { border: 3px solid #ff0000; box-shadow: 0 0 25px rgba(255,0,0,0.6);}
 #kosz1 { border: 3px solid blueviolet; box-shadow: 0 0 25px blueviolet;}
-#koszb { border: 3px solid #f1c40f; box-shadow: 0 0 25px #f1c40f;}
-#koszj { border: 3px solid #28ba00; box-shadow: 0 0 25px #28ba00; background: linear-gradient(180deg, rgba(2,30,0,0.95), rgba(6,60,10,0.85));}
 
 #doom, #koszsz, #feliratb, #feliratj {
   font-size: 3rem;
@@ -188,9 +230,19 @@ footer {
   text-align: center;
 }
 
-h2 { margin-bottom: 20px; color: blueviolet; text-shadow: 0 0 10px black; }
+h2 { 
+  margin-bottom: 20px; 
+  color: blueviolet; 
+  text-shadow: 0 0 10px black; 
+}
 
-label { display: block; text-align: left; margin: 10px 0 5px; font-weight: bold; }
+label { 
+  display: block; 
+  text-align: left; 
+  margin: 10px 0 5px; 
+  font-weight: bold; 
+}
+
 input[type="text"], input[type="password"] {
   width: 100%;
   padding: 10px;
@@ -201,6 +253,7 @@ input[type="text"], input[type="password"] {
   color: #f2f2f2;
   font-size: 14px;
 }
+
 input[type="text"]:focus, input[type="password"]:focus {
   outline: 2px solid blueviolet;
   background: #1c1c1c;
@@ -310,4 +363,11 @@ input[type="text"]:focus, input[type="password"]:focus {
 @keyframes flamePulse {
   from { text-shadow: 0 0 10px #ff6600, 2px 2px 4px #000; }
   to { text-shadow: 0 0 25px #ffaa00, 4px 4px 8px #000; }
+}
+
+/* ------------------ MOBILITÁS ------------------ */
+@media (max-width: 1200px) {
+  .tartalom-wrapper {
+    grid-template-columns: 1fr;
+  }
 }
