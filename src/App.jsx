@@ -9,13 +9,13 @@ import Login from "./pages/Login.jsx";
 function App() {
   return (
     <Router>
-      <Navbar />
+      <Navbar/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/karakterek" element={<Characters />} />
         <Route path="/login" element={<Login />} />
       </Routes>
-      <Footer />
+      <Footer/>
     </Router>
   );
 }

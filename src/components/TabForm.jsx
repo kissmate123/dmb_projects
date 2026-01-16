@@ -4,8 +4,10 @@ const TabForm = () => {
   const [activeTab, setActiveTab] = useState("login");
 
   return (
-    <div className="tartalom">
-      Ha nincs még fikókod regisztrálj egyet!
+
+    <div className="login_reg_tab tartalom1">
+
+      <p>Ha nincs még fikókod regisztrálj egyet!</p>
       <div className="tab-buttons">
         <button
           className={activeTab === "login" ? "active" : ""}
@@ -47,7 +49,9 @@ const TabForm = () => {
           </form>
         </div>
       )}
+
     </div>
+
   );
 };
 
