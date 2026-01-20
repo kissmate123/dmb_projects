@@ -8,7 +8,7 @@ const Navbar = () => {
 
         <Link className="nav-logo" to="/">
           <img 
-            src="/assets/images/logo.jpg"   
+            src="/assets/images/logo_favi.png"   
             alt="Logo"
             className="logo-image"
             style={{ width: "40px", marginRight: "8px", borderRadius: "5px" }}
@@ -17,9 +17,9 @@ const Navbar = () => {
         </Link>
 
         <ul className="nav-links">
-          <li><NavLink to="/">Home</NavLink></li>
+          <li><NavLink to="/">Otthon</NavLink></li>
           <li><NavLink to="/karakterek">Karakterek</NavLink></li>
-          <li><NavLink to="/login">Login</NavLink></li>
+          <li><NavLink to="/login">Bejelentkezés</NavLink></li>
         </ul>
 
       </div>
