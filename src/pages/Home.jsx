@@ -10,10 +10,12 @@ const Home = () => {
 
       <div className="tartalom1">
         <p>
-          A karakter kinézetét pályától függetlenül mindig változtathatod!{" "}
-          <Link to="/karakterek">Karakterek megtekintése →</Link>
+          A The Pixel Realms játék egy oldal nézetes(2D) játék amely egy történet alapján működik.
+          <a href="#tortenet"onClick={(e) => {e.preventDefault(); document.getElementById("tortenet").scrollIntoView({ behavior: "smooth" });}}>Történet megtekintése ↓</a>
+
+          
         </p>
-        <p>A pályákra bármilyen karakter kinézettel beléphetsz.</p>
+        <p><Link to="/karakterek">Karakterek megtekintése →</Link></p>
       </div>
 
       <div className="elvalaszto">
@@ -23,7 +25,7 @@ const Home = () => {
       <div id="kosz1">
         <h2 id="koszsz">The Pixel Realms története</h2>
       </div>
-      <div className="tartalom-wrapper">
+      <div id="tortenet" className="tartalom-wrapper">
 
         {/* 1. FEJEZET – BAL OLDAL */}
         <div className="tartalom1">
