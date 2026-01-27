@@ -117,6 +117,7 @@ footer {
   font-size: 0.9rem;
   line-height: 0.8rem;
   color: #eaeaea;
+  
 }
 
 .tartalom-wrapper {
@@ -178,6 +179,16 @@ footer {
   color: #f0c9ff;
   text-shadow: none;
 }
+/* ------------------ MOZGÁS IMG ------------------ */
+#moves_img{
+  width: 80%; 
+}
+/* ------------------ TRAILER ------------------ */
+#trailer{
+  width: 80%;
+  border-radius: 5px;
+  
+}
 
 /* ------------------ ELVÁLASZTÓ ------------------ */
 .elvalaszto {
@@ -221,8 +232,6 @@ footer {
 
 #doom { color: #ff0000; text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000; }
 #koszsz { color: blueviolet; text-shadow: 0 0 15px blueviolet, 2px 2px 4px #000; }
-#feliratb { color: #f1c40f; text-shadow: 0 0 15px #f1c40f, 2px 2px 4px #000; }
-#feliratj { color: #28ba00; text-shadow: 0 0 15px #28ba00, 2px 2px 4px #000; }
 
 /* ------------------ LOGIN REGISTER ------------------ */
 .login_reg_tab{
