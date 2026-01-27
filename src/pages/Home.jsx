@@ -12,7 +12,7 @@ const Home = () => {
         <p>
           A The Pixel Realms játék egy oldal nézetes(2D) játék amely egy történet alapján működik.
           <a href="#tortenet"onClick={(e) => {e.preventDefault(); document.getElementById("tortenet").scrollIntoView({ behavior: "smooth" });}}>Történet megtekintése ↓</a>
-
+        
           
         </p>
         <p><Link to="/karakterek">Karakterek megtekintése →</Link></p>
@@ -21,11 +21,11 @@ const Home = () => {
       <div className="elvalaszto">
         <p>dmb projects©</p>
       </div>
-
+      <p id="tortenet"></p>
       <div id="kosz1">
         <h2 id="koszsz">The Pixel Realms története</h2>
       </div>
-      <div id="tortenet" className="tartalom-wrapper">
+      <div className="tartalom-wrapper">
 
         {/* 1. FEJEZET – BAL OLDAL */}
         <div className="tartalom1">
