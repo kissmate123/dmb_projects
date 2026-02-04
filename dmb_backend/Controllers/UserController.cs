@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace dmb_backend.Controllers;
 
@@ -11,6 +12,14 @@ public class UserController : ControllerBase
     [HttpGet("me")]
     public IActionResult Me()
     {
-        return Ok(new { message = "Be vagy jelentkezve ✅" });
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userName = User.FindFirstValue(ClaimTypes.Name);
+
+        return Ok(new
+        {
+            message = "Be vagy jelentkezve.",
+            userId,
+            userName
+        });
     }
 }

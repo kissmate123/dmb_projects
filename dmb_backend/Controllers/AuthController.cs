@@ -25,34 +25,69 @@ public class AuthController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
-        var existing = await _userManager.FindByEmailAsync(dto.Email);
-        if (existing != null)
-            return BadRequest("Ez az email már létezik!");
+        var email = (dto.Email ?? "").Trim();
+        var userName = (dto.UserName ?? "").Trim();
+        var password = dto.Password ?? "";
+
+        if (string.IsNullOrWhiteSpace(email))
+            return BadRequest(new { message = "Email megadása kötelező." });
+
+        if (string.IsNullOrWhiteSpace(userName))
+            return BadRequest(new { message = "Felhasználónév megadása kötelező." });
+
+        if (string.IsNullOrWhiteSpace(password))
+            return BadRequest(new { message = "Jelszó megadása kötelező." });
+
+        var existingByEmail = await _userManager.FindByEmailAsync(email);
+        if (existingByEmail != null)
+            return BadRequest(new { message = "Ez az email már létezik." });
+
+        var existingByUserName = await _userManager.FindByNameAsync(userName);
+        if (existingByUserName != null)
+            return BadRequest(new { message = "Ez a felhasználónév már létezik." });
 
         var user = new ApplicationUser
         {
-            UserName = dto.Email,
-            Email = dto.Email
+            Email = email,
+            UserName = userName
         };
 
-        var result = await _userManager.CreateAsync(user, dto.Password);
+        var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
-            return BadRequest(result.Errors);
+        {
+            return BadRequest(new
+            {
+                message = "Sikertelen regisztráció.",
+                errors = result.Errors.Select(e => e.Description)
+            });
+        }
 
-        return Ok("Sikeres regisztráció ✅");
+        return Ok(new { message = "Sikeres regisztráció." });
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<AuthResponseDto>> Login(LoginDto dto)
     {
-        var user = await _userManager.FindByEmailAsync(dto.Email);
-        if (user == null)
-            return Unauthorized("Hibás email/jelszó!");
+        var identifier = (dto.Identifier ?? "").Trim();
+        var password = dto.Password ?? "";
 
-        var ok = await _userManager.CheckPasswordAsync(user, dto.Password);
+        if (string.IsNullOrWhiteSpace(identifier))
+            return BadRequest(new { message = "Email vagy felhasználónév megadása kötelező." });
+
+        if (string.IsNullOrWhiteSpace(password))
+            return BadRequest(new { message = "Jelszó megadása kötelező." });
+
+        var user = await _userManager.FindByEmailAsync(identifier);
+        if (user == null)
+            user = await _userManager.FindByNameAsync(identifier);
+
+        if (user == null)
+            return Unauthorized(new { message = "Hibás email/felhasználónév vagy jelszó." });
+
+        var ok = await _userManager.CheckPasswordAsync(user, password);
         if (!ok)
-            return Unauthorized("Hibás email/jelszó!");
+            return Unauthorized(new { message = "Hibás email/felhasználónév vagy jelszó." });
 
         return Ok(CreateJwtToken(user));
     }
@@ -68,7 +103,9 @@ public class AuthController : ControllerBase
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-            new Claim(ClaimTypes.NameIdentifier, user.Id)
+            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Name, user.UserName ?? "")
         };
 
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));

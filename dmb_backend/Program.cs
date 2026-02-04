@@ -8,7 +8,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MySQL + EF Core
 var connStr = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -16,9 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connStr, ServerVersion.AutoDetect(connStr));
 });
 
-// Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
+    options.User.RequireUniqueEmail = true;
+
     options.Password.RequireDigit = true;
     options.Password.RequireUppercase = false;
     options.Password.RequireNonAlphanumeric = false;
@@ -27,7 +27,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 
-// JWT Auth
 var jwtKey = builder.Configuration["Jwt:Key"]!;
 var issuer = builder.Configuration["Jwt:Issuer"]!;
 var audience = builder.Configuration["Jwt:Audience"]!;
@@ -51,14 +50,13 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// CORS (React miatt)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactCors", policy =>
     {
         policy.WithOrigins(
-                "http://localhost:5173", // Vite
-                "http://localhost:3000"  // CRA
+                "http://localhost:5173",
+                "http://localhost:3000"
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
