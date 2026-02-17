@@ -4,9 +4,19 @@ import { Link } from "react-router-dom";
 const Home = () => {
   return (
     <div>
-      <div id="kosz1">
-        <h2 id="koszsz">Üdvözlet a The Pixel Realms világában</h2>
-      </div>
+      <div className="trailer-section">
+  <div className="trailer-text">
+    <h3>The Pixel Realms előzetes</h3>
+    <p>
+      Nézd meg a legújabb előzetest, és pillants bele a világba, karakterekbe és a játékmenetbe.
+    </p>
+  </div>
+
+  <div className="trailer-video">
+    <video id="trailer" src="/assets/images/Trailer.mp4" controls />
+  </div>
+</div>
+
 
       <div className="tartalom1">
         <p>
@@ -16,10 +26,8 @@ const Home = () => {
           <img id="moves_img" src="/public/assets/images/moves.png" alt="moves"/>
           
         </p>
-        <p>Különböző karakter kinézetek vannak. <Link to="/karakterek"> Karakterek megtekintése →</Link></p>
-        <h3>The Pixel Realms előzetes</h3>
-        <video id="trailer" src="/assets/images/Trailer.mp4" controls/>
-
+        <p>Különböző karakterek és ellenségek vannak. <Link to="/karakterek"> Karakterek, ellenségek megtekintése →</Link></p>
+  
       </div>
 
       <div className="elvalaszto">

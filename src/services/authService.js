@@ -1,10 +1,10 @@
-const API_URL = "https://localhost:7273"; // backend címed!
+const API_URL = "https://localhost:7273";
 
-export async function loginRequest(email, password) {
+export async function loginRequest(identifier, password) {
   const res = await fetch(`${API_URL}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ identifier, password }),
   });
 
   if (!res.ok) {
@@ -12,5 +12,5 @@ export async function loginRequest(email, password) {
     throw new Error(err);
   }
 
-  return res.json(); // { token, expiresAt }
+  return res.json();
 }

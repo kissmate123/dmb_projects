@@ -1,7 +1,3 @@
-html {
-  scroll-behavior: smooth;
-}
-
 /* ------------------ BODY ------------------ */
 body {
   margin: 0;
@@ -10,6 +6,7 @@ body {
   background-size: cover;
   color: #f2f2f2;
   padding-top: 70px;
+  scroll-behavior: smooth;
 }
 
 /* ------------------ NAVBAR ------------------ */
@@ -18,14 +15,36 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 1000;
+  padding: 10px 0;
+
+  background: transparent; /* a háttér a ::before-on lesz */
+}
+
+/* csak a háttér réteg */
+.navbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
   background: linear-gradient(180deg, #1a1a1a, #000);
   border-bottom: 2px solid #800000;
   box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-  z-index: 1000;
-  padding: 10px 0;
+
+  opacity: 1;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+/* görgetés után csak a háttér legyen halvány */
+.navbar.navbar--scrolled::before {
+  opacity: 0.3;
 }
 
 .nav-container {
+  position: relative;
+  z-index: 1; /* a tartalom a háttér felett legyen */
+
   margin: 0 0;
   display: flex;  
   justify-content: space-between;
@@ -74,6 +93,12 @@ body {
   text-shadow: 0 0 15px #ff3333;
 }
 
+#felhn {
+  min-width: 100px;
+  text-align: center;
+}
+
+
 /* ------------------ FOOTER ------------------ */
 footer {
   background-color: #1a1a1a;
@@ -96,6 +121,8 @@ footer {
   transition: 0.3s;
   font-size: 15px;
   text-decoration: none;
+  text-align: right;
+  margin-right: 2%;
 }
 
 #fel:hover {
@@ -103,13 +130,22 @@ footer {
   text-decoration: underline;
 }
 
+.footer-legal {
+  font-size: 0.75rem;     
+  opacity: 0.85;           
+  line-height: 1.2rem;     
+  margin: 8px 0 12px;
+  text-shadow: none;       
+}
+
+
 /* ------------------- FŐOLDAL TARTALOM ------------------- */
 .tartalom1 {
   position: relative;
   border-radius: 6px;
-  margin: 20px auto;
+  margin: 100px auto;
   padding: 20px;
-  max-width: 900px;
+  max-width: 80%;
   background: rgba(20, 20, 20, 0.9);
   min-height: 150px;
   box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
@@ -184,11 +220,60 @@ footer {
   width: 80%; 
 }
 /* ------------------ TRAILER ------------------ */
-#trailer{
-  width: 80%;
-  border-radius: 5px;
-  
+.trailer-section{
+  max-width: 80%;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(20, 20, 20, 0.85);
+  box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.35), 0 0 15px rgba(0,0,0,0.8);
+  display: grid;
+  grid-template-columns: 1fr 1.4fr; 
+  gap: 24px;
+  align-items: center;
 }
+
+.trailer-text h3{
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+  color: #c77dff;
+  text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
+}
+
+.trailer-text p{
+  margin: 0;
+  color: #eaeaea;
+  line-height: 1.4rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+}
+
+.trailer-video{
+  display: flex;
+  justify-content: flex-end;
+}
+
+#trailer{
+  width: 100%;
+  max-width: 760px;
+  border-radius: 8px;
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.8);
+  display: block;
+}
+
+/* Mobil: egymás alá */
+@media (max-width: 900px){
+  .trailer-section{
+    grid-template-columns: 1fr;
+  }
+  .trailer-video{
+    justify-content: center;
+  }
+  #trailer{
+    max-width: 100%;
+  }
+}
+
+
 
 /* ------------------ ELVÁLASZTÓ ------------------ */
 .elvalaszto {
@@ -234,6 +319,50 @@ footer {
 #koszsz { color: blueviolet; text-shadow: 0 0 15px blueviolet, 2px 2px 4px #000; }
 
 /* ------------------ LOGIN REGISTER ------------------ */
+.password-hints {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.pw-status {
+  margin-bottom: 6px;
+}
+
+.pw-rules {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.pw-rules li {
+  margin: 2px 0;
+  font-weight: 600;
+  text-align: left;
+}
+
+/* Alap: ha nem teljesül -> piros */
+.pw-rules li.bad {
+  color: #ff4d4d;
+}
+
+/* Ha teljesül -> zöld */
+.pw-rules li.ok {
+  color: #35c759;
+}
+
+/* Összesített státusz */
+.pw-status.bad {
+  color: #ff4d4d;
+}
+
+.pw-status.ok {
+  color: #35c759;
+}
+
+input.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .login_reg_tab{
   max-width: 50%;
   text-align: center;
@@ -308,6 +437,40 @@ input[type="text"]:focus, input[type="password"]:focus {
 }
 
 /* ------------------ KARAKTER BLOKK ------------------ */
+.karakter {
+  position: relative; 
+  overflow: hidden;    
+}
+
+/* Alapból rejtve */
+.karakter-desc {
+  position: absolute;
+  inset: 0;                       
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.25s ease;
+
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+}
+
+/* Hoverre megjelenik */
+.karakter:hover .karakter-desc {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.karakter:hover img {
+  filter: brightness(0.6);
+  transition: 0.25s ease;
+}
+
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
@@ -326,7 +489,7 @@ input[type="text"]:focus, input[type="password"]:focus {
   background: rgba(20,20,20,0.9);
   border: 2px solid #ff0000;
   box-shadow: inset 0 0 20px rgba(255,0,0,0.6), 0 0 15px rgba(0,0,0,0.8);
-  opacity: 0.95;
+  opacity: 0.9;
   border-radius: 10px;
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -367,6 +530,20 @@ input[type="text"]:focus, input[type="password"]:focus {
   transform: scale(1.08); 
   box-shadow:0 0 40px #ff6600; 
 }
+
+.container-single{
+  grid-template-columns: 1fr;
+  justify-items: center;
+  max-width: 20%;   
+}
+
+
+.container-grid {
+  margin-top: 10px;
+  max-width: 90%;
+  
+}
+
 
 /* ------------------ ANIMÁCIÓK ------------------ */
 @keyframes pulse {

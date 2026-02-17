@@ -1,22 +1,42 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-const API_URL = "https://localhost:7273"; // <-- IDE a backend címed (Swaggerből)
+const API_URL = "https://localhost:7273";
 
 const TabForm = () => {
   const [activeTab, setActiveTab] = useState("login");
 
-  // Login mezők
-  const [loginEmail, setLoginEmail] = useState("");
+  const [loginIdentifier, setLoginIdentifier] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  // Register mezők
+  const [regUserName, setRegUserName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
 
-  // Üzenet (hiba / siker)
   const [message, setMessage] = useState("");
 
-  // ✅ LOGIN
+  const navigate = useNavigate();
+  const auth = useAuth();
+
+  // Jelszó szabályok (backenddel egyező)
+  const passwordRules = useMemo(() => {
+    const p = regPassword || "";
+
+    const lengthOk = p.length >= 8;
+    const uppercaseOk = /[A-Z]/.test(p);
+    const digitOk = /\d/.test(p);
+    const specialOk = /[^A-Za-z0-9]/.test(p);
+
+    return {
+      lengthOk,
+      uppercaseOk,
+      digitOk,
+      specialOk,
+      allOk: lengthOk && uppercaseOk && digitOk && specialOk,
+    };
+  }, [regPassword]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -26,29 +46,41 @@ const TabForm = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: loginEmail,
+          identifier: loginIdentifier,
           password: loginPassword,
         }),
       });
 
       if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
+        let errMsg = "Hiba történt!";
+        const ct = res.headers.get("content-type") || "";
+        if (ct.includes("application/json")) {
+          const errJson = await res.json();
+          errMsg = errJson.message || JSON.stringify(errJson);
+        } else {
+          errMsg = await res.text();
+        }
+        throw new Error(errMsg);
       }
 
-      const data = await res.json(); // { token, expiresAt }
-      localStorage.setItem("token", data.token);
+      const data = await res.json(); // { token, expires }
+      auth.login(data.token);
 
-      setMessage("Sikeres bejelentkezés ✅");
+      navigate("/", { replace: true });
     } catch (err) {
       setMessage(err.message);
     }
   };
 
-  // ✅ REGISTER
   const handleRegister = async (e) => {
     e.preventDefault();
     setMessage("");
+
+    // opcionális: ne is küldje el, ha nem jó a jelszó
+    if (!passwordRules.allOk) {
+      setMessage("A jelszó nem felel meg a követelményeknek.");
+      return;
+    }
 
     try {
       const res = await fetch(`${API_URL}/api/auth/register`, {
@@ -56,19 +88,34 @@ const TabForm = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: regEmail,
+          userName: regUserName,
           password: regPassword,
         }),
       });
 
       if (!res.ok) {
-        const err = await res.text();
-        throw new Error(err);
+        let errMsg = "Hiba történt!";
+        const ct = res.headers.get("content-type") || "";
+        if (ct.includes("application/json")) {
+          const errJson = await res.json();
+          errMsg = errJson.message || JSON.stringify(errJson);
+        } else {
+          errMsg = await res.text();
+        }
+        throw new Error(errMsg);
       }
 
-      setMessage("Sikeres regisztráció ✅ Most jelentkezz be!");
-      setActiveTab("login");
+      const ct = res.headers.get("content-type") || "";
+      if (ct.includes("application/json")) {
+        const okJson = await res.json();
+        setMessage(okJson.message || "Sikeres regisztráció. Most jelentkezz be!");
+      } else {
+        const okText = await res.text();
+        setMessage(okText || "Sikeres regisztráció. Most jelentkezz be!");
+      }
 
-      // ürítjük a mezőket
+      setActiveTab("login");
+      setRegUserName("");
       setRegEmail("");
       setRegPassword("");
     } catch (err) {
@@ -78,8 +125,6 @@ const TabForm = () => {
 
   return (
     <div className="login_reg_tab tartalom1">
-      <p></p>
-
       <div className="tab-buttons">
         <button
           className={activeTab === "login" ? "active" : ""}
@@ -98,23 +143,21 @@ const TabForm = () => {
         </button>
       </div>
 
-      {/* Üzenet kiírás */}
       {message && (
         <p style={{ marginTop: "10px", fontWeight: "bold" }}>{message}</p>
       )}
 
-      {/* LOGIN TAB */}
       {activeTab === "login" && (
         <div className="form-content active">
           <h2>Bejelentkezés</h2>
 
           <form onSubmit={handleLogin}>
-            <label>Email</label>
+            <label>Email vagy Felhasználónév</label>
             <input
               type="text"
-              placeholder="Email"
-              value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
+              placeholder="Email vagy Felhasználónév"
+              value={loginIdentifier}
+              onChange={(e) => setLoginIdentifier(e.target.value)}
             />
 
             <label>Jelszó</label>
@@ -129,13 +172,20 @@ const TabForm = () => {
           </form>
         </div>
       )}
-
-      {/* REGISTER TAB */}
+       
       {activeTab === "register" && (
         <div className="form-content active">
-          <h2>Regisztráció</h2>
+          <h2>Regisztráció</h2> 
 
           <form onSubmit={handleRegister}>
+            <label>Felhasználónév</label>
+            <input
+              type="text"
+              placeholder="Felhasználónév"
+              value={regUserName}
+              onChange={(e) => setRegUserName(e.target.value)}
+            />
+
             <label>Email</label>
             <input
               type="text"
@@ -152,7 +202,36 @@ const TabForm = () => {
               onChange={(e) => setRegPassword(e.target.value)}
             />
 
-            <input className="button" type="submit" value="Regisztráció" />
+            {/* Jelszó követelmények kijelzése */}
+            <div className="password-hints">
+              <div className={passwordRules.allOk ? "pw-status ok" : "pw-status bad"}>
+                {passwordRules.allOk
+                  ? "A jelszó megfelel a követelményeknek."
+                  : "A jelszónak meg kell felelnie az alábbi feltételeknek:"}
+              </div>
+
+              <ul className="pw-rules">
+                <li className={passwordRules.lengthOk ? "ok" : "bad"}>
+                  Legalább 8 karakter
+                </li>
+                <li className={passwordRules.uppercaseOk ? "ok" : "bad"}>
+                  Legalább 1 nagybetű
+                </li>
+                <li className={passwordRules.digitOk ? "ok" : "bad"}>
+                  Legalább 1 szám
+                </li>
+                <li className={passwordRules.specialOk ? "ok" : "bad"}>
+                  Legalább 1 speciális karakter
+                </li>
+              </ul>
+            </div>
+
+            <input
+              className="button"
+              type="submit"
+              value="Regisztráció"
+              disabled={!passwordRules.allOk}
+            />
           </form>
         </div>
       )}
