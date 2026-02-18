@@ -142,49 +142,144 @@ footer {
 /* ------------------- FŐOLDAL TARTALOM ------------------- */
 .tartalom1 {
   position: relative;
-  border-radius: 6px;
-  margin: 100px auto;
+  border-radius: 5px;
   padding: 20px;
-  max-width: 80%;
+  width: 100%;
   background: rgba(20, 20, 20, 0.9);
   min-height: 150px;
   box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
-  font-family: "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.9rem;
   line-height: 0.8rem;
+  min-height: 400px;
+}
+.tartalom1 p{
+  margin: 0;
   color: #eaeaea;
-  
-}
-
-.tartalom-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 30px;
-  max-width: 1600px;
-  margin: 40px;
-}
-
-/* Cím a tartalomban */
-.tartalom1 h2 {
-  font-size: 1.5rem;
-  margin-bottom: 28px;
-  color: #c77dff;
-  text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
-}
-
-/* Bekezdések */
-.tartalom1 p {
-  margin-bottom: 18px;
+  line-height: 1.8rem;
   text-shadow: 0 1px 2px rgba(0,0,0,0.85);
 }
 
-/* Kiemelések */
-.tartalom1 strong {
+/* ------------------ STORY CARDS (TÖRTÉNET) ------------------ */
+.story-section{
+  width: 100%;
+  margin: 60px auto 80px;
+  padding: 0 20px;
+}
+
+.story-title{
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 3rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #c77dff;
+  text-shadow: 0 0 20px rgba(0,0,0,0.9);
+  margin: 50px;
+}
+
+.story-cards{
+  display: grid;
+  grid-template-columns: repeat(3, 320px);
+  gap: 5%;
+  justify-content: center;
+  overflow: visible;
+}
+
+.story-card{
+  width: 70%;
+  min-height: 300px;
+  border-radius: 22px;
+  background: rgba(20, 20, 20, 0.92);
+  box-shadow: 0 0 25px rgba(0,0,0,0.75);
+  position: relative;
+  overflow: hidden;
+  padding: 18px 18px 16px 22px;
+  transition: width 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  cursor: default;
+}
+
+.story-card::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:0;
+  width:10px;
+  height:100%;
+  background: var(--accent, #a855f7);
+}
+
+.story-meta{
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+}
+
+.story-card-title{
+  margin: 0 0 12px 0;
+  font-size: 1.8rem;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.75);
+}
+
+.story-lead{
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.35rem;
+  opacity: 0.92;
+  margin: 0;
+}
+
+/* Kinyíló rész alapból rejtve */
+.story-more{
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.22s ease, opacity 0.22s ease;
+}
+
+/* Hoverre nyíljon ki */
+.story-card:hover{
+  width: 640px;
+  z-index: 10;
+  box-shadow: 0 0 35px rgba(0,0,0,0.85), 0 0 18px rgba(168,85,247,0.35);
+}
+
+.story-card:hover .story-more{
+  max-height: 520px;
+  opacity: 1;
+  overflow: auto;
+}
+
+/* NYITÁS IRÁNYAI */
+/* bal oldali: jobbra nő (alapból így viselkedik) */
+.story-card--left:hover{
+  transform: translateX(0);
+}
+
+/* középső: két oldalra -> balra csúsztatjuk fél deltával (640-320=320, fele 160) */
+.story-card--middle:hover{
+  transform: translateX(-160px);
+}
+
+/* jobb oldali: balra -> balra csúsztatjuk teljes deltával (320) */
+.story-card--right:hover{
+  transform: translateX(-320px);
+}
+
+/* belső tartalom stílus */
+.story-more p{
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.35rem;
+  margin: 0 0 10px 0;
+}
+
+.story-more strong{
   color: #ffd966;
 }
 
-/* Tutorial badge */
-.tartalom1 .tutorial {
+/* “tutorial” badge stílus (mert a régi csak .tartalom1 alatt volt) */
+.story-card .tutorial{
   display: inline-block;
   margin-left: 8px;
   padding: 4px 10px;
@@ -193,28 +288,43 @@ footer {
   border-radius: 10px;
   background: rgba(138, 43, 226, 0.25);
   color: #f3e8ff;
-  text-shadow: none;
 }
 
-/* Drámai rész */
-.tartalom1 .dramatic {
+/* Drámai rész / fejezet vége */
+.story-card .dramatic{
   font-style: italic;
   color: #f5e6ff;
   border-left: 4px solid #a855f7;
-  padding-left: 16px;
-  margin: 28px 0;
+  padding-left: 14px;
+  margin: 14px 0;
   background: rgba(138, 43, 226, 0.08);
 }
 
-/* Fejezet vége */
-.tartalom1 .end {
+.story-card .end{
   text-align: center;
-  margin-top: 40px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  margin-top: 16px;
+  font-weight: 700;
   color: #f0c9ff;
-  text-shadow: none;
 }
+
+/* Mobilon: egymás alá, nincs “két oldalra nyílás” */
+@media (max-width: 1100px){
+  .story-cards{
+    grid-template-columns: 1fr;
+  }
+  .story-card{
+    width: 100%;
+  }
+  .story-card:hover{
+    width: 100%;
+    transform: none;
+  }
+  .story-card--middle:hover,
+  .story-card--right:hover{
+    transform: none;
+  }
+}
+
 /* ------------------ MOZGÁS IMG ------------------ */
 #moves_img{
   width: 80%; 
@@ -273,42 +383,208 @@ footer {
   }
 }
 
-
-
 /* ------------------ ELVÁLASZTÓ ------------------ */
 .elvalaszto {
   width: 100%;
-  height: 50px;
-  background-color: #1a1a1a;
-  box-shadow: 0 0 20px rgba(255,0,0,0.6);
-  color: #ff0000;
-  text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000;
-  animation: pulse 1.5s infinite alternate;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
+  height: 100px;
+
+  background-image: url("/assets/images/border.png");
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: auto 100%; 
+}
+/* ------------------ NEWS BLOCK ------------------ */
+.news{
+  width: 95%;
 }
 
-.elvalaszto h3 {
+.news-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.news-title{
+  margin: 20px;
+  font-size: 3rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 18px rgba(0,0,0,0.9);
+}
+
+.news-admin-badge{
+  margin: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(168, 85, 247, 0.18);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  color: #f3e8ff;
+}
+
+/* Admin form */
+.news-admin{
+  margin: 20px;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.news-admin-row{
+  margin: 20px;
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+.news-admin-label{
+  margin: 20px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 700;
+  opacity: 0.9;
+  padding-top: 8px;
+}
+
+.news-admin-input,
+.news-admin-textarea{
+  width: 80%;
+  border: none;
+  border-radius: 10px;
+  background: #2a2a2a;
+  color: #f2f2f2;
+  padding: 10px 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  outline: none;
+}
+
+.news-admin-input:focus,
+.news-admin-textarea:focus{
+  outline: 2px solid blueviolet;
+  background: #1c1c1c;
+}
+
+.news-admin-actions{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.news-admin-btn{
+  padding: 10px 14px;
+  border: none;
+  border-radius: 10px;
+  background: blueviolet;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.news-admin-btn:hover{
+  background: indigo;
+}
+
+.news-admin-btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.news-admin-note{
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* 4 kártya egymás mellett */
+.news-grid{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.news-empty{
+  font-family: "Segoe UI", Arial, sans-serif;
+  opacity: 0.85;
+  padding: 10px 0;
+}
+
+/* kártya */
+.news-card{
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(35, 35, 35, 0.92);
+  box-shadow: 0 0 22px rgba(0,0,0,0.7);
+  min-height: 360px;
+}
+
+.news-card-accent{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 100%;
+}
+
+.news-card-body{
+  height: 100%;
+  padding: 18px 18px 16px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.news-date{
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 0.95rem;
+  opacity: 0.75;
+}
+
+.news-headline{
+  margin: 10px;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(0,0,0,0.7);
+}
+
+.news-excerpt{
   margin: 0;
-  font-size: 1.5rem;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.35rem;
+  opacity: 0.92;
+}
+
+.news-link{
+  margin-top: auto;
+  height: 10px; /* üresen hagyjuk, később ide jöhet gomb/link */
+}
+
+/* reszponzív törés */
+@media (max-width: 1200px){
+  .news-grid{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px){
+  .news-admin-row{
+    grid-template-columns: 1fr;
+  }
+  .news-grid{
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ------------------ KOSZ BLOKKOK ------------------ */
-#kosz1 {
-  opacity: 1;
-  border-radius: 6px;
-  margin: 20px auto;
-  height: 300px;
-  max-width: 800px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#kosz1 { border: 3px solid blueviolet; box-shadow: 0 0 25px blueviolet;}
-
 #doom, #koszsz, #feliratb, #feliratj {
   font-size: 3rem;
   margin: 0;
@@ -329,12 +605,13 @@ footer {
 }
 
 .pw-rules {
-  margin: 0;
+  margin: 8px;
   padding-left: 18px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .pw-rules li {
-  margin: 2px 0;
+  margin: 5px 0;
   font-weight: 600;
   text-align: left;
 }

@@ -5,7 +5,6 @@ const AuthContext = createContext(null);
 function base64UrlDecode(str) {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
   const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-
   try {
     return decodeURIComponent(
       atob(padded)
@@ -47,16 +46,30 @@ function extractUserName(payload) {
 function extractIsAdmin(payload) {
   if (!payload) return false;
 
-  if (payload.is_admin === true) return true;
-  if (typeof payload.is_admin === "string" && payload.is_admin.toLowerCase() === "true") return true;
+  // te ezt a claimet adod: new Claim("is_admin", "true/false")
+  const val = payload.is_admin;
+
+  if (val === true) return true;
+  if (val === false) return false;
+
+  if (typeof val === "string") return val.toLowerCase() === "true";
 
   return false;
 }
 
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem("token") || "");
-  const [userName, setUserName] = useState("");
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [userName, setUserName] = useState(() => {
+    const t = localStorage.getItem("token") || "";
+    const payload = decodeJwt(t);
+    return extractUserName(payload);
+  });
+
+  const [isAdmin, setIsAdmin] = useState(() => {
+    const t = localStorage.getItem("token") || "";
+    const payload = decodeJwt(t);
+    return extractIsAdmin(payload);
+  });
 
   useEffect(() => {
     if (!token) {
@@ -64,7 +77,6 @@ export function AuthProvider({ children }) {
       setIsAdmin(false);
       return;
     }
-
     const payload = decodeJwt(token);
     setUserName(extractUserName(payload));
     setIsAdmin(extractIsAdmin(payload));
@@ -83,7 +95,16 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, userName, isAdmin, isLoggedIn: !!token, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        userName,
+        isAdmin,
+        login,
+        logout,
+        isLoggedIn: !!token,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

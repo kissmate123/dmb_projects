@@ -41,7 +41,6 @@ const Characters = () => {
 
       {/* Elválasztó */}
       <div className="elvalaszto">
-        <p>ELLENSÉGEK</p>
       </div>
 
       {/* 2. sor: ELLENSÉGEK */}
