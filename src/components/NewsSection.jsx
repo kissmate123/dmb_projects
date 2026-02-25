@@ -1,145 +1,293 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useAuth } from "../context/AuthContext";
 
-const STORAGE_KEY = "pixelrealms_news_v1";
+const STORAGE_KEY = "pixelrealms_news_items";
+const MAX_VISIBLE = 4;
 
-function safeParse(json) {
+const ACCENT_COLORS = ["#c77dff", "#a855f7", "#ff0000", "#ff4dd2"];
+
+function decodeJwtPayload(token) {
   try {
-    const x = JSON.parse(json);
-    return Array.isArray(x) ? x : [];
+    const parts = token.split(".");
+    if (parts.length < 2) return null;
+
+    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
+    const json = decodeURIComponent(
+      atob(padded)
+        .split("")
+        .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
+        .join("")
+    );
+
+    return JSON.parse(json);
   } catch {
-    return [];
+    return null;
   }
 }
 
-function makeId() {
-  if (typeof crypto !== "undefined" && crypto.randomUUID) return crypto.randomUUID();
-  return String(Date.now()) + "_" + Math.random().toString(16).slice(2);
+function getStoredToken() {
+  // igazítsd, ha nálad más kulcs alatt van
+  const direct =
+    localStorage.getItem("token") ||
+    localStorage.getItem("authToken") ||
+    localStorage.getItem("jwt");
+
+  if (direct) return direct;
+
+  // ha objektumban tárolod
+  const authRaw = localStorage.getItem("auth");
+  if (authRaw) {
+    try {
+      const parsed = JSON.parse(authRaw);
+      if (parsed?.token) return parsed.token;
+    } catch {}
+  }
+
+  const userRaw = localStorage.getItem("user");
+  if (userRaw) {
+    try {
+      const parsed = JSON.parse(userRaw);
+      if (parsed?.token) return parsed.token;
+    } catch {}
+  }
+
+  return null;
 }
 
-function formatDate(iso) {
-  try {
-    const d = new Date(iso);
-    return d.toLocaleDateString("hu-HU", { year: "numeric", month: "long", day: "numeric" });
-  } catch {
-    return "";
-  }
+function isAdminUser() {
+  const token = getStoredToken();
+  if (!token) return false;
+
+  const payload = decodeJwtPayload(token);
+  if (!payload) return false;
+
+  const isAdminClaim =
+    payload.is_admin === true ||
+    payload.is_admin === "true" ||
+    payload["is_admin"] === true ||
+    payload["is_admin"] === "true";
+
+  const email =
+    payload.email ||
+    payload[
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+    ] ||
+    payload[
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+    ];
+
+  const userName =
+    payload.unique_name ||
+    payload[
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+    ] ||
+    payload.name;
+
+  const adminByIdentity =
+    String(email || "").toLowerCase() === "admin44@gmail.com" ||
+    String(userName || "").toLowerCase() === "admin";
+
+  return Boolean(isAdminClaim || adminByIdentity);
+}
+
+function formatDateHu(dateLike) {
+  const d = new Date(dateLike);
+  if (Number.isNaN(d.getTime())) return "";
+
+  return d.toLocaleDateString("hu-HU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
+function normalizeNewsItem(item) {
+  return {
+    id: item.id ?? crypto.randomUUID(),
+    title: String(item.title ?? "").trim(),
+    excerpt: String(item.excerpt ?? "").trim(),
+    createdAt: item.createdAt ?? new Date().toISOString(),
+  };
 }
 
 export default function NewsSection() {
-  const { isAdmin } = useAuth();
-
-  const [items, setItems] = useState(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? safeParse(raw) : [];
-  });
-
-  // form state (admin)
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [newsItems, setNewsItems] = useState([]);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
 
+  // admin státusz frissítése betöltéskor + storage változáskor
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-  }, [items]);
+    const refreshAdmin = () => setIsAdmin(isAdminUser());
 
-  const visibleItems = useMemo(() => {
-    // már eleve 4-re vágunk mentéskor, de biztos ami biztos:
-    return [...items]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 4);
-  }, [items]);
+    refreshAdmin();
+    window.addEventListener("storage", refreshAdmin);
 
-  const canAdd = isAdmin;
+    return () => window.removeEventListener("storage", refreshAdmin);
+  }, []);
 
-  const handleAdd = (e) => {
+  // hírek betöltése
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        setNewsItems([]);
+        return;
+      }
+
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) {
+        setNewsItems([]);
+        return;
+      }
+
+      const normalized = parsed
+        .map(normalizeNewsItem)
+        .filter((x) => x.title || x.excerpt);
+
+      setNewsItems(normalized);
+    } catch {
+      setNewsItems([]);
+    }
+  }, []);
+
+  // mentés localStorage-ba
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newsItems));
+  }, [newsItems]);
+
+  // legújabbak elöl
+  const sortedNews = useMemo(() => {
+    return [...newsItems].sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+  }, [newsItems]);
+
+  // csak 4 látszik
+  const visibleNews = sortedNews.slice(0, MAX_VISIBLE);
+
+  const handleAddNews = (e) => {
     e.preventDefault();
-    if (!canAdd) return;
+    if (!isAdmin) return;
 
-    const trimmedTitle = title.trim();
-    const trimmedExcerpt = excerpt.trim();
+    const t = title.trim();
+    const ex = excerpt.trim();
 
-    // ha üres, ne engedjük felvenni
-    if (!trimmedTitle || !trimmedExcerpt) return;
+    if (!t || !ex) return;
 
     const newItem = {
-      id: makeId(),
-      title: trimmedTitle,
-      excerpt: trimmedExcerpt,
+      id: crypto.randomUUID(),
+      title: t,
+      excerpt: ex,
       createdAt: new Date().toISOString(),
     };
 
-    const next = [newItem, ...items]
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      .slice(0, 4); // max 4, a legrégebbi kiesik
-
-    setItems(next);
+    setNewsItems((prev) => [newItem, ...prev]); // több is maradhat, csak 4 látszik
     setTitle("");
     setExcerpt("");
   };
 
-  return (
-    <section className="news">
-      <div className="news-header">
-        <h2 className="news-title">NEWS</h2>
+  const handleDeleteNews = (id) => {
+    if (!isAdmin) return;
 
-        {canAdd ? (
-          <span className="news-admin-badge">Admin</span>
-        ) : null}
+    const ok = window.confirm("Biztosan törölni szeretnéd ezt a hírt?");
+    if (!ok) return;
+
+    setNewsItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  return (
+    <div className="news">
+      <div className="news-header">
+        <h2 className="title">News</h2>
+        {isAdmin && <span className="news-admin-badge">Admin mód</span>}
       </div>
 
-      {canAdd && (
-        <form className="news-admin" onSubmit={handleAdd}>
+      {isAdmin && (
+        <form className="news-admin" onSubmit={handleAddNews}>
           <div className="news-admin-row">
-            <label className="news-admin-label">Cím</label>
+            <label className="news-admin-label" htmlFor="news-title">
+              Cím
+            </label>
             <input
+              id="news-title"
               className="news-admin-input"
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder=""
+              maxLength={120}
             />
           </div>
 
           <div className="news-admin-row">
-            <label className="news-admin-label">Leírás</label>
+            <label className="news-admin-label" htmlFor="news-excerpt">
+              Leírás
+            </label>
             <textarea
+              id="news-excerpt"
               className="news-admin-textarea"
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              rows={3}
-              placeholder=""
+              placeholder="Rövid leírás..."
+              maxLength={500}
             />
           </div>
 
           <div className="news-admin-actions">
-            <button className="news-admin-btn" type="submit" disabled={!title.trim() || !excerpt.trim()}>
+            <button
+              className="news-admin-btn"
+              type="submit"
+              disabled={!title.trim() || !excerpt.trim()}
+            >
               Hír hozzáadása
             </button>
-            <div className="news-admin-note">Maximum 4 hír látszik, az új felülírja a legrégebbit.</div>
+
+            <span className="news-admin-note">
+              Maximum 4 hír látszik egyszerre (a legrégebbi rejtve marad).
+            </span>
           </div>
         </form>
       )}
 
-      <div className="news-grid">
-        {visibleItems.length === 0 ? (
-          <div className="news-empty">Nincs hír.</div>
-        ) : (
-          visibleItems.map((n, idx) => (
-            <article className="news-card" key={n.id}>
+      {visibleNews.length === 0 ? (
+        <div className="news-empty">
+          Még nincs hír hozzáadva.
+        </div>
+      ) : (
+        <div className="news-grid">
+          {visibleNews.map((item, index) => (
+            <article className="news-card" key={item.id}>
               <div
                 className="news-card-accent"
-                style={{ background: idx === 3 ? "#ff2f86" : "#a855f7" }}
+                style={{ background: ACCENT_COLORS[index % ACCENT_COLORS.length] }}
               />
+
+              {isAdmin && (
+                <button
+                  type="button"
+                  className="news-delete-btn"
+                  onClick={() => handleDeleteNews(item.id)}
+                  aria-label="Hír törlése"
+                  title="Törlés"
+                >
+                  ×
+                </button>
+              )}
+
               <div className="news-card-body">
-                <div className="news-date">{formatDate(n.createdAt)}</div>
-                <h3 className="news-headline">{n.title}</h3>
-                <p className="news-excerpt">{n.excerpt}</p>
-                <div className="news-link"> </div>
+                <div className="news-date">{formatDateHu(item.createdAt)}</div>
+
+                <h3 className="news-headline">{item.title}</h3>
+
+                <p className="news-excerpt">{item.excerpt}</p>
+
+                <div className="news-link" />
               </div>
             </article>
-          ))
-        )}
-      </div>
-    </section>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

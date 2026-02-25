@@ -47,7 +47,6 @@ const Navbar = () => {
             className="logo-image"
             style={{ width: "40px", marginRight: "8px", borderRadius: "5px" }}
           />
-          The Pixel Realms
         </Link>
 
         <ul className="nav-links">

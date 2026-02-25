@@ -4,9 +4,20 @@ body {
   font-family: "Impact", "Arial Black", sans-serif;
   background: url("/public/assets/images/page_back.png") no-repeat center center fixed;
   background-size: cover;
-  color: #f2f2f2;
+  color: #cccccc;
   padding-top: 70px;
   scroll-behavior: smooth;
+}
+.title{
+  margin: 20px;
+  font-size: 2.4rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color:#c77dff;
+  text-shadow: 0 0 18px rgba(0,0,0,0.9);
+
+  /* ne csússzon össze */
+  line-height: 1.05;
 }
 
 /* ------------------ NAVBAR ------------------ */
@@ -157,129 +168,44 @@ footer {
   line-height: 1.8rem;
   text-shadow: 0 1px 2px rgba(0,0,0,0.85);
 }
+.tartalom2 {
+  position: relative;
+  border-radius: 5px;
+  padding: 20px;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.9);
+  box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
+  line-height: 0.8rem;
+}
+.tartalom2 h2{
+  margin: 20px;
+  color: #c77dff;
+  line-height: 1.8rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
+  text-align: center;
+}
 
 /* ------------------ STORY CARDS (TÖRTÉNET) ------------------ */
-.story-section{
-  width: 100%;
-  margin: 60px auto 80px;
-  padding: 0 20px;
+.tartalom-wrapper {
+  gap: 30px;
+  max-width: 1600px;
+  margin: 40px;
 }
 
-.story-title{
-  font-family: "Impact", "Arial Black", sans-serif;
-  font-size: 3rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #c77dff;
-  text-shadow: 0 0 20px rgba(0,0,0,0.9);
-  margin: 50px;
-}
-
-.story-cards{
-  display: grid;
-  grid-template-columns: repeat(3, 320px);
-  gap: 5%;
-  justify-content: center;
-  overflow: visible;
-}
-
-.story-card{
-  width: 70%;
-  min-height: 300px;
-  border-radius: 22px;
-  background: rgba(20, 20, 20, 0.92);
-  box-shadow: 0 0 25px rgba(0,0,0,0.75);
-  position: relative;
-  overflow: hidden;
-  padding: 18px 18px 16px 22px;
-  transition: width 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
-  cursor: default;
-}
-
-.story-card::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:0;
-  width:10px;
-  height:100%;
-  background: var(--accent, #a855f7);
-}
-
-.story-meta{
-  font-family: "Segoe UI", Arial, sans-serif;
-  font-size: 0.95rem;
-  opacity: 0.8;
-  margin-bottom: 10px;
-}
-
-.story-card-title{
-  margin: 0 0 12px 0;
-  font-size: 1.8rem;
-  color: #c77dff;
-  text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
-}
-
-.story-lead{
-  font-family: "Segoe UI", Arial, sans-serif;
+/* történet szövegek */
+.tartalom-wrapper .tartalom1 p {
+  margin-bottom: 18px;
+  color: #eaeaea;
   line-height: 1.35rem;
-  opacity: 0.92;
-  margin: 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
 }
 
-/* Kinyíló rész alapból rejtve */
-.story-more{
-  margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255,255,255,0.12);
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.22s ease, opacity 0.22s ease;
-}
-
-/* Hoverre nyíljon ki */
-.story-card:hover{
-  width: 640px;
-  z-index: 10;
-  box-shadow: 0 0 35px rgba(0,0,0,0.85), 0 0 18px rgba(168,85,247,0.35);
-}
-
-.story-card:hover .story-more{
-  max-height: 520px;
-  opacity: 1;
-  overflow: auto;
-}
-
-/* NYITÁS IRÁNYAI */
-/* bal oldali: jobbra nő (alapból így viselkedik) */
-.story-card--left:hover{
-  transform: translateX(0);
-}
-
-/* középső: két oldalra -> balra csúsztatjuk fél deltával (640-320=320, fele 160) */
-.story-card--middle:hover{
-  transform: translateX(-160px);
-}
-
-/* jobb oldali: balra -> balra csúsztatjuk teljes deltával (320) */
-.story-card--right:hover{
-  transform: translateX(-320px);
-}
-
-/* belső tartalom stílus */
-.story-more p{
-  font-family: "Segoe UI", Arial, sans-serif;
-  line-height: 1.35rem;
-  margin: 0 0 10px 0;
-}
-
-.story-more strong{
+.tartalom-wrapper .tartalom1 strong {
   color: #ffd966;
 }
 
-/* “tutorial” badge stílus (mert a régi csak .tartalom1 alatt volt) */
-.story-card .tutorial{
+/* tutorial badge a történet blokkon belül */
+.tartalom-wrapper .tartalom1 {
   display: inline-block;
   margin-left: 8px;
   padding: 4px 10px;
@@ -288,41 +214,27 @@ footer {
   border-radius: 10px;
   background: rgba(138, 43, 226, 0.25);
   color: #f3e8ff;
+  text-shadow: none;
 }
 
-/* Drámai rész / fejezet vége */
-.story-card .dramatic{
+/* drámai rész */
+.tartalom-wrapper .tartalom1 .dramatic {
   font-style: italic;
   color: #f5e6ff;
   border-left: 4px solid #a855f7;
-  padding-left: 14px;
-  margin: 14px 0;
+  padding-left: 16px;
+  margin: 28px 0;
   background: rgba(138, 43, 226, 0.08);
 }
 
-.story-card .end{
+/* fejezet vége */
+.tartalom-wrapper .tartalom1 .end {
   text-align: center;
-  margin-top: 16px;
-  font-weight: 700;
+  margin-top: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: #f0c9ff;
-}
-
-/* Mobilon: egymás alá, nincs “két oldalra nyílás” */
-@media (max-width: 1100px){
-  .story-cards{
-    grid-template-columns: 1fr;
-  }
-  .story-card{
-    width: 100%;
-  }
-  .story-card:hover{
-    width: 100%;
-    transform: none;
-  }
-  .story-card--middle:hover,
-  .story-card--right:hover{
-    transform: none;
-  }
+  text-shadow: none;
 }
 
 /* ------------------ MOZGÁS IMG ------------------ */
@@ -341,13 +253,6 @@ footer {
   grid-template-columns: 1fr 1.4fr; 
   gap: 24px;
   align-items: center;
-}
-
-.trailer-text h3{
-  margin: 0 0 10px 0;
-  font-size: 1.8rem;
-  color: #c77dff;
-  text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
 }
 
 .trailer-text p{
@@ -406,18 +311,6 @@ footer {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 26px;
-}
-
-.news-title{
-  margin: 20px;
-  font-size: 3rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #ffffff;
-  text-shadow: 0 0 18px rgba(0,0,0,0.9);
-
-  /* ne csússzon össze */
-  line-height: 1.05;
 }
 
 .news-admin-badge{
@@ -555,8 +448,6 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 12px;
-
-  /* ne örökölje a kicsi line-height-et */
   line-height: 1.35rem;
 }
 
@@ -607,6 +498,47 @@ footer {
 .news-link{
   margin-top: auto;
   height: 10px; /* később ide jöhet gomb/link */
+}
+/* Admin törlés gomb a kártyán */
+.news-card {
+  position: relative; /* ez már nálad megvan, maradhat */
+}
+
+.news-delete-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 3;
+
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.35);
+  transition: 0.2s ease;
+}
+
+.news-delete-btn:hover {
+  background: rgba(140, 0, 0, 0.9);
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.35);
+  transform: scale(1.06);
+}
+
+/* hogy a gomb ne lógjon rá a címre */
+.news-card-body {
+  padding-right: 52px;
 }
 
 /* reszponzív törés */
