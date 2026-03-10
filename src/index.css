@@ -20,6 +20,22 @@ body {
   line-height: 1.05;
 }
 
+html, body {
+  overflow-x: hidden;
+  overflow: auto;
+  -ms-overflow-style: none;  /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;             /* Chrome/Safari */
+}
+
+* {
+  box-sizing: border-box;
+}
+
 /* ------------------ NAVBAR ------------------ */
 .navbar {
   position: fixed;
@@ -157,7 +173,6 @@ footer {
   padding: 20px;
   width: 100%;
   background: rgba(20, 20, 20, 0.9);
-  min-height: 150px;
   box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
   line-height: 0.8rem;
   min-height: 400px;
@@ -186,55 +201,28 @@ footer {
 }
 
 /* ------------------ STORY CARDS (TÖRTÉNET) ------------------ */
-.tartalom-wrapper {
-  gap: 30px;
-  max-width: 1600px;
-  margin: 40px;
+.epizode-row{
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  align-items: center;
+}
+.epizode-media{
+  margin-right: 20px;
+  margin-bottom: 60px;
 }
 
-/* történet szövegek */
-.tartalom-wrapper .tartalom1 p {
-  margin-bottom: 18px;
-  color: #eaeaea;
-  line-height: 1.35rem;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
-}
-
-.tartalom-wrapper .tartalom1 strong {
-  color: #ffd966;
-}
-
-/* tutorial badge a történet blokkon belül */
-.tartalom-wrapper .tartalom1 {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 4px 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
+.epizode-media img.epizode-img{
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 10px;
-  background: rgba(138, 43, 226, 0.25);
-  color: #f3e8ff;
-  text-shadow: none;
 }
 
-/* drámai rész */
-.tartalom-wrapper .tartalom1 .dramatic {
-  font-style: italic;
-  color: #f5e6ff;
-  border-left: 4px solid #a855f7;
-  padding-left: 16px;
-  margin: 28px 0;
-  background: rgba(138, 43, 226, 0.08);
-}
-
-/* fejezet vége */
-.tartalom-wrapper .tartalom1 .end {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #f0c9ff;
-  text-shadow: none;
+@media (max-width: 900px){
+  .epizode-row{
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ------------------ MOZGÁS IMG ------------------ */
@@ -292,7 +280,6 @@ footer {
 .elvalaszto {
   width: 100%;
   height: 100px;
-
   background-image: url("/assets/images/border.png");
   background-repeat: repeat-x;
   background-position: center;
@@ -558,15 +545,14 @@ footer {
 }
 
 
-/* ------------------ KOSZ BLOKKOK ------------------ */
-#doom, #koszsz, #feliratb, #feliratj {
-  font-size: 3rem;
-  margin: 0;
-  animation: pulse 1.5s infinite alternate;
+/* ------------------ KARAKTER BLOKKOK ------------------ */
+.karakter-img{
+  width: 50%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  margin-right: 55%;
 }
-
-#doom { color: #ff0000; text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000; }
-#koszsz { color: blueviolet; text-shadow: 0 0 15px blueviolet, 2px 2px 4px #000; }
 
 /* ------------------ LOGIN REGISTER ------------------ */
 .password-hints {

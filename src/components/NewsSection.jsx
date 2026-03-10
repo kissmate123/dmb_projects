@@ -199,18 +199,18 @@ export default function NewsSection() {
   return (
     <div className="news">
       <div className="news-header">
-        <h2 className="title">News</h2>
+        <h2 className="title">Frissítések</h2>
         {isAdmin && <span className="news-admin-badge">Admin mód</span>}
       </div>
 
       {isAdmin && (
         <form className="news-admin" onSubmit={handleAddNews}>
           <div className="news-admin-row">
-            <label className="news-admin-label" htmlFor="news-title">
+            <label className="news-admin-label" htmlFor="title">
               Cím
             </label>
             <input
-              id="news-title"
+              id="title"
               className="news-admin-input"
               type="text"
               value={title}
