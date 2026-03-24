@@ -1,0 +1,153 @@
+﻿<Window x:Class="SimplePlatformer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Platformer Game"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
+        ResizeMode="CanResize"
+        KeyDown="Window_KeyDown"
+        KeyUp="Window_KeyUp"
+        Loaded="Window_Loaded"
+        Focusable="True">
+    <Grid>
+
+        <!-- JÁTÉKTÉR -->
+        <Canvas x:Name="GameCanvas" Background="LightBlue">
+
+            <!-- JÁTÉKOS -->
+            <Image x:Name="Player"
+                   Width="80"
+                   Height="60"
+                   Canvas.Left="100"
+                   Canvas.Top="300"
+                   Source="Assets/Borien_stand_test.png"
+                   RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <ScaleTransform x:Name="PlayerScaleTransform" ScaleX="1"/>
+                </Image.RenderTransform>
+            </Image>
+
+            <!-- PLATFORMOK -->
+            <Rectangle x:Name="Platform1"
+                       Width="1140"
+                       Height="20"
+                       Fill="Brown"
+                       Canvas.Left="10"
+                       Canvas.Top="546"/>
+
+            <Rectangle x:Name="Platform2"
+                       Width="200"
+                       Height="20"
+                       Fill="Brown"
+                       Canvas.Left="360"
+                       Canvas.Top="472"/>
+
+            <Rectangle x:Name="Platform3"
+                       Width="200"
+                       Height="20"
+                       Fill="Brown"
+                       Canvas.Left="1630"
+                       Canvas.Top="472"/>
+
+            <Rectangle x:Name="Platform4"
+                       Width="2044"
+                       Height="20"
+                       Fill="Brown"
+                       Canvas.Left="1254"
+                       Canvas.Top="546"/>
+        </Canvas>
+
+        <!-- HP BAR (BAL ALSÓ SAROK) -->
+        <Canvas HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Margin="20"
+                Height="30"
+                Width="120">
+
+            <!-- KERET -->
+            <Rectangle Width="104"
+                       Height="14"
+                       Fill="#222"/>
+
+            <!-- TÖLTET -->
+            <Rectangle x:Name="HpBarFill"
+                       Width="100"
+                       Height="10"
+                       Fill="Red"
+                       Canvas.Left="2"
+                       Canvas.Top="2"/>
+        </Canvas>
+
+        <!-- PAUSE OVERLAY -->
+        <Grid x:Name="PauseOverlay"
+              Background="#AA000000"
+              Visibility="Collapsed">
+
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="400">
+
+                <TextBlock Text="PAUSE"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,30"/>
+
+                <Button Content="Folytatás"
+                        Height="50"
+                        Margin="0,0,0,15"
+                        Click="Resume_Click"/>
+
+                <Button Content="Kilépés a főmenübe"
+                        Height="50"
+                        Margin="0,0,0,15"
+                        Click="ExitToMenu_Click"/>
+
+                <Button Content="Kilépés a játékból"
+                        Height="50"
+                        Click="ExitGame_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- DEAD SCREEN -->
+        <Grid x:Name="Dead"
+              Background="#AA000000"
+              Visibility="Collapsed">
+
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Width="400">
+
+                <TextBlock Text="MEGHALTÁL"
+                           FontSize="40"
+                           FontWeight="Bold"
+                           Foreground="Red"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,30"/>
+
+                <Button Content="Újraéledés"
+                        Height="50"
+                        Margin="0,0,0,15"
+                        Click="Respawn_Click"/>
+
+                <Button Content="Kilépés a főmenübe"
+                        Height="50"
+                        Margin="0,0,0,15"
+                        Click="ExitToMenu_Click"/>
+
+                <Button Content="Kilépés a játékból"
+                        Height="50"
+                        Click="ExitGame_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- DEBUG -->
+        <TextBlock x:Name="DebugText"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="10"
+                   FontSize="16"
+                   Foreground="Black"/>
+    </Grid>
+</Window>
