@@ -9,8 +9,11 @@ namespace SimplePlatformer
 {
     public enum EnemyType
     {
-        Troop_easy,
-        Troop_medium
+        Brogur_light,
+        Brogur_medium,
+        Brogur_heavy,
+        Skulk,
+        Raider
     }
 
     public enum EnemyMode
@@ -25,14 +28,30 @@ namespace SimplePlatformer
         public EnemyType Type { get; }
         public EnemyMode Mode { get; }
 
-        public Rectangle Visual;
+        public Image Visual;
         public Rectangle HpBarBackground;
         public Rectangle HpBarFill;
+
+        public BitmapImage[] IdleFrames;
+        public BitmapImage[] WalkFrames;
+        public BitmapImage[] AttackFrames;
+
+        public int FrameIndex = 0;
+        public double FrameTimer = 0;
+
+        public double WalkFrameDuration = 0.08;
+        public double AttackFrameDuration = 0.05;
+        public double[] IdleFrameDurations = { 0.5, 0.05, 0.5, 0.05 };
+
+        public bool IsAttacking = false;
+        public string CurrentAnimState = "";
 
         public double WorldX;
         public double WorldY;
         public double VelocityX;
         public double VelocityY;
+
+        public double HpBarWidth;
 
         public double WalkSpeed;
         public double AggroSpeed;
@@ -41,7 +60,6 @@ namespace SimplePlatformer
         public double RightLimit;
         public bool OnGround;
 
-        public double MeleeDamage { get; } 
         public double MeleeCooldown { get; }
         public double MeleeCooldownTimer { get; set; } = 0;
 
@@ -106,9 +124,8 @@ namespace SimplePlatformer
             double damageCooldown,
             double attackRange,
             double stopDistance,
-            double meleeDamage,
-            double meleeCooldown,
-            double aggroShareRadius)
+            double aggroShareRadius,
+            double hpBarWidth)
         {
             this.canvas = canvas;
 
@@ -135,21 +152,19 @@ namespace SimplePlatformer
 
             DamageCooldown = damageCooldown;
             DamageCooldownTimer = 0;
+            HpBarWidth = hpBarWidth;
 
             VelocityX = WalkSpeed;
             VelocityY = 0;
 
-            MeleeDamage = meleeDamage;
-            MeleeCooldown = meleeCooldown;
-
 
             AggroShareRadius = aggroShareRadius;
 
-            Visual = new Rectangle
+            Visual = new Image
             {
                 Width = width,
                 Height = height,
-                Fill = fill
+                Source = (fill as ImageBrush)?.ImageSource
             };
 
             Visual.Opacity = 1.0;
@@ -160,18 +175,16 @@ namespace SimplePlatformer
             Visual.RenderTransformOrigin = new Point(0.5, 0.5);
             Visual.RenderTransform = Scale;
 
-            OriginalBrush = Visual.Fill;
-
             HpBarBackground = new Rectangle
             {
-                Width = width + 2,
+                Width = HpBarWidth + 2,
                 Height = 6,
                 Fill = Brushes.Black
             };
 
             HpBarFill = new Rectangle
             {
-                Width = width,
+                Width = HpBarWidth,
                 Height = 4,
                 Fill = Brushes.LimeGreen
             };
@@ -207,11 +220,11 @@ namespace SimplePlatformer
         {
             switch (type)
             {
-                case EnemyType.Troop_medium:
+                case EnemyType.Raider:
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Brogur/BrogurMedium_Base.png", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -221,33 +234,40 @@ namespace SimplePlatformer
                             Stretch = Stretch.Fill
                         };
 
-                        return new Enemy(
-                        canvas, type, mode,
-                        startX, startY, leftLimit, rightLimit,
-                        width: 58,
-                        height: 78,
-                        fill: brush,
-                        maxHp: 180,
-                        walkSpeed: 70,
-                        aggroSpeed: 130,
-                        attackRange: 60,
-                        stopDistance: 50,
-                        aggroRange: 250,
-                        contactDamage: 10,
-                        damageCooldown: 2.5,
-                        meleeDamage: 20,
-                        meleeCooldown: 1.0,
-                        aggroShareRadius: 500
-                    );
+                        var enemy = new Enemy(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 108,
+                            height: 60,
+                            fill: brush,
+                            maxHp: 200,
+                            walkSpeed: 60,
+                            aggroSpeed: 150,
+                            attackRange: 50,
+                            stopDistance: 50,
+                            aggroRange: 200,
+                            contactDamage: 20,
+                            damageCooldown: 2,
+                            aggroShareRadius: 200,
+                            hpBarWidth: 50
+                        );
+
+                        enemy.IdleFrames = LoadFrames("Assets/Sprites/Borien/Borien_Stand_", 4);
+                        enemy.WalkFrames = LoadFrames("Assets/Sprites/Borien/Borien_Walk_", 4);
+                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Borien/Borien_Sword1_", 3);
+                        enemy.CurrentAnimState = "Idle";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                        return enemy;
                     }
-                    
 
-                case EnemyType.Troop_easy:
-                default:
+                case EnemyType.Skulk:
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Brogur/BrogurEasy_Base.png", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -257,24 +277,168 @@ namespace SimplePlatformer
                             Stretch = Stretch.Fill
                         };
 
-                        return new Enemy(
+                        var enemy = new Enemy(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 34,
+                            height: 56,
+                            fill: brush,
+                            maxHp: 60,
+                            walkSpeed: 30,
+                            aggroSpeed: 100,
+                            attackRange: 50,
+                            stopDistance: 50,
+                            aggroRange: 200,
+                            contactDamage: 5,
+                            damageCooldown: 1,
+                            aggroShareRadius: 200,
+                            hpBarWidth: 30
+                        );
+
+                        enemy.IdleFrames = new[] { bmp };
+                        enemy.WalkFrames = new[] { bmp };
+                        enemy.AttackFrames = new[] { bmp };
+
+                        enemy.CurrentAnimState = "Idle";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                        return enemy;
+                    }
+
+                case EnemyType.Brogur_heavy:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/Brogur/Brogur_Heavy.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp)
+                        {
+                            Stretch = Stretch.Fill
+                        };
+
+                        var enemy = new Enemy(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 62,
+                            height: 78,
+                            fill: brush,
+                            maxHp: 650,
+                            walkSpeed: 65,
+                            aggroSpeed: 120,
+                            attackRange: 60,
+                            stopDistance: 50,
+                            aggroRange: 300,
+                            contactDamage: 60,
+                            damageCooldown: 4.5,
+                            aggroShareRadius: 300,
+                            hpBarWidth: 150
+                        );
+
+                        enemy.IdleFrames = new[] { bmp };
+                        enemy.WalkFrames = new[] { bmp };
+                        enemy.AttackFrames = new[] { bmp };
+
+                        enemy.CurrentAnimState = "Idle";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                        return enemy;
+                    }
+
+                case EnemyType.Brogur_medium:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/Brogur/Brogur_Medium.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp)
+                        {
+                            Stretch = Stretch.Fill
+                        };
+
+                        var enemy = new Enemy(
                             canvas, type, mode,
                             startX, startY, leftLimit, rightLimit,
                             width: 58,
                             height: 78,
                             fill: brush,
-                            maxHp: 100,
-                            walkSpeed: 80,
-                            aggroSpeed: 150,
+                            maxHp: 400,
+                            walkSpeed: 70,
+                            aggroSpeed: 140,
                             attackRange: 60,
                             stopDistance: 50,
-                            aggroRange: 250,
-                            contactDamage: 8,
-                            damageCooldown: 2.0,
-                            meleeDamage: 20,
-                            meleeCooldown: 1.0,
-                            aggroShareRadius: 500
+                            aggroRange: 300,
+                            contactDamage: 35,
+                            damageCooldown: 3,
+                            aggroShareRadius: 300,
+                            hpBarWidth: 90
                         );
+
+                        enemy.IdleFrames = new[] { bmp };
+                        enemy.WalkFrames = new[] { bmp };
+                        enemy.AttackFrames = new[] { bmp };
+
+                        enemy.CurrentAnimState = "Idle";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                        return enemy;
+                    }
+                    
+
+                case EnemyType.Brogur_light:
+                default:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/Brogur/Brogur_Light.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp)
+                        {
+                            Stretch = Stretch.Fill
+                        };
+
+                        var enemy = new Enemy(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 58,
+                            height: 78,
+                            fill: brush,
+                            maxHp: 280,
+                            walkSpeed: 80,
+                            aggroSpeed: 160,
+                            attackRange: 60,
+                            stopDistance: 50,
+                            aggroRange: 300,
+                            contactDamage: 20,
+                            damageCooldown: 2.5,
+                            aggroShareRadius: 300,
+                            hpBarWidth: 60
+                        );
+
+                        enemy.IdleFrames = new[] { bmp };
+                        enemy.WalkFrames = new[] { bmp };
+                        enemy.AttackFrames = new[] { bmp };
+
+                        enemy.CurrentAnimState = "Idle";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                        return enemy;
                     }
             }
         }
@@ -284,13 +448,35 @@ namespace SimplePlatformer
             double hpPercent = CurrentHp / MaxHp;
             if (hpPercent < 0) hpPercent = 0;
 
-            HpBarFill.Width = Visual.Width * hpPercent;
+            HpBarFill.Width = HpBarWidth * hpPercent;
 
-            Canvas.SetLeft(HpBarBackground, WorldX - cameraX - 1);
+            double enemyCenterX = WorldX + Visual.Width / 2;
+            double barLeft = enemyCenterX - (HpBarWidth / 2);
+
+            Canvas.SetLeft(HpBarBackground, barLeft - cameraX - 1);
             Canvas.SetTop(HpBarBackground, WorldY - 10);
 
-            Canvas.SetLeft(HpBarFill, WorldX - cameraX);
+            Canvas.SetLeft(HpBarFill, barLeft - cameraX);
             Canvas.SetTop(HpBarFill, WorldY - 9);
+        }
+
+        private static BitmapImage[] LoadFrames(string basePath, int count)
+        {
+            BitmapImage[] frames = new BitmapImage[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri($"{basePath}{i + 1}.png", UriKind.Relative);
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.EndInit();
+                bmp.Freeze();
+
+                frames[i] = bmp;
+            }
+
+            return frames;
         }
     }
 }

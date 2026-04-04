@@ -40,14 +40,11 @@ namespace SimplePlatformer
             }
 
             ResolvePlatformCollision(map.Ground, map.GroundX);
-            ResolvePlatformCollision(map.HousePlatform1, map.HousePlatform1X);
-            ResolvePlatformCollision(map.HousePlatform2, map.HousePlatform2X);
-            ResolvePlatformCollision(map.HousePlatform3, map.HousePlatform3X);
-            ResolvePlatformCollision(map.HousePlatform4, map.HousePlatform4X);
-            ResolvePlatformCollision(map.HousePlatform5, map.HousePlatform5X);
-            ResolvePlatformCollision(map.HousePlatform6, map.HousePlatform6X);
-            ResolvePlatformCollision(map.HousePlatform7, map.HousePlatform7X);
-            ResolvePlatformCollision(map.HousePlatform8, map.HousePlatform8X);
+            foreach (var platform in map.platforms)
+            {
+                double worldX = (double)platform.Tag;
+                ResolvePlatformCollision(platform, worldX);
+            }
         }
 
         public void ResolvePlatformCollision(Rectangle platform, double platformWorldX)
@@ -124,13 +121,9 @@ namespace SimplePlatformer
             double screenX = map.playerWorldX - map.cameraX;
 
             if (screenX > map.screenRightLimit)
-            {
                 map.cameraX = map.playerWorldX - map.screenRightLimit;
-            }
             else if (screenX < map.screenLeftLimit)
-            {
                 map.cameraX = map.playerWorldX - map.screenLeftLimit;
-            }
 
             if (map.cameraX < 0)
                 map.cameraX = 0;
@@ -138,38 +131,16 @@ namespace SimplePlatformer
             if (map.cameraX > map.WorldWidth - map.GameCanvas.ActualWidth)
                 map.cameraX = map.WorldWidth - map.GameCanvas.ActualWidth;
 
-            Canvas.SetLeft(map.Ground, map.GroundX - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform1, map.HousePlatform1X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform2, map.HousePlatform2X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform3, map.HousePlatform3X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform4, map.HousePlatform4X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform5, map.HousePlatform5X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform6, map.HousePlatform6X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform7, map.HousePlatform7X - map.cameraX);
-            Canvas.SetLeft(map.HousePlatform8, map.HousePlatform8X - map.cameraX);
-            Canvas.SetLeft(map.Tree1, 4000 - map.cameraX);
+            foreach (UIElement element in map.GameCanvas.Children)
+            {
+                if (element == map.Player)
+                    continue;
 
-            Canvas.SetLeft(map.House1, 100 - map.cameraX);
-            Canvas.SetLeft(map.House2, 500 - map.cameraX);
-            Canvas.SetLeft(map.House3, 900 - map.cameraX);
-            Canvas.SetLeft(map.House4, 1300 - map.cameraX);
-            Canvas.SetLeft(map.House5, 1700 - map.cameraX);
-            Canvas.SetLeft(map.House6, 2100 - map.cameraX);
-            Canvas.SetLeft(map.House7, 2500 - map.cameraX);
-            Canvas.SetLeft(map.House8, 2900 - map.cameraX);
-
-            Canvas.SetLeft(map.HouseBack1, 300 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack2, 650 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack3, 1170 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack4, 1500 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack5, 1950 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack6, 2370 - map.cameraX);
-            Canvas.SetLeft(map.HouseBack7, 2700 - map.cameraX);
-
-            Canvas.SetLeft(map.MarketStall1, 3500 - map.cameraX);
-            Canvas.SetLeft(map.MarketStall2, 3820 - map.cameraX);
-            Canvas.SetLeft(map.MarketStall3, 4140 - map.cameraX);
-            Canvas.SetLeft(map.MarketStall4, 4460 - map.cameraX);
+                if (element is FrameworkElement fe && fe.Tag is double worldX)
+                {
+                    Canvas.SetLeft(fe, worldX - map.cameraX);
+                }
+            }
         }
 
         public Rect GetPlatformRect(Rectangle platform, double worldX)

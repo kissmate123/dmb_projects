@@ -40,7 +40,6 @@ namespace SimplePlatformer
             if (!map.canTakeDamage || map.isDead)
                 return;
 
-            // --- SHIELD kapja, ha van és épp shielding ---
             if (map.shieldTaken && map.isShielding && map.currentShield > 0)
             {
                 map.currentShield -= amount;
@@ -70,13 +69,10 @@ namespace SimplePlatformer
                     else
                         map.playerVelocityX = -map.playerKnockbackX;
 
-                    // SHIELD esetén nincs felugrás
                 }
 
                 return;
             }
-
-            // --- HP ---
             map.currentHp -= amount;
             if (map.currentHp < 0)
                 map.currentHp = 0;

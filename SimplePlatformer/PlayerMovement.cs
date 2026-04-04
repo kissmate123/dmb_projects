@@ -3,10 +3,6 @@ using System.Windows.Media;
 
 namespace SimplePlatformer
 {
-    // FIGYELEM:
-    // Ez a class a TestMap belső állapotára/mezőire támaszkodik.
-    // Ahhoz, hogy forduljon, a TestMap-ben az érintett mezőknek elérhetőnek kell lenniük (pl. internal),
-    // vagy legyenek internal property-k rájuk.
     internal sealed class PlayerMovement
     {
         private readonly TestMap map;

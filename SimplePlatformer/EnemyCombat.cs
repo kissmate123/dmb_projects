@@ -38,6 +38,16 @@ namespace SimplePlatformer
                 {
                     if (enemy.DamageCooldownTimer <= 0)
                     {
+                        enemy.IsAttacking = true;
+                        enemy.CurrentAnimState = "";
+                        enemy.FrameIndex = 0;
+                        enemy.FrameTimer = 0;
+
+                        if (enemy.AttackFrames != null && enemy.AttackFrames.Length > 0)
+                        {
+                            enemy.Visual.Source = enemy.AttackFrames[0];
+                        }
+
                         map.DamagePlayer(enemy.ContactDamage, enemy);
 
                         enemy.DamageCooldownTimer = enemy.DamageCooldown;

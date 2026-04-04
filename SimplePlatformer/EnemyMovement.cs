@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace SimplePlatformer
@@ -117,6 +118,8 @@ namespace SimplePlatformer
                 }
 
                 enemy.UpdateHpBar(map.cameraX);
+                UpdateEnemyAnimation(enemy);
+
             }
         }
 
@@ -319,6 +322,88 @@ namespace SimplePlatformer
             {
                 enemy.Scale.ScaleX = -1;
             }
+        }
+
+        private void UpdateEnemyAnimation(Enemy enemy)
+        {
+            BitmapImage[] frames;
+            string nextState;
+
+            if (enemy.IsAttacking && enemy.AttackFrames != null && enemy.AttackFrames.Length > 0)
+            {
+                frames = enemy.AttackFrames;
+                nextState = "Attack";
+            }
+            else if (Math.Abs(enemy.VelocityX) > 1 && enemy.WalkFrames != null && enemy.WalkFrames.Length > 0)
+            {
+                frames = enemy.WalkFrames;
+                nextState = "Walk";
+            }
+            else
+            {
+                frames = enemy.IdleFrames;
+                nextState = "Idle";
+            }
+
+            if (frames == null || frames.Length == 0)
+                return;
+
+            // state váltásnál azonnali reset + első frame kirakása
+            if (enemy.CurrentAnimState != nextState)
+            {
+                enemy.CurrentAnimState = nextState;
+                enemy.FrameIndex = 0;
+                enemy.FrameTimer = 0;
+                enemy.Visual.Source = frames[0];
+                return;
+            }
+
+            enemy.FrameTimer += map.deltaTime;
+
+            double currentDuration;
+
+            if (nextState == "Attack")
+            {
+                currentDuration = enemy.AttackFrameDuration;
+            }
+            else if (nextState == "Walk")
+            {
+                currentDuration = enemy.WalkFrameDuration;
+            }
+            else
+            {
+                // Idle ugyanúgy működjön mint a playernél
+                if (enemy.IdleFrameDurations != null && enemy.IdleFrameDurations.Length > 0)
+                    currentDuration = enemy.IdleFrameDurations[enemy.FrameIndex % enemy.IdleFrameDurations.Length];
+                else
+                    currentDuration = 0.1;
+            }
+
+            if (enemy.FrameTimer < currentDuration)
+                return;
+
+            enemy.FrameTimer -= currentDuration;
+            enemy.FrameIndex++;
+
+            if (enemy.FrameIndex >= frames.Length)
+            {
+                if (nextState == "Attack")
+                {
+                    enemy.IsAttacking = false;
+                    enemy.CurrentAnimState = "";
+                    enemy.FrameIndex = 0;
+                    enemy.FrameTimer = 0;
+
+                    if (enemy.IdleFrames != null && enemy.IdleFrames.Length > 0)
+                        enemy.Visual.Source = enemy.IdleFrames[0];
+
+                    return;
+                }
+
+                enemy.FrameIndex = 0;
+            }
+
+            enemy.Visual.Source = frames[enemy.FrameIndex];
         }
     }
 }

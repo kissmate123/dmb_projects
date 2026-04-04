@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -49,6 +50,15 @@ namespace SimplePlatformer
         public ScaleTransform Scale { get; }
 
         private readonly Canvas canvas;
+
+        private static readonly Random Rng = new Random();
+
+        private static List<string> guardPool = new List<string>
+        {
+            "Assets/Sprites/Guards/RoyalGuard1.png",
+            "Assets/Sprites/Guards/RoyalGuard2.png",
+            "Assets/Sprites/Guards/RoyalGuard3.png"
+        };
 
         public Npc(
             Canvas canvas,
@@ -111,9 +121,29 @@ namespace SimplePlatformer
             {
                 case NpcType.Guard:
                     {
+                        string chosen;
+
+                        if (guardPool.Count > 0)
+                        {
+                            int index = Rng.Next(guardPool.Count);
+                            chosen = guardPool[index];
+                            guardPool.RemoveAt(index);
+                        }
+                        else
+                        {
+                            string[] fallback =
+                            {
+                                "Assets/Sprites/Guards/RoyalGuard1.png",
+                                "Assets/Sprites/Guards/RoyalGuard2.png",
+                                "Assets/Sprites/Guards/RoyalGuard3.png"
+                            };
+
+                            chosen = fallback[Rng.Next(fallback.Length)];
+                        }
+
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Guards/RoyalGuard2.png", UriKind.Relative);
+                        bmp.UriSource = new Uri(chosen, UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();

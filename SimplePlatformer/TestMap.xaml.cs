@@ -57,6 +57,27 @@ namespace SimplePlatformer
 
             npcMovement = new NpcMovement(this);
             npcCombat = new NpcCombat(this);
+
+            foreach (UIElement element in GameCanvas.Children)
+            {
+                if (element is Rectangle rect && rect.Name.Contains("Platform"))
+                {
+                    platforms.Add(rect);
+                }
+
+                if (element is Image img && img.Name.Contains("House"))
+                {
+                    worldObjects.Add(img);
+                }
+            }
+
+            foreach (UIElement element in GameCanvas.Children)
+            {
+                if (element is FrameworkElement fe)
+                {
+                    fe.Tag = Canvas.GetLeft(fe);
+                }
+            }
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -211,10 +232,18 @@ namespace SimplePlatformer
 
         private void InitializeEnemies()
         {
-            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Troop_easy, 4000, 300, 3800, 4500, EnemyMode.Patrol));
-            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Troop_medium, 5000, 300, 4800, 5500, EnemyMode.Stand));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Civilian, 1200, 600, 1100, 1400, NpcMode.Stand));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 800, 600, 700, 1000, NpcMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 3000, 300, 2800, 3500, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 2850, 300, 2800, 3000, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 3000, 300, 2900, 3200, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 3050, 300, 3000, 3600, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 2900, 300, 2850, 3250, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_light, 5000, 300, 4800, 5500, EnemyMode.Patrol));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_medium, 6000, 300, 5800, 6500, EnemyMode.Stand));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_heavy, 7500, 300, 7000, 8000, EnemyMode.Stand));
+            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Raider, 2000, 300, 1800, 2600, EnemyMode.Patrol));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 1200, 600, 900, 1400, NpcMode.Stand));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 2000, 600, 1800, 2500, NpcMode.Wander));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 3000, 600, 2700, 3100, NpcMode.Patrol));
         }
     
         private void InitializeBowAndAimUI()
@@ -429,14 +458,7 @@ namespace SimplePlatformer
         internal bool isDead = false;
 
         internal double GroundX = 10;
-        internal double HousePlatform1X = 122;
-        internal double HousePlatform2X = 522;
-        internal double HousePlatform3X = 922;
-        internal double HousePlatform4X = 1322;
-        internal double HousePlatform5X = 1722;
-        internal double HousePlatform6X = 2122;
-        internal double HousePlatform7X = 2522;
-        internal double HousePlatform8X = 2922;
+        
 
         internal double playerWalkSpeed = 150;
         internal double playerRunSpeed = 350;
@@ -505,5 +527,8 @@ namespace SimplePlatformer
 
         private NpcMovement npcMovement;
         private NpcCombat npcCombat;
+
+        internal List<Rectangle> platforms = new List<Rectangle>();
+        internal List<Image> worldObjects = new List<Image>();
     }
 }
