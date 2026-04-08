@@ -34,6 +34,9 @@
     <None Remove="Assets\Props\MarketStall_Food2.png" />
     <None Remove="Assets\Props\MarketStall_Grog.png" />
     <None Remove="Assets\Props\Tree.png" />
+    <None Remove="Assets\UI\CommentBubble_Left.png" />
+    <None Remove="Assets\UI\CommentBubble_Middle.png" />
+    <None Remove="Assets\UI\CommentBubble_Right.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -78,9 +81,21 @@
     <Resource Include="Assets\Props\MarketStall_Food2.png" />
     <Resource Include="Assets\Props\MarketStall_Grog.png" />
     <Resource Include="Assets\Props\Tree.png" />
+    <Resource Include="Assets\UI\CommentBubble_Left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\UI\CommentBubble_Middle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\UI\CommentBubble_Right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Assets\Dialog\greetings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\Items\Shield.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -147,13 +162,22 @@
     <None Update="Assets\Sprites\Enemy\Skeleton.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Sprites\Guards\RoyalGuard1.png">
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Sprites\Guards\RoyalGuard2.png">
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Assets\Sprites\Guards\RoyalGuard3.png">
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

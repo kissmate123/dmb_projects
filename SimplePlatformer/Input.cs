@@ -12,6 +12,9 @@ namespace SimplePlatformer
             this.map = map;
         }
 
+        public bool EPressed = false;
+
+
         public void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (map.isDead)
@@ -24,6 +27,10 @@ namespace SimplePlatformer
             {
                 case Key.G:
                     map.bowKeyPressed = true;
+                    break;
+
+                case Key.E:
+                    EPressed = true;
                     break;
 
                 case Key.V:
@@ -120,6 +127,10 @@ namespace SimplePlatformer
 
                 case Key.F:
                     map.attackPressed = false;
+                    break;
+
+                case Key.E:
+                    EPressed = false;
                     break;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace SimplePlatformer
@@ -38,6 +39,7 @@ namespace SimplePlatformer
                 Canvas.SetTop(npc.Visual, npc.WorldY);
 
                 UpdateNpcFacing(npc);
+                UpdateNpcAnimation(npc);
             }
         }
 
@@ -194,6 +196,62 @@ namespace SimplePlatformer
                 npc.Scale.ScaleX = 1;
             else if (npc.VelocityX < -1)
                 npc.Scale.ScaleX = -1;
+        }
+
+        private void UpdateNpcAnimation(Npc npc)
+        {
+            BitmapImage[] frames;
+            string nextState;
+
+            if (Math.Abs(npc.VelocityX) > 1 && npc.WalkFrames != null && npc.WalkFrames.Length > 0)
+            {
+                frames = npc.WalkFrames;
+                nextState = "Walk";
+            }
+            else
+            {
+                frames = npc.IdleFrames;
+                nextState = "Idle";
+            }
+
+            if (frames == null || frames.Length == 0)
+                return;
+
+            if (npc.CurrentAnimState != nextState)
+            {
+                npc.CurrentAnimState = nextState;
+                npc.FrameIndex = 0;
+                npc.FrameTimer = 0;
+                npc.Visual.Source = frames[0];
+                return;
+            }
+
+            npc.FrameTimer += map.deltaTime;
+
+            double currentDuration;
+
+            if (nextState == "Walk")
+            {
+                currentDuration = npc.WalkFrameDuration;
+            }
+            else
+            {
+                if (npc.IdleFrameDurations != null && npc.IdleFrameDurations.Length > 0)
+                    currentDuration = npc.IdleFrameDurations[npc.FrameIndex % npc.IdleFrameDurations.Length];
+                else
+                    currentDuration = 0.1;
+            }
+
+            if (npc.FrameTimer < currentDuration)
+                return;
+
+            npc.FrameTimer -= currentDuration;
+            npc.FrameIndex++;
+
+            if (npc.FrameIndex >= frames.Length)
+                npc.FrameIndex = 0;
+
+            npc.Visual.Source = frames[npc.FrameIndex];
         }
     }
 }

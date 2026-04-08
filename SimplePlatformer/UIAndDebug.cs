@@ -47,14 +47,14 @@ namespace SimplePlatformer
         {
             List<string> debugInfo = map.debugInfo;
 
-            debugInfo.Add($"FPS: {map.fps:F1}");
-            debugInfo.Add($"Position: ({System.Windows.Controls.Canvas.GetLeft(map.Player):F0}, {System.Windows.Controls.Canvas.GetTop(map.Player):F0})");
-            debugInfo.Add($"On Ground: {map.isOnGround}");
-            debugInfo.Add($"Jumping: {map.isJumping}");
-            debugInfo.Add($"Facing: {(map.isFacingRight ? "Right" : "Left")}");
-            debugInfo.Add($"Keys: A/D={map.leftPressed}/{map.rightPressed}, Space={map.spacePressed}");
+            //debugInfo.Add($"FPS: {map.fps:F1}");
+            //debugInfo.Add($"Position: ({System.Windows.Controls.Canvas.GetLeft(map.Player):F0}, {System.Windows.Controls.Canvas.GetTop(map.Player):F0})");
+            //debugInfo.Add($"On Ground: {map.isOnGround}");
+            //debugInfo.Add($"Jumping: {map.isJumping}");
+            //debugInfo.Add($"Facing: {(map.isFacingRight ? "Right" : "Left")}");
+            //debugInfo.Add($"Keys: A/D={map.leftPressed}/{map.rightPressed}, Space={map.spacePressed}");
 
-            map.DebugText.Text = string.Join("\n", debugInfo);
+            //map.DebugText.Text = string.Join("\n", debugInfo);
         }
 
         public void ToggleDebugVisibility()

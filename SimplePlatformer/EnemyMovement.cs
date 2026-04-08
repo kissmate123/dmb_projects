@@ -348,7 +348,6 @@ namespace SimplePlatformer
             if (frames == null || frames.Length == 0)
                 return;
 
-            // state váltásnál azonnali reset + első frame kirakása
             if (enemy.CurrentAnimState != nextState)
             {
                 enemy.CurrentAnimState = nextState;
@@ -372,7 +371,6 @@ namespace SimplePlatformer
             }
             else
             {
-                // Idle ugyanúgy működjön mint a playernél
                 if (enemy.IdleFrameDurations != null && enemy.IdleFrameDurations.Length > 0)
                     currentDuration = enemy.IdleFrameDurations[enemy.FrameIndex % enemy.IdleFrameDurations.Length];
                 else

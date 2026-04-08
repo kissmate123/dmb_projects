@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SimplePlatformer
 {
     public enum NpcType
     {
         Civilian,
-        Guard
+        Guard1,
+        Guard2
     }
 
     public enum NpcMode
@@ -26,7 +25,18 @@ namespace SimplePlatformer
         public NpcType Type { get; }
         public NpcMode Mode { get; }
 
-        public Rectangle Visual;
+        public Image Visual;
+
+        public BitmapImage[] IdleFrames;
+        public BitmapImage[] WalkFrames;
+
+        public int FrameIndex = 0;
+        public double FrameTimer = 0;
+
+        public double WalkFrameDuration = 0.08;
+        public double[] IdleFrameDurations = { 0.5, 0.05, 0.5, 0.05 };
+
+        public string CurrentAnimState = "";
 
         public double WorldX;
         public double WorldY;
@@ -34,6 +44,8 @@ namespace SimplePlatformer
         public double VelocityY;
 
         public double WalkSpeed;
+
+        public double InteractCooldown = 0;
 
         public double LeftLimit;
         public double RightLimit;
@@ -50,15 +62,6 @@ namespace SimplePlatformer
         public ScaleTransform Scale { get; }
 
         private readonly Canvas canvas;
-
-        private static readonly Random Rng = new Random();
-
-        private static List<string> guardPool = new List<string>
-        {
-            "Assets/Sprites/Guards/RoyalGuard1.png",
-            "Assets/Sprites/Guards/RoyalGuard2.png",
-            "Assets/Sprites/Guards/RoyalGuard3.png"
-        };
 
         public Npc(
             Canvas canvas,
@@ -89,12 +92,11 @@ namespace SimplePlatformer
             VelocityX = WalkSpeed;
             VelocityY = 0;
 
-            Visual = new Rectangle
+            Visual = new Image
             {
                 Width = width,
                 Height = height,
-                Fill = fill,
-                Opacity = 1.0
+                Source = (fill as ImageBrush)?.ImageSource
             };
 
             RenderOptions.SetBitmapScalingMode(Visual, BitmapScalingMode.NearestNeighbor);
@@ -119,38 +121,18 @@ namespace SimplePlatformer
         {
             switch (type)
             {
-                case NpcType.Guard:
+                case NpcType.Guard1:
                     {
-                        string chosen;
-
-                        if (guardPool.Count > 0)
-                        {
-                            int index = Rng.Next(guardPool.Count);
-                            chosen = guardPool[index];
-                            guardPool.RemoveAt(index);
-                        }
-                        else
-                        {
-                            string[] fallback =
-                            {
-                                "Assets/Sprites/Guards/RoyalGuard1.png",
-                                "Assets/Sprites/Guards/RoyalGuard2.png",
-                                "Assets/Sprites/Guards/RoyalGuard3.png"
-                            };
-
-                            chosen = fallback[Rng.Next(fallback.Length)];
-                        }
-
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri(chosen, UriKind.Relative);
+                        bmp.UriSource = new Uri("", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
 
                         var brush = new ImageBrush(bmp) { Stretch = Stretch.Fill };
 
-                        return new Npc(
+                        var npc = new Npc(
                             canvas, type, mode,
                             startX, startY, leftLimit, rightLimit,
                             width: 48,
@@ -158,6 +140,47 @@ namespace SimplePlatformer
                             fill: brush,
                             walkSpeed: 70
                         );
+
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Stand_", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Walk_", 4);
+
+                        npc.CurrentAnimState = "Idle";
+                        npc.FrameIndex = 0;
+                        npc.FrameTimer = 0;
+                        npc.Visual.Source = npc.IdleFrames[0];
+
+                        return npc;
+                    }
+
+                case NpcType.Guard2:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/Guards/RoyalGuard1.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp) { Stretch = Stretch.Fill };
+
+                        var npc = new Npc(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 48,
+                            height: 60,
+                            fill: brush,
+                            walkSpeed: 70
+                        );
+
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/Borien/Borien_Stand_", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Borien/Borien_Walk_", 4);
+
+                        npc.CurrentAnimState = "Idle";
+                        npc.FrameIndex = 0;
+                        npc.FrameTimer = 0;
+                        npc.Visual.Source = npc.IdleFrames[0];
+
+                        return npc;
                     }
 
                 case NpcType.Civilian:
@@ -172,7 +195,7 @@ namespace SimplePlatformer
 
                         var brush = new ImageBrush(bmp) { Stretch = Stretch.Fill };
 
-                        return new Npc(
+                        var npc = new Npc(
                             canvas, type, mode,
                             startX, startY, leftLimit, rightLimit,
                             width: 48,
@@ -180,8 +203,37 @@ namespace SimplePlatformer
                             fill: brush,
                             walkSpeed: 60
                         );
+
+                        npc.IdleFrames = new[] { bmp };
+                        npc.WalkFrames = new[] { bmp };
+
+                        npc.CurrentAnimState = "Idle";
+                        npc.FrameIndex = 0;
+                        npc.FrameTimer = 0;
+                        npc.Visual.Source = npc.IdleFrames[0];
+
+                        return npc;
                     }
             }
+        }
+
+        private static BitmapImage[] LoadFrames(string basePath, int count)
+        {
+            BitmapImage[] frames = new BitmapImage[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                var bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri($"{basePath}{i + 1}.png", UriKind.Relative);
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.EndInit();
+                bmp.Freeze();
+
+                frames[i] = bmp;
+            }
+
+            return frames;
         }
     }
 }

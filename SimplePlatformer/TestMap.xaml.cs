@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -78,6 +79,69 @@ namespace SimplePlatformer
                     fe.Tag = Canvas.GetLeft(fe);
                 }
             }
+
+            InitializeSpeechUi();
+        }
+
+        private void InitializeSpeechUi()
+        {
+            playerSpeech = new TextBlock
+            {
+                Foreground = Brushes.Black,
+                FontSize = 16,
+                Visibility = Visibility.Hidden
+            };
+
+            npcSpeech = new TextBlock
+            {
+                Foreground = Brushes.Black,
+                FontSize = 16,
+                Visibility = Visibility.Hidden
+            };
+
+            interactionHint = new TextBlock
+            {
+                Text = "Press (E) to talk",
+                Foreground = Brushes.White,
+                FontSize = 16,
+                Visibility = Visibility.Hidden
+            };
+
+            BitmapImage leftImg = new BitmapImage(new Uri("Assets/UI/CommentBubble_Left.png", UriKind.Relative));
+            BitmapImage midImg = new BitmapImage(new Uri("Assets/UI/CommentBubble_Middle.png", UriKind.Relative));
+            BitmapImage rightImg = new BitmapImage(new Uri("Assets/UI/CommentBubble_Right.png", UriKind.Relative));
+
+            playerBubbleLeft = new Image { Source = leftImg, Height = 44, Stretch = Stretch.Fill };
+            playerBubbleMiddle = new Image { Source = midImg, Height = 44, Stretch = Stretch.Fill };
+            playerBubbleRight = new Image { Source = rightImg, Height = 44, Stretch = Stretch.Fill };
+
+            npcBubbleLeft = new Image { Source = leftImg, Height = 44, Stretch = Stretch.Fill };
+            npcBubbleMiddle = new Image { Source = midImg, Height = 44, Stretch = Stretch.Fill };
+            npcBubbleRight = new Image { Source = rightImg, Height = 44, Stretch = Stretch.Fill };  
+
+            Panel.SetZIndex(playerBubbleLeft, 1997);
+            Panel.SetZIndex(playerBubbleMiddle, 1998);
+            Panel.SetZIndex(playerBubbleRight, 1999);
+
+            Panel.SetZIndex(npcBubbleLeft, 1992);
+            Panel.SetZIndex(npcBubbleMiddle, 1993);
+            Panel.SetZIndex(npcBubbleRight, 1994);
+
+            Panel.SetZIndex(playerSpeech, 2000);
+            Panel.SetZIndex(npcSpeech, 1995);
+            Panel.SetZIndex(interactionHint, 2001);
+
+            GameCanvas.Children.Add(playerBubbleLeft);
+            GameCanvas.Children.Add(playerBubbleMiddle);
+            GameCanvas.Children.Add(playerBubbleRight);
+
+            GameCanvas.Children.Add(npcBubbleLeft);
+            GameCanvas.Children.Add(npcBubbleMiddle);
+            GameCanvas.Children.Add(npcBubbleRight);
+
+            GameCanvas.Children.Add(playerSpeech);
+            GameCanvas.Children.Add(npcSpeech);
+            GameCanvas.Children.Add(interactionHint);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -155,6 +219,15 @@ namespace SimplePlatformer
 
             if (isShielding && shieldSprite != null)
                 Player.Source = shieldSprite;
+
+            HandleNpcInteraction();
+            UpdateSpeech();
+
+            foreach (var npc in npcs)
+            {
+                if (npc.InteractCooldown > 0)
+                    npc.InteractCooldown -= deltaTime;
+            }
         }
 
         internal void TogglePause()
@@ -241,11 +314,12 @@ namespace SimplePlatformer
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_medium, 6000, 300, 5800, 6500, EnemyMode.Stand));
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_heavy, 7500, 300, 7000, 8000, EnemyMode.Stand));
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Raider, 2000, 300, 1800, 2600, EnemyMode.Patrol));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 1200, 600, 900, 1400, NpcMode.Stand));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 2000, 600, 1800, 2500, NpcMode.Wander));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard, 3000, 600, 2700, 3100, NpcMode.Patrol));
+
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard1, 1200, 600, 900, 1400, NpcMode.Stand));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard2, 2000, 600, 1800, 2500, NpcMode.Wander));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard2, 3000, 600, 2700, 3100, NpcMode.Patrol));
         }
-    
+
         private void InitializeBowAndAimUI()
         {
             bowChargeBarBg = new Rectangle
@@ -381,6 +455,200 @@ namespace SimplePlatformer
             }
         }
 
+        private void HandleNpcInteraction()
+        {
+            Npc nearest = null;
+            double minDist = double.MaxValue;
+
+            foreach (var npc in npcs)
+            {
+                double dist = Math.Abs(playerWorldX - npc.WorldX);
+
+                if (dist < 120 && dist < minDist)
+                {
+                    nearest = npc;
+                    minDist = dist;
+                }
+            }
+
+            if (nearest != null)
+            {
+                interactionHint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                double npcCenterX = nearest.WorldX + (nearest.Visual.Width / 2.0);
+
+                Canvas.SetLeft(interactionHint,
+                    npcCenterX - cameraX - (interactionHint.DesiredSize.Width / 2.0));
+
+                Canvas.SetTop(interactionHint, nearest.WorldY - 28);
+
+                interactionHint.Visibility =
+                    nearest.InteractCooldown <= 0
+                    ? Visibility.Visible
+                    : Visibility.Hidden;
+
+                if (input.EPressed && nearest.InteractCooldown <= 0)
+                {
+                    input.EPressed = false;
+
+                    StartGreeting(nearest);
+
+                    nearest.InteractCooldown = 10.0;
+
+                    interactionHint.Visibility = Visibility.Hidden;
+                }
+            }
+            else
+            {
+                interactionHint.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void StartGreeting(Npc npc)
+        {
+            var lines = LoadGreetings();
+
+            if (lines.Count < 12)
+                return;
+
+            var rng = new Random();
+
+            string playerLine = lines[rng.Next(0, 6)];
+            string npcLine = lines[rng.Next(6, 12)];
+
+            playerSpeech.Text = playerLine;
+            playerSpeech.Visibility = Visibility.Visible;
+            playerSpeechTimer = 2;
+
+            npcSpeech.Text = npcLine;
+            npcSpeech.Visibility = Visibility.Hidden;
+            npcResponseDelay = 1;
+            npcSpeechTimer = 2;
+
+            currentNpc = npc;
+            isGreetingActive = true;
+        }
+
+        private List<string> LoadGreetings()
+        {
+            var lines = new List<string>();
+
+            try
+            {
+                using (var reader = new System.IO.StreamReader("Assets/Dialog/greetings.txt", Encoding.UTF8))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(line))
+                            lines.Add(line);
+                    }
+                }
+            }
+            catch
+            {
+                lines.Add("Hiba");
+            }
+
+            return lines;
+        }
+
+        private void HideBubble(Image left, Image middle, Image right, TextBlock text)
+        {
+            left.Visibility = Visibility.Hidden;
+            middle.Visibility = Visibility.Hidden;
+            right.Visibility = Visibility.Hidden;
+            text.Visibility = Visibility.Hidden;
+        }
+
+        private void DrawBubble(Image left, Image middle, Image right, TextBlock text, double centerX, double worldY)
+        {
+            const double sideWidth = 12.0;
+            const double height = 44.0;
+            const double padding = 20.0;
+
+            text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            double textWidth = Math.Ceiling(text.DesiredSize.Width);
+            double totalWidth = Math.Ceiling(textWidth + padding + (sideWidth * 2));
+
+            double startX = Math.Round(centerX - cameraX - totalWidth / 2);
+            double topY = Math.Round(worldY - 72);
+
+            double middleWidth = totalWidth - (sideWidth * 2);
+
+            left.Width = sideWidth;
+            left.Height = height;
+            Canvas.SetLeft(left, startX);
+            Canvas.SetTop(left, topY);
+
+            middle.Width = middleWidth;
+            middle.Height = height;
+            Canvas.SetLeft(middle, startX + sideWidth);
+            Canvas.SetTop(middle, topY);
+
+            right.Width = sideWidth;
+            right.Height = height;
+            Canvas.SetLeft(right, startX + sideWidth + middleWidth);
+            Canvas.SetTop(right, topY);
+
+            Canvas.SetLeft(text, Math.Round(centerX - cameraX - textWidth / 2));
+            Canvas.SetTop(text, Math.Round(worldY - 61));
+
+            left.Visibility = Visibility.Visible;
+            middle.Visibility = Visibility.Visible;
+            right.Visibility = Visibility.Visible;
+            text.Visibility = Visibility.Visible;
+        }
+
+        private void UpdateSpeech()
+        {
+            if (playerSpeechTimer > 0)
+            {
+                playerSpeechTimer -= deltaTime;
+
+                double playerCenterX = playerWorldX + (Player.ActualWidth / 2.0);
+                DrawBubble(playerBubbleLeft, playerBubbleMiddle, playerBubbleRight, playerSpeech, playerCenterX, playerWorldY);
+
+                if (playerSpeechTimer <= 0)
+                {
+                    HideBubble(playerBubbleLeft, playerBubbleMiddle, playerBubbleRight, playerSpeech);
+                }
+            }
+            else
+            {
+                HideBubble(playerBubbleLeft, playerBubbleMiddle, playerBubbleRight, playerSpeech);
+            }
+
+            if (isGreetingActive && npcResponseDelay > 0)
+            {
+                npcResponseDelay -= deltaTime;
+
+                if (npcResponseDelay <= 0)
+                    npcSpeech.Visibility = Visibility.Visible;
+            }
+
+            if (npcSpeech.Visibility == Visibility.Visible && npcSpeechTimer > 0)
+            {
+                npcSpeechTimer -= deltaTime;
+
+                if (currentNpc != null)
+                {
+                    double npcCenterX = currentNpc.WorldX + (currentNpc.Visual.Width / 2.0);
+                    DrawBubble(npcBubbleLeft, npcBubbleMiddle, npcBubbleRight, npcSpeech, npcCenterX, currentNpc.WorldY);
+                }
+
+                if (npcSpeechTimer <= 0)
+                {
+                    HideBubble(npcBubbleLeft, npcBubbleMiddle, npcBubbleRight, npcSpeech);
+                    isGreetingActive = false;
+                }
+            }
+            else if (!isGreetingActive)
+            {
+                HideBubble(npcBubbleLeft, npcBubbleMiddle, npcBubbleRight, npcSpeech);
+            }
+        }
+
         internal bool canShootBow = true;
         internal double bowShootCooldownTimer = 0;
         internal double bowShootCooldown = 0.5;
@@ -458,7 +726,6 @@ namespace SimplePlatformer
         internal bool isDead = false;
 
         internal double GroundX = 10;
-        
 
         internal double playerWalkSpeed = 150;
         internal double playerRunSpeed = 350;
@@ -530,5 +797,26 @@ namespace SimplePlatformer
 
         internal List<Rectangle> platforms = new List<Rectangle>();
         internal List<Image> worldObjects = new List<Image>();
+
+        internal TextBlock interactionHint;
+
+        internal TextBlock playerSpeech;
+        internal TextBlock npcSpeech;
+
+        internal double playerSpeechTimer = 0;
+        internal double npcSpeechTimer = 0;
+
+        internal bool isGreetingActive = false;
+        internal double npcResponseDelay = 0;
+
+        internal Image playerBubbleLeft;
+        internal Image playerBubbleMiddle;
+        internal Image playerBubbleRight;
+
+        internal Image npcBubbleLeft;
+        internal Image npcBubbleMiddle;
+        internal Image npcBubbleRight;
+
+        internal Npc currentNpc = null;
     }
 }
