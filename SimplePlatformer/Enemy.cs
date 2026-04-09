@@ -224,7 +224,7 @@ namespace SimplePlatformer
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton.png", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton/Skeleton.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -267,7 +267,7 @@ namespace SimplePlatformer
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton.png", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Enemy/Skeleton/Skeleton_Walk2.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -280,24 +280,24 @@ namespace SimplePlatformer
                         var enemy = new Enemy(
                             canvas, type, mode,
                             startX, startY, leftLimit, rightLimit,
-                            width: 34,
-                            height: 56,
+                            width: 54,
+                            height: 60,
                             fill: brush,
-                            maxHp: 60,
-                            walkSpeed: 30,
-                            aggroSpeed: 100,
+                            maxHp: 100,
+                            walkSpeed: 50,
+                            aggroSpeed: 200,
                             attackRange: 50,
                             stopDistance: 50,
                             aggroRange: 200,
                             contactDamage: 5,
-                            damageCooldown: 1,
+                            damageCooldown: 2,
                             aggroShareRadius: 200,
                             hpBarWidth: 30
                         );
 
                         enemy.IdleFrames = new[] { bmp };
-                        enemy.WalkFrames = new[] { bmp };
-                        enemy.AttackFrames = new[] { bmp };
+                        enemy.WalkFrames = LoadFrames("Assets/Sprites/Enemy/Skeleton/Skeleton_Walk", 4);
+                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Enemy/Skeleton/Skeleton_Attack", 3);
 
                         enemy.CurrentAnimState = "Idle";
                         enemy.FrameIndex = 0;
@@ -371,7 +371,7 @@ namespace SimplePlatformer
                             width: 58,
                             height: 78,
                             fill: brush,
-                            maxHp: 400,
+                            maxHp: 420,
                             walkSpeed: 70,
                             aggroSpeed: 140,
                             attackRange: 60,

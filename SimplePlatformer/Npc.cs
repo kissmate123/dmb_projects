@@ -10,7 +10,9 @@ namespace SimplePlatformer
     {
         Civilian,
         Guard1,
-        Guard2
+        Guard2,
+        Guard3,
+        Eldon
     }
 
     public enum NpcMode
@@ -125,7 +127,7 @@ namespace SimplePlatformer
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Guards/Guard1/Guard1_Stand1.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -141,8 +143,8 @@ namespace SimplePlatformer
                             walkSpeed: 70
                         );
 
-                        npc.IdleFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Stand_", 4);
-                        npc.WalkFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Walk_", 4);
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Stand", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Guards/Guard1/Guard1_Walk", 4);
 
                         npc.CurrentAnimState = "Idle";
                         npc.FrameIndex = 0;
@@ -156,7 +158,7 @@ namespace SimplePlatformer
                     {
                         var bmp = new BitmapImage();
                         bmp.BeginInit();
-                        bmp.UriSource = new Uri("Assets/Sprites/Guards/RoyalGuard1.png", UriKind.Relative);
+                        bmp.UriSource = new Uri("Assets/Sprites/Guards/Guard2/Guard2_Stand2.png", UriKind.Relative);
                         bmp.CacheOption = BitmapCacheOption.OnLoad;
                         bmp.EndInit();
                         bmp.Freeze();
@@ -172,8 +174,70 @@ namespace SimplePlatformer
                             walkSpeed: 70
                         );
 
-                        npc.IdleFrames = LoadFrames("Assets/Sprites/Borien/Borien_Stand_", 4);
-                        npc.WalkFrames = LoadFrames("Assets/Sprites/Borien/Borien_Walk_", 4);
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/Guards/Guard2/Guard2_Stand", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Guards/Guard2/Guard2_Walk", 4);
+
+                        npc.CurrentAnimState = "Idle";
+                        npc.FrameIndex = 0;
+                        npc.FrameTimer = 0;
+                        npc.Visual.Source = npc.IdleFrames[0];
+
+                        return npc;
+                    }
+
+                case NpcType.Guard3:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/Guards/Guard3/Guard3_Stand2.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp) { Stretch = Stretch.Fill };
+
+                        var npc = new Npc(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 48,
+                            height: 60,
+                            fill: brush,
+                            walkSpeed: 70
+                        );
+
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/Guards/Guard3/Guard3_Stand", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Guards/Guard3/Guard3_Walk", 4);
+
+                        npc.CurrentAnimState = "Idle";
+                        npc.FrameIndex = 0;
+                        npc.FrameTimer = 0;
+                        npc.Visual.Source = npc.IdleFrames[0];
+
+                        return npc;
+                    }
+
+                case NpcType.Eldon:
+                    {
+                        var bmp = new BitmapImage();
+                        bmp.BeginInit();
+                        bmp.UriSource = new Uri("Assets/Sprites/SideCharacters/Eldon/Eldon_Stand1.png", UriKind.Relative);
+                        bmp.CacheOption = BitmapCacheOption.OnLoad;
+                        bmp.EndInit();
+                        bmp.Freeze();
+
+                        var brush = new ImageBrush(bmp) { Stretch = Stretch.Fill };
+
+                        var npc = new Npc(
+                            canvas, type, mode,
+                            startX, startY, leftLimit, rightLimit,
+                            width: 48,
+                            height: 60,
+                            fill: brush,
+                            walkSpeed: 70
+                        );
+
+                        npc.IdleFrames = LoadFrames("Assets/Sprites/SideCharacters/Eldon/Eldon_Stand", 4);
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/SideCharacters/Eldon/Eldon_Walk", 4);
 
                         npc.CurrentAnimState = "Idle";
                         npc.FrameIndex = 0;

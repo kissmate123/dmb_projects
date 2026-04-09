@@ -35,7 +35,7 @@ namespace SimplePlatformer
             lastUpdateTime = DateTime.Now;
             CompositionTarget.Rendering += GameLoop;
 
-            DebugText.Text = "Game Started! Use A/D or Left/Right to move, Space to jump";
+            DebugText.Text = "";
 
             enemyCombat = new EnemyCombat(this);
             gamePhysics = new GamePhysics(this);
@@ -45,7 +45,7 @@ namespace SimplePlatformer
             uiAndDebug = new UIAndDebug(this);
             input = new Input(this);
 
-            InitializeEnemies();
+            InitializeEntities();
             InitializeBowAndAimUI();
             SpawnShieldPickup();
 
@@ -303,7 +303,7 @@ namespace SimplePlatformer
 
         private void Respawn_Click(object sender, RoutedEventArgs e) => Respawn();
 
-        private void InitializeEnemies()
+        private void InitializeEntities()
         {
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 3000, 300, 2800, 3500, EnemyMode.Patrol));
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Skulk, 2850, 300, 2800, 3000, EnemyMode.Patrol));
@@ -313,11 +313,11 @@ namespace SimplePlatformer
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_light, 5000, 300, 4800, 5500, EnemyMode.Patrol));
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_medium, 6000, 300, 5800, 6500, EnemyMode.Stand));
             enemies.Add(Enemy.Create(GameCanvas, EnemyType.Brogur_heavy, 7500, 300, 7000, 8000, EnemyMode.Stand));
-            enemies.Add(Enemy.Create(GameCanvas, EnemyType.Raider, 2000, 300, 1800, 2600, EnemyMode.Patrol));
 
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard1, 1200, 600, 900, 1400, NpcMode.Stand));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard2, 2000, 600, 1800, 2500, NpcMode.Wander));
-            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard2, 3000, 600, 2700, 3100, NpcMode.Patrol));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard1, 500, 600, 200, 600, NpcMode.Wander));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard2, 600, 600, 550, 900, NpcMode.Wander));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Guard3, 700, 600, 600, 1000, NpcMode.Wander));
+            npcs.Add(Npc.Create(GameCanvas, NpcType.Eldon, 300, 600, 200, 500, NpcMode.Stand));
         }
 
         private void InitializeBowAndAimUI()
