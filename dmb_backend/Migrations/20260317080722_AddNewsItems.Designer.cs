@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dmb_backend.Data;
 
@@ -11,9 +12,11 @@ using dmb_backend.Data;
 namespace dmb_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260317080722_AddNewsItems")]
+    partial class AddNewsItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -226,18 +229,16 @@ namespace dmb_backend.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(4000)
+                        .HasColumnType("varchar(4000)");
+
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("CreatedByUserId")
-                        .HasMaxLength(255)
                         .HasColumnType("varchar(255)");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("varchar(4000)")
-                        .HasColumnName("Content");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -245,6 +246,10 @@ namespace dmb_backend.Migrations
                         .HasColumnType("varchar(140)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedAtUtc");
+
+                    b.HasIndex("CreatedByUserId");
 
                     b.ToTable("news_items", (string)null);
                 });
@@ -298,6 +303,16 @@ namespace dmb_backend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("dmb_backend.Models.NewsItem", b =>
+                {
+                    b.HasOne("dmb_backend.Models.ApplicationUser", "CreatedByUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("CreatedByUser");
                 });
 #pragma warning restore 612, 618
         }

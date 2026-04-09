@@ -99,14 +99,19 @@ public class AuthController : ControllerBase
         var audience = _config["Jwt:Audience"]!;
         var expireMinutes = int.Parse(_config["Jwt:ExpireMinutes"]!);
 
+        var isAdmin =
+            string.Equals(user.Email, "admin44@gmail.com", StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(user.UserName, "admin", StringComparison.OrdinalIgnoreCase);
+
         var claims = new List<Claim>
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Name, user.UserName ?? "")
-        };
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+        new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName ?? ""),
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+        new Claim(ClaimTypes.Name, user.UserName ?? ""),
+        new Claim("is_admin", isAdmin ? "true" : "false")
+    };
 
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
@@ -125,4 +130,5 @@ public class AuthController : ControllerBase
             expires
         );
     }
+
 }
