@@ -1,10 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 
 function base64UrlDecode(str) {
   const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
   const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
+
   try {
     return decodeURIComponent(
       atob(padded)
@@ -19,6 +20,7 @@ function base64UrlDecode(str) {
 
 function decodeJwt(token) {
   if (!token) return null;
+
   const parts = token.split(".");
   if (parts.length !== 3) return null;
 
@@ -46,7 +48,6 @@ function extractUserName(payload) {
 function extractIsAdmin(payload) {
   if (!payload) return false;
 
-  // te ezt a claimet adod: new Claim("is_admin", "true/false")
   const val = payload.is_admin;
 
   if (val === true) return true;
@@ -57,19 +58,58 @@ function extractIsAdmin(payload) {
   return false;
 }
 
+function isTokenExpired(payload) {
+  if (!payload?.exp) return false;
+  const nowInSeconds = Math.floor(Date.now() / 1000);
+  return payload.exp <= nowInSeconds;
+}
+
+function getValidStoredToken() {
+  const stored = localStorage.getItem("token") || "";
+  if (!stored) return "";
+
+  const payload = decodeJwt(stored);
+  if (!payload || isTokenExpired(payload)) {
+    localStorage.removeItem("token");
+    return "";
+  }
+
+  return stored;
+}
+
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
+  const [token, setToken] = useState(() => getValidStoredToken());
+
   const [userName, setUserName] = useState(() => {
-    const t = localStorage.getItem("token") || "";
+    const t = getValidStoredToken();
     const payload = decodeJwt(t);
     return extractUserName(payload);
   });
 
   const [isAdmin, setIsAdmin] = useState(() => {
-    const t = localStorage.getItem("token") || "";
+    const t = getValidStoredToken();
     const payload = decodeJwt(t);
     return extractIsAdmin(payload);
   });
+
+  const logout = useCallback(() => {
+    localStorage.removeItem("token");
+    setToken("");
+    setUserName("");
+    setIsAdmin(false);
+  }, []);
+
+  const login = useCallback((newToken) => {
+    const payload = decodeJwt(newToken);
+
+    if (!payload || isTokenExpired(payload)) {
+      logout();
+      throw new Error("Érvénytelen vagy lejárt token.");
+    }
+
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  }, [logout]);
 
   useEffect(() => {
     if (!token) {
@@ -77,22 +117,36 @@ export function AuthProvider({ children }) {
       setIsAdmin(false);
       return;
     }
+
     const payload = decodeJwt(token);
+
+    if (!payload || isTokenExpired(payload)) {
+      logout();
+      return;
+    }
+
     setUserName(extractUserName(payload));
     setIsAdmin(extractIsAdmin(payload));
-  }, [token]);
 
-  const login = (newToken) => {
-    localStorage.setItem("token", newToken);
-    setToken(newToken);
-  };
+    let timeoutId;
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-    setUserName("");
-    setIsAdmin(false);
-  };
+    if (payload.exp) {
+      const msUntilExpiry = payload.exp * 1000 - Date.now();
+
+      if (msUntilExpiry <= 0) {
+        logout();
+        return;
+      }
+
+      timeoutId = setTimeout(() => {
+        logout();
+      }, msUntilExpiry);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [token, logout]);
 
   return (
     <AuthContext.Provider

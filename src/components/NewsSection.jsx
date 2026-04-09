@@ -1,236 +1,158 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { getNews, createNews, deleteNews } from "../services/newsService";
 
-const STORAGE_KEY = "pixelrealms_news_items";
-const MAX_VISIBLE = 4;
-
-const ACCENT_COLORS = ["#c77dff", "#a855f7", "#ff0000", "#ff4dd2"];
-
-function decodeJwtPayload(token) {
+function formatHuDate(d) {
   try {
-    const parts = token.split(".");
-    if (parts.length < 2) return null;
-
-    const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64 + "=".repeat((4 - (base64.length % 4)) % 4);
-    const json = decodeURIComponent(
-      atob(padded)
-        .split("")
-        .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
-        .join("")
-    );
-
-    return JSON.parse(json);
+    const date = new Date(d);
+    if (Number.isNaN(date.getTime())) return "";
+    return date.toLocaleDateString("hu-HU", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   } catch {
-    return null;
+    return "";
   }
-}
-
-function getStoredToken() {
-  // igazítsd, ha nálad más kulcs alatt van
-  const direct =
-    localStorage.getItem("token") ||
-    localStorage.getItem("authToken") ||
-    localStorage.getItem("jwt");
-
-  if (direct) return direct;
-
-  // ha objektumban tárolod
-  const authRaw = localStorage.getItem("auth");
-  if (authRaw) {
-    try {
-      const parsed = JSON.parse(authRaw);
-      if (parsed?.token) return parsed.token;
-    } catch {}
-  }
-
-  const userRaw = localStorage.getItem("user");
-  if (userRaw) {
-    try {
-      const parsed = JSON.parse(userRaw);
-      if (parsed?.token) return parsed.token;
-    } catch {}
-  }
-
-  return null;
-}
-
-function isAdminUser() {
-  const token = getStoredToken();
-  if (!token) return false;
-
-  const payload = decodeJwtPayload(token);
-  if (!payload) return false;
-
-  const isAdminClaim =
-    payload.is_admin === true ||
-    payload.is_admin === "true" ||
-    payload["is_admin"] === true ||
-    payload["is_admin"] === "true";
-
-  const email =
-    payload.email ||
-    payload[
-      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-    ] ||
-    payload[
-      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
-    ];
-
-  const userName =
-    payload.unique_name ||
-    payload[
-      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-    ] ||
-    payload.name;
-
-  const adminByIdentity =
-    String(email || "").toLowerCase() === "admin44@gmail.com" ||
-    String(userName || "").toLowerCase() === "admin";
-
-  return Boolean(isAdminClaim || adminByIdentity);
-}
-
-function formatDateHu(dateLike) {
-  const d = new Date(dateLike);
-  if (Number.isNaN(d.getTime())) return "";
-
-  return d.toLocaleDateString("hu-HU", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
-
-function normalizeNewsItem(item) {
-  return {
-    id: item.id ?? crypto.randomUUID(),
-    title: String(item.title ?? "").trim(),
-    excerpt: String(item.excerpt ?? "").trim(),
-    createdAt: item.createdAt ?? new Date().toISOString(),
-  };
 }
 
 export default function NewsSection() {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [newsItems, setNewsItems] = useState([]);
+  const { token, isAdmin } = useAuth();
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
+  const [text, setText] = useState("");
 
-  // admin státusz frissítése betöltéskor + storage változáskor
-  useEffect(() => {
-    const refreshAdmin = () => setIsAdmin(isAdminUser());
+  const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
 
-    refreshAdmin();
-    window.addEventListener("storage", refreshAdmin);
+  const visibleItems = useMemo(() => {
+    const arr = Array.isArray(items) ? [...items] : [];
 
-    return () => window.removeEventListener("storage", refreshAdmin);
-  }, []);
+    arr.sort((a, b) => {
+      const da = new Date(
+        a.createdAtUtc ?? a.CreatedAtUtc ?? a.createdAt ?? a.CreatedAt ?? a.date ?? a.Date ?? 0
+      ).getTime();
 
-  // hírek betöltése
-  useEffect(() => {
+      const db = new Date(
+        b.createdAtUtc ?? b.CreatedAtUtc ?? b.createdAt ?? b.CreatedAt ?? b.date ?? b.Date ?? 0
+      ).getTime();
+
+      return db - da;
+    });
+
+    return arr.slice(0, 4);
+  }, [items]);
+
+  async function refresh() {
+    setError("");
+    setLoading(true);
+
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) {
-        setNewsItems([]);
-        return;
-      }
-
-      const parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) {
-        setNewsItems([]);
-        return;
-      }
-
-      const normalized = parsed
-        .map(normalizeNewsItem)
-        .filter((x) => x.title || x.excerpt);
-
-      setNewsItems(normalized);
-    } catch {
-      setNewsItems([]);
+      const data = await getNews();
+      setItems(Array.isArray(data) ? data : data?.items ?? []);
+    } catch (e) {
+      console.error("GET /api/News hiba:", e);
+      setError(e?.message || "Nem sikerült betölteni a híreket.");
+    } finally {
+      setLoading(false);
     }
+  }
+
+  useEffect(() => {
+    refresh();
   }, []);
 
-  // mentés localStorage-ba
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newsItems));
-  }, [newsItems]);
-
-  // legújabbak elöl
-  const sortedNews = useMemo(() => {
-    return [...newsItems].sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-  }, [newsItems]);
-
-  // csak 4 látszik
-  const visibleNews = sortedNews.slice(0, MAX_VISIBLE);
-
-  const handleAddNews = (e) => {
+  async function onAdd(e) {
     e.preventDefault();
-    if (!isAdmin) return;
+    setError("");
 
-    const t = title.trim();
-    const ex = excerpt.trim();
+    if (!isAdmin) {
+      setError("Ehhez admin jogosultság szükséges.");
+      return;
+    }
 
-    if (!t || !ex) return;
+    if (!token) {
+      setError("Hiányzik a bejelentkezési token.");
+      return;
+    }
 
-    const newItem = {
-      id: crypto.randomUUID(),
-      title: t,
-      excerpt: ex,
-      createdAt: new Date().toISOString(),
-    };
+    if (!title.trim() || !text.trim()) {
+      setError("A cím és a szöveg megadása kötelező.");
+      return;
+    }
 
-    setNewsItems((prev) => [newItem, ...prev]); // több is maradhat, csak 4 látszik
-    setTitle("");
-    setExcerpt("");
-  };
+    try {
+      setSaving(true);
+      await createNews(token, title.trim(), text.trim());
+      setTitle("");
+      setText("");
+      await refresh();
+    } catch (e) {
+      console.error("POST /api/News hiba:", e);
+      setError(e?.message || "Nem sikerült létrehozni a hírt.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
-  const handleDeleteNews = (id) => {
-    if (!isAdmin) return;
+  async function onDelete(id) {
+    setError("");
 
-    const ok = window.confirm("Biztosan törölni szeretnéd ezt a hírt?");
-    if (!ok) return;
+    if (!isAdmin) {
+      setError("Ehhez admin jogosultság szükséges.");
+      return;
+    }
 
-    setNewsItems((prev) => prev.filter((item) => item.id !== id));
-  };
+    if (!token) {
+      setError("Hiányzik a bejelentkezési token.");
+      return;
+    }
+
+    try {
+      await deleteNews(token, id);
+      setItems((prev) => prev.filter((x) => (x.id ?? x.Id) !== id));
+    } catch (e) {
+      console.error("DELETE /api/News/{id} hiba:", e);
+      setError(e?.message || "Nem sikerült törölni a hírt.");
+    }
+  }
 
   return (
     <div className="news">
       <div className="news-header">
-        <h2 className="title">Frissítések</h2>
-        {isAdmin && <span className="news-admin-badge">Admin mód</span>}
+        <h2 className="title">FRISSÍTÉSEK</h2>
+        {isAdmin ? <div className="news-admin-badge">ADMIN</div> : null}
       </div>
 
-      {isAdmin && (
-        <form className="news-admin" onSubmit={handleAddNews}>
+      {error ? (
+        <p style={{ margin: "0 20px 14px", fontFamily: "Segoe UI, Arial, sans-serif" }}>
+          {error}
+        </p>
+      ) : null}
+
+      {isAdmin ? (
+        <form className="news-admin" onSubmit={onAdd}>
           <div className="news-admin-row">
-            <label className="news-admin-label" htmlFor="title">
-              Cím
-            </label>
+            <div className="news-admin-label">Cím</div>
             <input
-              id="title"
               className="news-admin-input"
-              type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder=""
-              maxLength={120}
+              placeholder="Cím"
+              type="text"
             />
           </div>
 
           <div className="news-admin-row">
-            <label className="news-admin-label" htmlFor="news-excerpt">
-              Leírás
-            </label>
+            <div className="news-admin-label">Szöveg</div>
             <textarea
-              id="news-excerpt"
               className="news-admin-textarea"
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="Rövid leírás..."
-              maxLength={500}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Szöveg"
             />
           </div>
 
@@ -238,54 +160,53 @@ export default function NewsSection() {
             <button
               className="news-admin-btn"
               type="submit"
-              disabled={!title.trim() || !excerpt.trim()}
+              disabled={saving || !title.trim() || !text.trim()}
             >
-              Hír hozzáadása
+              {saving ? "Mentés..." : "Hozzáadás"}
             </button>
-
-            <span className="news-admin-note">
-              Maximum 4 hír látszik egyszerre (a legrégebbi rejtve marad).
-            </span>
+            <div className="news-admin-note">Max. 4 kártya látszik.</div>
           </div>
         </form>
-      )}
+      ) : null}
 
-      {visibleNews.length === 0 ? (
-        <div className="news-empty">
-          Még nincs hír hozzáadva.
-        </div>
+      {loading ? (
+        <div className="news-empty">Betöltés...</div>
+      ) : visibleItems.length === 0 ? (
+        <div className="news-empty">Nincs még frissítés.</div>
       ) : (
         <div className="news-grid">
-          {visibleNews.map((item, index) => (
-            <article className="news-card" key={item.id}>
-              <div
-                className="news-card-accent"
-                style={{ background: ACCENT_COLORS[index % ACCENT_COLORS.length] }}
-              />
+          {visibleItems.map((x) => {
+            const id = x.id ?? x.Id;
+            const created =
+              x.createdAtUtc ?? x.CreatedAtUtc ?? x.createdAt ?? x.CreatedAt ?? x.date ?? x.Date;
+            const headline = x.title ?? x.Title ?? "";
+            const excerpt = x.text ?? x.Text ?? x.content ?? x.Content ?? "";
 
-              {isAdmin && (
-                <button
-                  type="button"
-                  className="news-delete-btn"
-                  onClick={() => handleDeleteNews(item.id)}
-                  aria-label="Hír törlése"
-                  title="Törlés"
-                >
-                  ×
-                </button>
-              )}
+            return (
+              <article className="news-card" key={id}>
+                <div className="news-card-accent" style={{ background: "#a855f7" }} />
 
-              <div className="news-card-body">
-                <div className="news-date">{formatDateHu(item.createdAt)}</div>
+                {isAdmin ? (
+                  <button
+                    type="button"
+                    className="news-delete-btn"
+                    onClick={() => onDelete(id)}
+                    title="Törlés"
+                    aria-label="Törlés"
+                  >
+                    ×
+                  </button>
+                ) : null}
 
-                <h3 className="news-headline">{item.title}</h3>
-
-                <p className="news-excerpt">{item.excerpt}</p>
-
-                <div className="news-link" />
-              </div>
-            </article>
-          ))}
+                <div className="news-card-body">
+                  <div className="news-date">{created ? formatHuDate(created) : ""}</div>
+                  <h3 className="news-headline">{headline}</h3>
+                  <p className="news-excerpt">{excerpt}</p>
+                  <div className="news-link" />
+                </div>
+              </article>
+            );
+          })}
         </div>
       )}
     </div>

@@ -2,7 +2,26 @@ import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-const API_URL = "https://localhost:7273";
+const API_URL = "/api";
+
+async function readResponseError(res) {
+  const ct = res.headers.get("content-type") || "";
+
+  if (ct.includes("application/json")) {
+    const errJson = await res.json().catch(() => null);
+
+    if (errJson?.message) return errJson.message;
+    if (Array.isArray(errJson?.errors)) return errJson.errors.join(" ");
+    if (errJson?.errors && typeof errJson.errors === "object") {
+      return Object.values(errJson.errors).flat().join(" ");
+    }
+
+    return "Hiba történt!";
+  }
+
+  const text = await res.text().catch(() => "");
+  return text || "Hiba történt!";
+}
 
 const TabForm = () => {
   const [activeTab, setActiveTab] = useState("login");
@@ -19,7 +38,6 @@ const TabForm = () => {
   const navigate = useNavigate();
   const auth = useAuth();
 
-  // Jelszó szabályok (backenddel egyező)
   const passwordRules = useMemo(() => {
     const p = regPassword || "";
 
@@ -42,33 +60,27 @@ const TabForm = () => {
     setMessage("");
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/login`, {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          identifier: loginIdentifier,
+          identifier: loginIdentifier.trim(),
           password: loginPassword,
         }),
       });
 
       if (!res.ok) {
-        let errMsg = "Hiba történt!";
-        const ct = res.headers.get("content-type") || "";
-        if (ct.includes("application/json")) {
-          const errJson = await res.json();
-          errMsg = errJson.message || JSON.stringify(errJson);
-        } else {
-          errMsg = await res.text();
-        }
-        throw new Error(errMsg);
+        throw new Error(await readResponseError(res));
       }
 
-      const data = await res.json(); // { token, expires }
+      const data = await res.json();
       auth.login(data.token);
 
+      setLoginIdentifier("");
+      setLoginPassword("");
       navigate("/", { replace: true });
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message || "Sikertelen bejelentkezés.");
     }
   };
 
@@ -76,41 +88,32 @@ const TabForm = () => {
     e.preventDefault();
     setMessage("");
 
-    // opcionális: ne is küldje el, ha nem jó a jelszó
     if (!passwordRules.allOk) {
       setMessage("A jelszó nem felel meg a követelményeknek.");
       return;
     }
 
     try {
-      const res = await fetch(`${API_URL}/api/auth/register`, {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: regEmail,
-          userName: regUserName,
+          email: regEmail.trim(),
+          userName: regUserName.trim(),
           password: regPassword,
         }),
       });
 
       if (!res.ok) {
-        let errMsg = "Hiba történt!";
-        const ct = res.headers.get("content-type") || "";
-        if (ct.includes("application/json")) {
-          const errJson = await res.json();
-          errMsg = errJson.message || JSON.stringify(errJson);
-        } else {
-          errMsg = await res.text();
-        }
-        throw new Error(errMsg);
+        throw new Error(await readResponseError(res));
       }
 
       const ct = res.headers.get("content-type") || "";
       if (ct.includes("application/json")) {
-        const okJson = await res.json();
-        setMessage(okJson.message || "Sikeres regisztráció. Most jelentkezz be!");
+        const okJson = await res.json().catch(() => null);
+        setMessage(okJson?.message || "Sikeres regisztráció. Most jelentkezz be!");
       } else {
-        const okText = await res.text();
+        const okText = await res.text().catch(() => "");
         setMessage(okText || "Sikeres regisztráció. Most jelentkezz be!");
       }
 
@@ -119,7 +122,7 @@ const TabForm = () => {
       setRegEmail("");
       setRegPassword("");
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message || "Sikertelen regisztráció.");
     }
   };
 
@@ -172,10 +175,10 @@ const TabForm = () => {
           </form>
         </div>
       )}
-       
+
       {activeTab === "register" && (
         <div className="form-content active">
-          <h2>Regisztráció</h2> 
+          <h2>Regisztráció</h2>
 
           <form onSubmit={handleRegister}>
             <label>Felhasználónév</label>
@@ -202,7 +205,6 @@ const TabForm = () => {
               onChange={(e) => setRegPassword(e.target.value)}
             />
 
-            {/* Jelszó követelmények kijelzése */}
             <div className="password-hints">
               <div className={passwordRules.allOk ? "pw-status ok" : "pw-status bad"}>
                 {passwordRules.allOk

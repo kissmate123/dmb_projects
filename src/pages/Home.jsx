@@ -32,7 +32,7 @@ const Home = () => {
 
         <p>A játék irányítása egyszerű. Mindent amit tudnod kell a játékban megtalálod.</p>
 
-        <img id="moves_img" src="/public/assets/images/moves.png" alt="moves" />
+        <img id="moves_img" src="/assets/images/moves.png" alt="moves" />
 
         <p>
           Különböző karakterek és ellenségek vannak.{" "}
@@ -46,7 +46,6 @@ const Home = () => {
         <h2 className="title">The Pixel Realms története</h2>
       </div>
 
-      {/* 1. FEJEZET */}
       <div className="tartalom1">
         <h2 className="title">1. fejezet – A támadás</h2>
 
@@ -91,7 +90,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 2. FEJEZET */}
       <div className="tartalom1">
         <h2 className="title">2. fejezet – A Voryndal erdő</h2>
 
@@ -140,7 +138,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* 3. FEJEZET */}
       <div className="tartalom1">
         <h2 className="title">3. fejezet – Az erdő szíve</h2>
 
