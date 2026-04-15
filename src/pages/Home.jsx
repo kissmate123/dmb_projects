@@ -42,9 +42,11 @@ const Home = () => {
 
       <div className="elvalaszto"></div>
 
-      <div className="tartalom2" id="tortenet">
+      <div className="tartalom1" id="tortenet">
         <h2 className="title">The Pixel Realms története</h2>
       </div>
+
+      <div className="elvalaszto"></div>
 
       <div className="tartalom1">
         <h2 className="title">1. fejezet – A támadás</h2>
@@ -181,6 +183,8 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      <div className="elvalaszto"></div>
 
       <div className="tartalom1">
         <NewsSection />

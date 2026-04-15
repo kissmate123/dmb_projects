@@ -15,49 +15,85 @@ const Characters = () => {
 
         </div>
 
-        <div className="epizode-media">
+        <div className="character-description">
           <p>
-            Borien elhagyja a város kapuit, és tovább üldözi a Grivakokat. Útja a sűrű{" "}
-            <strong>Voryndal erdőn</strong> át vezet.
+            Borien a történet bátor főhőse, egy fiatal harcos és íjász, aki mindennél fontosabbnak tartja szerelmét, Elira hercegnőt. 
           </p>
-
-          <p>
-            Egy tisztás közepére ér, ahol <strong>Brogurok</strong> és <strong>Fenwargok</strong>{" "}
-            állomásoznak. Borien leszámol velük. (íj használat tutorial)
-          </p>
-
-          <p>
-            A Grivakok nyomai egyre halványabbak. Az erdő fái olyan sűrűek, hogy Borien végül teljesen
-            elveszíti őket.
-          </p>
-
-          <p>
-            Hirtelen újabb <strong>Fenwargok</strong>, valamint két <strong>Thralog</strong> bukkan fel
-            előtte. A túlerő túl nagy, ezért Borien menekülni kényszerül.
-          </p>
-
-          <p>Egy apró házat pillant meg, ahová berohan. A házat mágikus erőburok védi.</p>
-
-          <p>
-            A ház <strong>Selvaráé</strong>, a boszorkányé. Selvara elmondja, hová viszik a hercegnőt –{" "}
-            <strong>egy szeme árán</strong>.
-          </p>
-
-          <p className="dramatic">
-            Borien elfogadja az alkut. Fél szemét elveszítve, de eltökélten folytatja útját.
-          </p>
-
-          <p className="end">
-            Borien nem messze, egy sziklaperem alatt ver tábort, felkészülve az előtte álló
-            veszélyekre.
+          <p> 
+            Kitartó, önfeláldozó és elszánt, még a legsötétebb veszélyekkel is szembeszáll, hogy megmentse őt és megállítsa Vathryx tervét.
           </p>
         </div>
       </div>
     </div>
 
+    <div className="tartalom1">
+      <h2 className="title">DORIN</h2>
+
+      <div className="epizode-row">
+        <div className="epizode-text">
+          <img className="karakter-img" src="/assets/gifs/karakter_dorin.gif" alt="dorin_karakter" />
+
+        </div>
+
+        <div className="character-description">
+          <p>
+            Dorin megbízható és tapasztalt harcos, aki erejével és hűségével mindig társai mellett áll a legnehezebb időkben is.
+          </p>
+          <p> 
+            Komor, kemény természetű férfi, de a szíve mélyén nemes lélek, aki kész bármikor életét kockáztatni azokért, akiket fontosnak tart.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="tartalom1">
+      <h2 className="title">ELDON</h2>
+
+      <div className="epizode-row">
+        <div className="epizode-text">
+          <img className="karakter-img" src="/assets/gifs/karakter_eldon.gif" alt="eldon_karakter" />
+
+        </div>
+
+        <div className="character-description">
+          <p>
+            Eldon Borien mestere, a város egyik legbölcsebb és legvitézebb harcosa, aki hosszú éveken át készítette fel tanítványát a rá váró megpróbáltatásokra.
+          </p>
+          <p> 
+            Bölcs, fegyelmezett és önfeláldozó ember, aki utolsó erejével is Borient segíti, hogy megmenthesse Elira hercegnőt és beteljesítse sorsát.
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div className="tartalom1">
+      <h2 className="title">MIRA</h2>
+
+      <div className="epizode-row">
+        <div className="epizode-text">
+          <img className="karakter-img" src="/assets/gifs/karakter_mira.gif" alt="mira_karakter" />
+
+        </div>
+
+        <div className="character-description">
+          <p>
+            Mira a város kedves és gondoskodó pékje, aki nemcsak friss kenyérrel, hanem gyógyító tudásával is segíti az embereket a nehéz időkben.
+          </p>
+          <p> 
+            Jószívű, türelmes és bátor asszony, aki a káosz közepén is igyekszik reményt és biztonságot nyújtani mindazoknak, akik hozzá fordulnak.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div className="elvalaszto"></div>
+
     <div className="tartalom2" id="tortenet">
         <h2 className="title">Ellenséges lények</h2>
       </div>
+
+      <div className="elvalaszto"></div>
 
     <div className="tartalom1">
       <h2 className="title">BROGUR</h2>
@@ -68,41 +104,52 @@ const Characters = () => {
 
         </div>
 
-        <div className="epizode-media">
+        <div className="character-description">
           <p>
-            Borien elhagyja a város kapuit, és tovább üldözi a Grivakokat. Útja a sűrű{" "}
-            <strong>Voryndal erdőn</strong> át vezet.
+            A Brogurok brutális, falmászó szörnyetegek, akik nyers erejükkel és kegyetlenségükkel támadják meg a várost.
           </p>
-
           <p>
-            Egy tisztás közepére ér, ahol <strong>Brogurok</strong> és <strong>Fenwargok</strong>{" "}
-            állomásoznak. Borien leszámol velük. (íj használat tutorial)
+            Vad, veszélyes ellenfelek, akik a sötétség szolgáiként pusztítanak, és az útjukba kerülőket könyörtelenül lemészárolják.
           </p>
+        </div>
+      </div>
+    </div>
 
+    <div className="tartalom1">
+      <h2 className="title">SKULK</h2>
+
+      <div className="epizode-row">
+        <div className="epizode-text">
+          <img className="karakter-img" src="/assets/gifs/karakter_skeleton.gif" alt="skulk_karakter"/>
+
+        </div>
+
+        <div className="character-description">
           <p>
-            A Grivakok nyomai egyre halványabbak. Az erdő fái olyan sűrűek, hogy Borien végül teljesen
-            elveszíti őket.
+            A Skulk lopakodó, sunyi teremtmény, amely a sötétséget és a rejtőzködést használja előnyére.
           </p>
-
           <p>
-            Hirtelen újabb <strong>Fenwargok</strong>, valamint két <strong>Thralog</strong> bukkan fel
-            előtte. A túlerő túl nagy, ezért Borien menekülni kényszerül.
+            Nem a nyers ereje teszi veszélyessé, hanem a gyorsasága, alattomossága és az, hogy váratlanul csap le áldozataira.
           </p>
+        </div>
+      </div>
+    </div>
 
-          <p>Egy apró házat pillant meg, ahová berohan. A házat mágikus erőburok védi.</p>
+    <div className="tartalom1">
+      <h2 className="title">GRIVAK</h2>
 
+      <div className="epizode-row">
+        <div className="epizode-text">
+          <img className="karakter-img" src="/assets/gifs/karakter_grivak.gif" alt="grivak_karakter"/>
+
+        </div>
+
+        <div className="character-description">
           <p>
-            A ház <strong>Selvaráé</strong>, a boszorkányé. Selvara elmondja, hová viszik a hercegnőt –{" "}
-            <strong>egy szeme árán</strong>.
+            A Grivalk szárnyas, félelmetes ragadozó, a sötétség egyik legveszélyesebb szolgája.
           </p>
-
-          <p className="dramatic">
-            Borien elfogadja az alkut. Fél szemét elveszítve, de eltökélten folytatja útját.
-          </p>
-
-          <p className="end">
-            Borien nem messze, egy sziklaperem alatt ver tábort, felkészülve az előtte álló
-            veszélyekre.
+          <p>
+            Gyors, agresszív és könyörtelen ellenfél, amely a levegőből támadva hurcolja el prédáját, és rettegést kelt mindenhol, ahol megjelenik.
           </p>
         </div>
       </div>

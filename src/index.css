@@ -35,7 +35,6 @@ body::-webkit-scrollbar {
   box-sizing: border-box;
 }
 
-
 /* ------------------ NAVBAR ------------------ */
 .navbar {
   position: fixed;
@@ -44,11 +43,9 @@ body::-webkit-scrollbar {
   width: 100%;
   z-index: 1000;
   padding: 10px 0;
-
-  background: transparent; /* a háttér a ::before-on lesz */
+  background: transparent;
 }
 
-/* csak a háttér réteg */
 .navbar::before {
   content: "";
   position: absolute;
@@ -63,14 +60,13 @@ body::-webkit-scrollbar {
   pointer-events: none;
 }
 
-/* görgetés után csak a háttér legyen halvány */
 .navbar.navbar--scrolled::before {
   opacity: 0.3;
 }
 
 .nav-container {
   position: relative;
-  z-index: 1; /* a tartalom a háttér felett legyen */
+  z-index: 1; 
 
   margin: 0 0;
   display: flex;  
@@ -124,7 +120,6 @@ body::-webkit-scrollbar {
   min-width: 100px;
   text-align: center;
 }
-
 
 /* ------------------ FOOTER ------------------ */
 footer {
@@ -192,7 +187,6 @@ footer {
   background: rgba(20, 20, 20, 0.9);
   box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.6), 0 0 15px rgba(0,0,0,0.8);
   line-height: 0.8rem;
-  min-height: 400px;
 }
 .tartalom1 p{
   margin: 0;
@@ -217,10 +211,14 @@ footer {
   text-align: center;
 }
 
+#moves_img{
+  width: 80%;
+  margin: 2%;
+}
 /* ------------------ STORY CARDS (TÖRTÉNET) ------------------ */
 .epizode-row{
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 0.5fr 1.2fr;
   gap: 24px;
   align-items: center;
 }
@@ -242,11 +240,7 @@ footer {
   }
 }
 
-/* ------------------ MOZGÁS IMG ------------------ */
-#moves_img{
-  width: 80%;
-  margin: 2%;
-}
+
 /* ------------------ TRAILER ------------------ */
 .trailer-section{
   max-width: 80%;
@@ -281,7 +275,6 @@ footer {
   display: block;
 }
 
-/* Mobil: egymás alá */
 @media (max-width: 900px){
   .trailer-section{
     grid-template-columns: 1fr;
@@ -310,7 +303,6 @@ footer {
   line-height: 1.35rem;
 }
 
-/* fejléc */
 .news-header{
   display: flex;
   align-items: center;
@@ -329,7 +321,6 @@ footer {
   color: #f3e8ff;
 }
 
-/* Admin form */
 .news-admin{
   margin: 20px;
   padding: 14px 14px 12px;
@@ -363,14 +354,13 @@ footer {
   padding: 10px 12px;
   font-family: "Segoe UI", Arial, sans-serif;
   outline: none;
-
-  /* hosszú szöveg ne törje szét a layoutot */
   overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 .news-admin-textarea{
   min-height: 90px;
+  max-height: 20%;
   resize: vertical;
 }
 
@@ -415,7 +405,6 @@ footer {
   opacity: 0.8;
 }
 
-/* 4 kártya egymás mellett */
 .news-grid{
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -424,36 +413,36 @@ footer {
 }
 
 .news-empty{
-  font-family: "Segoe UI", Arial, sans-serif;
   opacity: 0.85;
   padding: 10px 20px;
 }
 
-/* kártya */
 .news-card{
   position: relative;
   border-radius: 22px;
   overflow: hidden;
   background: rgba(35, 35, 35, 0.92);
   box-shadow: 0 0 22px rgba(0,0,0,0.7);
-  min-height: 360px;
+  max-height: 400px;
 }
 
 .news-card-accent{
   position: absolute;
   left: 0;
   top: 0;
-  width: 10px;
+  width: 2%;
   height: 100%;
 }
 
 .news-card-body{
   height: 100%;
-  padding: 18px 18px 16px 22px;
+  min-height: 0;
+  padding: 18px 52px 16px 22px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   line-height: 1.35rem;
+  box-sizing: border-box;
 }
 
 .news-date{
@@ -470,7 +459,6 @@ footer {
   font-weight: 900;
   color: #c77dff;
   text-shadow: 0 0 6px rgba(170, 0, 255, 0.45);
-
   line-height: 1.15;
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -482,7 +470,6 @@ footer {
   overflow: hidden;
 }
 
-/* Leírás: törjön, ne lógjon ki */
 .news-excerpt{
   margin: 0;
   font-family: "Segoe UI", Arial, sans-serif;
@@ -493,23 +480,29 @@ footer {
   word-break: break-word;
   hyphens: auto;
 
-  /* max 4 sor (ha nem kell, töröld ezt a blokkot) */
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+  flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-.news-link{
-  margin-top: auto;
-  height: 10px; /* később ide jöhet gomb/link */
-}
-/* Admin törlés gomb a kártyán */
-.news-card {
-  position: relative; /* ez már nálad megvan, maradhat */
+.news-expand-btn{
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: blueviolet;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-.news-delete-btn {
+.news-expand-btn:hover{
+  background: indigo;
+  transform: scale(1.04);
+}
+
+.news-delete-btn{
   position: absolute;
   top: 10px;
   right: 10px;
@@ -535,18 +528,89 @@ footer {
   transition: 0.2s ease;
 }
 
-.news-delete-btn:hover {
+.news-delete-btn:hover{
   background: rgba(140, 0, 0, 0.9);
   box-shadow: 0 0 12px rgba(255, 0, 0, 0.35);
   transform: scale(1.06);
 }
 
-/* hogy a gomb ne lógjon rá a címre */
-.news-card-body {
-  padding-right: 52px;
+.news-modal-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-/* reszponzív törés */
+.news-modal-card{
+  position: relative;
+  width: min(1100px, 95vw);
+  height: min(88vh, 900px);
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(35, 35, 35, 0.98);
+  box-shadow: 0 0 30px rgba(0,0,0,0.85);
+}
+
+.news-close-btn{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 0 10px rgba(0,0,0,0.35);
+  transition: 0.2s ease;
+}
+
+.news-close-btn:hover{
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(1.06);
+}
+
+.news-card-body-expanded{
+  height: 80%;
+  min-height: 0;
+  padding: 18px 56px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  margin: 2%;
+}
+
+.news-expanded-text{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.6rem;
+  opacity: 0.95;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+  white-space: pre-wrap;
+}
+
 @media (max-width: 1200px){
   .news-grid{
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -557,12 +621,16 @@ footer {
   .news-admin-row{
     grid-template-columns: 1fr;
   }
+
   .news-grid{
     grid-template-columns: 1fr;
   }
+
+  .news-modal-card{
+    width: 96vw;
+    height: 90vh;
+  }
 }
-
-
 /* ------------------ KARAKTER BLOKKOK ------------------ */
 .karakter-img{
   width: 50%;
@@ -570,6 +638,12 @@ footer {
   display: block;
   border-radius: 10px;
   margin-right: 55%;
+}
+.character-description{
+  margin: auto;
+  color: #eaeaea;
+  line-height: 1.4rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.85);
 }
 
 /* ------------------ LOGIN REGISTER ------------------ */
@@ -594,17 +668,14 @@ footer {
   text-align: left;
 }
 
-/* Alap: ha nem teljesül -> piros */
 .pw-rules li.bad {
   color: #ff4d4d;
 }
 
-/* Ha teljesül -> zöld */
 .pw-rules li.ok {
   color: #35c759;
 }
 
-/* Összesített státusz */
 .pw-status.bad {
   color: #ff4d4d;
 }
@@ -689,118 +760,4 @@ input[type="text"]:focus, input[type="password"]:focus {
 .tab-buttons button.active {
   background: blueviolet;
   color: white;
-}
-
-/* ------------------ KARAKTER BLOKK ------------------ */
-.karakter {
-  position: relative; 
-  overflow: hidden;    
-}
-
-/* Alapból rejtve */
-.karakter-desc {
-  position: absolute;
-  inset: 0;                       
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  text-align: center;
-
-  opacity: 0;
-  transform: translateY(10px);
-  transition: 0.25s ease;
-
-  background: rgba(0, 0, 0, 0.75);
-  color: #fff;
-}
-
-/* Hoverre megjelenik */
-.karakter:hover .karakter-desc {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.karakter:hover img {
-  filter: brightness(0.6);
-  transition: 0.25s ease;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap: 20px;
-  max-width: 1200px;
-  margin: 20px auto;
-  padding: 20px;
-}
-
-.karakter, .alapkarakter {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #ff0000;
-  text-shadow: 0 0 15px #ff1a1a, 2px 2px 4px #000;
-  animation: pulse 1.5s infinite alternate;
-  background: rgba(20,20,20,0.9);
-  border: 2px solid #ff0000;
-  box-shadow: inset 0 0 20px rgba(255,0,0,0.6), 0 0 15px rgba(0,0,0,0.8);
-  opacity: 0.9;
-  border-radius: 10px;
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.karakter:hover,
-.alapkarakter:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 30px #ff0000;
-}
-
-.karakter img,
-.alapkarakter img {
-  width: 100%;
-  border-radius: 6px;
-  margin-bottom: 15px;
-}
-
-.batman {
-  background: linear-gradient(180deg, #0d0d0d, #1a1a1a);
-  border: 2px solid #1e3a8a;
-  color: #1e3a8a;
-  text-shadow: 0 0 12px #1e3a8a, 2px 2px 4px #000;
-  box-shadow: 
-    inset 0 0 25px rgba(30, 58, 138, 0.6),
-    0 0 20px rgba(0, 0, 0, 0.9);
-  animation: none;
-}
-
-.scorpion { 
-  background: linear-gradient(180deg,#1a1a1a,#000); 
-  border:2px solid #ffcc00; color:#ffcc00; 
-  text-shadow:0 0 15px #ff9900,2px 2px 4px #000; 
-  box-shadow: inset 0 0 25px rgba(255,153,0,0.6),0 0 25px rgba(255,140,0,0.8); 
-  animation: flamePulse 1.8s infinite alternate; 
-}
-.scorpion:hover { 
-  transform: scale(1.08); 
-  box-shadow:0 0 40px #ff6600; 
-}
-
-.container-single{
-  grid-template-columns: 1fr;
-  justify-items: center;
-  max-width: 20%;   
-}
-
-.container-grid {
-  margin-top: 10px;
-  max-width: 90%;
-  
-}
-
-/* ------------------ MOBILITÁS ------------------ */
-@media (max-width: 1200px) {
-  .tartalom-wrapper {
-    grid-template-columns: 1fr;
-  }
 }
