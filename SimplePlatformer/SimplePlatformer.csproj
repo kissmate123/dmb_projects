@@ -1,0 +1,284 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\HUD\Border\Border_bottomleft.png" />
+    <None Remove="Assets\HUD\Border\Border_bottomright.png" />
+    <None Remove="Assets\HUD\Border\Border_topleft.png" />
+    <None Remove="Assets\HUD\Border\Border_topright.png" />
+    <None Remove="Assets\HUD\Border\Hud_border_left.png" />
+    <None Remove="Assets\HUD\Border\Hud_border_middle.png" />
+    <None Remove="Assets\HUD\Border\Hud_border_right.png" />
+    <None Remove="Assets\HUD\Border\Line_bottom.png" />
+    <None Remove="Assets\HUD\Border\Line_left.png" />
+    <None Remove="Assets\HUD\Border\Line_right.png" />
+    <None Remove="Assets\HUD\Border\Line_top.png" />
+    <None Remove="Assets\HUD\Hpbar.png" />
+    <None Remove="Assets\HUD\keymapping.png" />
+    <None Remove="Assets\Map\Ground_Grass.png" />
+    <None Remove="Assets\Map\Ground_Mud.png" />
+    <None Remove="Assets\Props\Alert.png" />
+    <None Remove="Assets\Props\House_1.png" />
+    <None Remove="Assets\Props\House_2.png" />
+    <None Remove="Assets\Props\House_3.png" />
+    <None Remove="Assets\Props\House_4.png" />
+    <None Remove="Assets\Props\House_Background.png" />
+    <None Remove="Assets\Props\MarketStall_Food1.png" />
+    <None Remove="Assets\Props\MarketStall_Food2.png" />
+    <None Remove="Assets\Props\MarketStall_Grog.png" />
+    <None Remove="Assets\Props\Tree.png" />
+    <None Remove="Assets\UI\CommentBubble_Left.png" />
+    <None Remove="Assets\UI\CommentBubble_Middle.png" />
+    <None Remove="Assets\UI\CommentBubble_Right.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\HUD\Border\Border_bottomleft.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Border_bottomright.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Border_topleft.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Border_topright.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Hud_border_left.png" />
+    <Resource Include="Assets\HUD\Border\Hud_border_middle.png" />
+    <Resource Include="Assets\HUD\Border\Hud_border_right.png" />
+    <Resource Include="Assets\HUD\Border\Line_bottom.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Line_left.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Line_right.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Border\Line_top.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\HUD\Hpbar.png" />
+    <Resource Include="Assets\HUD\keymapping.png" />
+    <Resource Include="Assets\Map\Ground_Grass.png" />
+    <Resource Include="Assets\Map\Ground_Mud.png" />
+    <Resource Include="Assets\Props\Alert.png" />
+    <Resource Include="Assets\Props\House_1.png" />
+    <Resource Include="Assets\Props\House_2.png" />
+    <Resource Include="Assets\Props\House_3.png" />
+    <Resource Include="Assets\Props\House_4.png" />
+    <Resource Include="Assets\Props\House_Background.png" />
+    <Resource Include="Assets\Props\MarketStall_Food1.png" />
+    <Resource Include="Assets\Props\MarketStall_Food2.png" />
+    <Resource Include="Assets\Props\MarketStall_Grog.png" />
+    <Resource Include="Assets\Props\Tree.png" />
+    <Resource Include="Assets\UI\CommentBubble_Left.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\UI\CommentBubble_Middle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\UI\CommentBubble_Right.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Dialog\greetings.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Items\Shield.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Bow_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Bow_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Bow_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Bow_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Jump.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Shield.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Stand_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Stand_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Stand_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Stand_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Sword1_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Sword1_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Sword1_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Walk_1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Walk_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Walk_3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Borien\Borien_Walk_4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Brogur\Brogur_Heavy.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Brogur\Brogur_Light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Brogur\Brogur_Medium.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Attack1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Attack2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Attack3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Walk3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Skeleton\Skeleton_Walk4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Stand4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard1\Guard1_Walk4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Stand1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Stand2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Stand3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Stand4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Walk3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard2\Guard2_Walk4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Stand1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Stand2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Stand3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Stand4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Walk3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Guards\Guard3\Guard3_Walk4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Stand1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Stand2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Stand3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Stand4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Walk1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Walk2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Walk3.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\SideCharacters\Eldon\Eldon_Walk4.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
