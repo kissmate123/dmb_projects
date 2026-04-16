@@ -33,10 +33,15 @@ const Navbar = () => {
   };
 
   const handleAdminClick = () => {
-    // Egyelőre nem csinál semmit
-    setOpen(false);
-  };
+  const link = document.createElement("a");
+  link.href = "/assets/apps/mysetup.exe";
+  link.setAttribute("download", "mysetup.exe");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 
+  setOpen(false);
+};
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="nav-container">
@@ -95,7 +100,6 @@ const Navbar = () => {
                       <button
                         type="button"
                         onClick={handleAdminClick}
-                        disabled
                         style={{
                           width: "100%",
                           background: "transparent",
@@ -103,9 +107,9 @@ const Navbar = () => {
                           color: "rgba(255,255,255,0.6)",
                           textAlign: "left",
                           padding: "10px",
-                          cursor: "not-allowed",
+                          cursor: "pointer",
                         }}
-                        title="Hamarosan"
+                        title="Admin applikáció"
                       >
                         Admin felület
                       </button>

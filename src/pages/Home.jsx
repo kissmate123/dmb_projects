@@ -42,14 +42,12 @@ const Home = () => {
 
       <div className="elvalaszto"></div>
 
-      <div className="tartalom1" id="tortenet">
+      <div className="tartalom1">
         <h2 className="title">The Pixel Realms története</h2>
       </div>
 
-      <div className="elvalaszto"></div>
-
       <div className="tartalom1">
-        <h2 className="title">1. fejezet – A támadás</h2>
+        <h3 style={{ fontSize: "1.5rem", fontStyle: "italic" }} className="title">1. fejezet – A támadás</h3>
 
         <div className="epizode-row">
           <div className="epizode-text">
@@ -90,10 +88,10 @@ const Home = () => {
             <img className="epizode-img" src="/assets/images/page_back.png" alt="1. fejezet" />
           </div>
         </div>
-      </div>
+      
 
-      <div className="tartalom1">
-        <h2 className="title">2. fejezet – A Voryndal erdő</h2>
+      
+        <h2 style={{ fontSize: "1.5rem", fontStyle: "italic" }} className="title">2. fejezet – A Voryndal erdő</h2>
 
         <div className="epizode-row">
           <div className="epizode-text">
@@ -138,10 +136,8 @@ const Home = () => {
             <img className="epizode-img" src="/assets/images/page_back.png" alt="2. fejezet" />
           </div>
         </div>
-      </div>
-
-      <div className="tartalom1">
-        <h2 className="title">3. fejezet – Az erdő szíve</h2>
+     
+        <h2 style={{ fontSize: "1.5rem", fontStyle: "italic" }} className="title">3. fejezet – Az erdő szíve</h2>
 
         <div className="epizode-row">
           <div className="epizode-text">

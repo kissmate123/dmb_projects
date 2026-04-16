@@ -24,9 +24,9 @@ const Characters = () => {
           </p>
         </div>
       </div>
-    </div>
+   
 
-    <div className="tartalom1">
+  
       <h2 className="title">DORIN</h2>
 
       <div className="epizode-row">
@@ -44,9 +44,8 @@ const Characters = () => {
           </p>
         </div>
       </div>
-    </div>
+  
 
-    <div className="tartalom1">
       <h2 className="title">ELDON</h2>
 
       <div className="epizode-row">
@@ -64,10 +63,10 @@ const Characters = () => {
           </p>
         </div>
       </div>
-    </div>
+  
 
 
-    <div className="tartalom1">
+  
       <h2 className="title">MIRA</h2>
 
       <div className="epizode-row">
@@ -89,7 +88,7 @@ const Characters = () => {
 
     <div className="elvalaszto"></div>
 
-    <div className="tartalom2" id="tortenet">
+    <div className="tartalom1">
         <h2 className="title">Ellenséges lények</h2>
       </div>
 
@@ -113,9 +112,9 @@ const Characters = () => {
           </p>
         </div>
       </div>
-    </div>
+    
 
-    <div className="tartalom1">
+   
       <h2 className="title">SKULK</h2>
 
       <div className="epizode-row">
@@ -133,9 +132,9 @@ const Characters = () => {
           </p>
         </div>
       </div>
-    </div>
+    
 
-    <div className="tartalom1">
+    
       <h2 className="title">GRIVAK</h2>
 
       <div className="epizode-row">
