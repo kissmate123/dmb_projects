@@ -33,15 +33,21 @@ const Navbar = () => {
   };
 
   const handleAdminClick = () => {
-  const driveFileUrl =
-    "https://drive.google.com/file/d/17P3tpOEmwxn4gwpiLae7VUkAiDszk-Fo/view?usp=sharing";
+    const driveFileUrl =
+      "https://drive.google.com/file/d/17P3tpOEmwxn4gwpiLae7VUkAiDszk-Fo/view?usp=sharing";
 
-  window.open(driveFileUrl, "_blank", "noopener,noreferrer");
-  setOpen(false);
+    window.open(driveFileUrl, "_blank", "noopener,noreferrer");
+    setOpen(false);
+  };
 
+  const handlePixelRealmsClick = () => {
+    const pixelRealmsUrl =
+      "https://drive.google.com/file/d/125RKbBsySj2JjlgtHLZZDLn3uV22EnA3/view?usp=sharing";
 
-  setOpen(false);
-};
+    window.open(pixelRealmsUrl, "_blank", "noopener,noreferrer");
+    setOpen(false);
+  };
+
   return (
     <nav className={`navbar ${scrolled ? "navbar--scrolled" : ""}`}>
       <div className="nav-container">
@@ -104,7 +110,7 @@ const Navbar = () => {
                           width: "100%",
                           background: "transparent",
                           border: "none",
-                          color: "rgba(255,255,255,0.6)",
+                          color: "inherit",
                           textAlign: "left",
                           padding: "10px",
                           cursor: "pointer",
@@ -114,6 +120,23 @@ const Navbar = () => {
                         Admin felület
                       </button>
                     )}
+
+                    <button
+                      type="button"
+                      onClick={handlePixelRealmsClick}
+                      style={{
+                        width: "100%",
+                        background: "transparent",
+                        border: "none",
+                        color: "inherit",
+                        textAlign: "left",
+                        padding: "10px",
+                        cursor: "pointer",
+                      }}
+                      title="The Pixel Realms letöltés"
+                    >
+                      The Pixel Realms
+                    </button>
 
                     <button
                       type="button"

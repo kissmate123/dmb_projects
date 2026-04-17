@@ -133,7 +133,7 @@ const Home = () => {
           </div>
 
           <div className="epizode-media">
-            <img className="epizode-img" src="/assets/images/page_back.png" alt="2. fejezet" />
+            <img className="epizode-img" src="/assets/images/coming_soon.png" alt="2. fejezet" />
           </div>
         </div>
      
@@ -175,7 +175,7 @@ const Home = () => {
           </div>
 
           <div className="epizode-media">
-            <img className="epizode-img" src="/assets/images/page_back.png" alt="3. fejezet" />
+            <img className="epizode-img" src="/assets/images/coming_soon.png" alt="3. fejezet" />
           </div>
         </div>
       </div>
