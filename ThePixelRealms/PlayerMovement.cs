@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace ThePixelRealms
@@ -46,7 +46,9 @@ namespace ThePixelRealms
             map.playerWorldX += map.playerVelocityX * map.deltaTime;
             map.playerWorldY += map.playerVelocityY * map.deltaTime;
 
-            if (map.playerWorldX < 0) map.playerWorldX = 0;
+            if (map.playerWorldX < 0)
+                map.playerWorldX = 0;
+
             if (map.playerWorldX + map.Player.ActualWidth > map.WorldWidth)
                 map.playerWorldX = map.WorldWidth - map.Player.ActualWidth;
 
@@ -78,9 +80,10 @@ namespace ThePixelRealms
 
             bool walkAllowed = map.isOnGround && !map.isChargingBow && !map.isMeleeAnimating;
 
-            bool isWalkingNow = walkAllowed &&
-                                Math.Abs(map.playerVelocityX) > 0.1 &&
-                                (map.leftPressed || map.rightPressed);
+            bool isWalkingNow =
+                walkAllowed &&
+                Math.Abs(map.playerVelocityX) > 0.1 &&
+                (map.leftPressed || map.rightPressed);
 
             if (map.wasWalking && !isWalkingNow)
             {

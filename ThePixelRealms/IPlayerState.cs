@@ -26,6 +26,8 @@ namespace ThePixelRealms
         double currentHp { get; set; }
         double maxHp { get; }
 
+        double PlayerHitboxOffsetX { get; }
+
         Rect GetPlayerHitboxRect();
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "GKYyPWBA+us=",
+  "dgSpecHash": "xOIM4Kh2j2w=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sutod\\source\\repos\\ThePixelRealms\\ThePixelRealms.Tests\\ThePixelRealms.Tests.csproj",
+  "projectFilePath": "C:\\Users\\sutod\\Documents\\GitHub\\dmb_projects\\ThePixelRealms.Tests\\ThePixelRealms.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sutod\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",
     "C:\\Users\\sutod\\.nuget\\packages\\microsoft.net.test.sdk\\17.8.0\\microsoft.net.test.sdk.17.8.0.nupkg.sha512",

@@ -76,8 +76,6 @@ namespace ThePixelRealms
             };
 
             Panel.SetZIndex(fullImage, 5000);
-            Panel.SetZIndex(text, 5001);
-            Panel.SetZIndex(continueText, 5002);
             Panel.SetZIndex(dlgLeft, 5001);
             Panel.SetZIndex(dlgMid, 5001);
             Panel.SetZIndex(dlgRight, 5001);
@@ -97,7 +95,7 @@ namespace ThePixelRealms
             steps.Clear();
             currentStepIndex = 0;
 
-            string cutsceneName = System.IO.Path.GetFileName(folderPath);
+            string cutsceneName = Path.GetFileName(folderPath);
 
             List<BitmapImage> loadedImages = new();
             for (int i = 1; i <= 20; i++)
@@ -145,11 +143,8 @@ namespace ThePixelRealms
 
         private void UpdateStep()
         {
-            if (steps.Count == 0)
-                return;
-
-            if (currentStepIndex < 0 || currentStepIndex >= steps.Count)
-                return;
+            if (steps.Count == 0) return;
+            if (currentStepIndex < 0 || currentStepIndex >= steps.Count) return;
 
             var step = steps[currentStepIndex];
 

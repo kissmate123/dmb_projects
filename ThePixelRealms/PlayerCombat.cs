@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ThePixelRealms
 {
@@ -68,11 +65,11 @@ namespace ThePixelRealms
                         map.playerVelocityX = map.playerKnockbackX;
                     else
                         map.playerVelocityX = -map.playerKnockbackX;
-
                 }
 
                 return;
             }
+
             map.currentHp -= amount;
             if (map.currentHp < 0)
                 map.currentHp = 0;
@@ -99,9 +96,7 @@ namespace ThePixelRealms
             {
                 map.playerStunTimer -= map.deltaTime;
                 if (map.playerStunTimer <= 0)
-                {
                     map.playerStunTimer = 0;
-                }
             }
         }
 
@@ -122,7 +117,6 @@ namespace ThePixelRealms
             {
                 Rect pr = map.GetPlayerHitboxRect();
                 double playerCenterX = pr.X + pr.Width / 2.0;
-
                 double enemyCenterX = enemy.WorldX + enemy.Visual.Width / 2.0;
 
                 double dx = enemyCenterX - playerCenterX;
@@ -239,7 +233,7 @@ namespace ThePixelRealms
                 Canvas.SetTop(map.bowChargeBarFill, Canvas.GetTop(map.Player) - 18);
             }
         }
-        
+
         public void ReleaseArrow()
         {
             if (!map.isChargingBow)
@@ -290,7 +284,6 @@ namespace ThePixelRealms
             );
 
             Panel.SetZIndex(arrow.Visual, 950);
-
             map.arrows.Add(arrow);
         }
 
@@ -316,6 +309,7 @@ namespace ThePixelRealms
                 }
 
                 bool hitEnemy = false;
+
                 foreach (var enemy in map.enemies)
                 {
                     Rect enemyRect = new Rect(
@@ -536,6 +530,7 @@ namespace ThePixelRealms
             }
 
             int bowFrameIndex;
+
             if (map.currentChargeStep <= 0) bowFrameIndex = 0;
             else if (map.currentChargeStep == 1) bowFrameIndex = 1;
             else if (map.currentChargeStep == 2) bowFrameIndex = 2;

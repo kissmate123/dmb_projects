@@ -30,11 +30,9 @@ namespace ThePixelRealms
         public StoryManager story { get; set; }
         internal RespawnSystem respawn { get; set; }
 
-        // ===================== PLAYER =====================
 
         public double playerWorldX { get; set; } = 3800;
         public double playerWorldY { get; set; } = 700;
-
         public double playerVelocityX { get; set; } = 0;
         public double playerVelocityY { get; set; } = 0;
 
@@ -55,7 +53,6 @@ namespace ThePixelRealms
         public bool spacePressed { get; set; }
         public bool shiftPressed { get; set; }
 
-        // ===================== COMBAT =====================
 
         public double maxHp { get; set; } = 100;
         public double currentHp { get; set; } = 100;
@@ -121,7 +118,6 @@ namespace ThePixelRealms
         public Rectangle bowChargeBarBg { get; set; }
         public Rectangle bowChargeBarFill { get; set; }
 
-        // ===================== ANIMÁCIÓ =====================
 
         public BitmapImage[] idleFrames { get; set; }
         public int idleFrameIndex { get; set; }
@@ -139,7 +135,6 @@ namespace ThePixelRealms
         public BitmapImage shieldSprite { get; set; }
         public bool isShielding { get; set; }
 
-        // ===================== WORLD =====================
 
         public double WorldWidth { get; set; } = 18400;
         public double cameraX { get; set; }
@@ -151,15 +146,14 @@ namespace ThePixelRealms
 
         public const double PlayerHitboxWidth = 48;
         public const double PlayerHitboxHeight = 60;
-        public const double PlayerHitboxOffsetX = 30;
+
+        public double PlayerHitboxOffsetX { get; } = 30;
 
         public List<Enemy> enemies { get; set; } = new();
         public List<Npc> npcs { get; set; } = new();
 
         public List<Rectangle> platforms { get; set; } = new();
         public List<Image> worldObjects { get; set; } = new();
-
-        // ===================== NPC / UI =====================
 
         public TextBlock interactionHint { get; set; }
 
@@ -199,7 +193,6 @@ namespace ThePixelRealms
             { 9, NpcType.Eldon }
         };
 
-        // ===================== ITEMS =====================
 
         public double shieldWorldX { get; set; } = 1500;
         public double shieldWorldY { get; set; } = 745;
@@ -211,7 +204,6 @@ namespace ThePixelRealms
         public double appleWorldY { get; set; } = 760;
         public double appleHealAmount { get; set; } = 35;
 
-        // ===================== GAME STATE =====================
 
         public bool isPaused { get; set; }
         public bool isDead { get; set; }
@@ -235,8 +227,6 @@ namespace ThePixelRealms
         public bool miraAppleSpawned { get; set; }
         public bool dorinShieldSpawned { get; set; }
         public bool eldonSuppliesSpawned { get; set; }
-
-        // ===================== TIME / DEBUG =====================
 
         public DateTime lastUpdateTime { get; set; }
         public double deltaTime { get; set; }
@@ -383,7 +373,6 @@ namespace ThePixelRealms
             gamePhysics.UpdateCamera();
             playerMovement.UpdatePlayerFacingDirection();
 
-            uiAndDebug.UpdateDebugInfo();
             uiAndDebug.UpdateHpBar();
 
             enemyMovement.UpdateEnemies();
@@ -506,7 +495,7 @@ namespace ThePixelRealms
             uiAndDebug.UpdateSpeech();
             uiAndDebug.HandleNpcInteraction();
 
-            if (!cutscene2Played && story.CurrentStep == 7 && playerWorldX <= 30)
+            if (!cutscene2Played && story.CurrentStep == 7 && playerWorldX <= 220)
             {
                 cutscene2Played = true;
                 OnCutsceneStart(2);
@@ -553,7 +542,7 @@ namespace ThePixelRealms
                 guide.ShowLine(7);
             }
 
-            if (!cutscene3Played && story.CurrentStep == 10 && playerWorldX >= 18200)
+            if (!cutscene3Played && story.CurrentStep == 10 && playerWorldX >= 18100)
             {
                 cutscene3Played = true;
                 OnCutsceneStart(3);
@@ -841,7 +830,7 @@ namespace ThePixelRealms
         Rectangle IUIState.HpBarFill => HpBarFill;
         UIElement IUIState.PauseOverlay => PauseOverlay;
         ScaleTransform IUIState.PlayerScaleTransform => (ScaleTransform)Player.RenderTransform;
-        Rectangle IPropState.ShieldBarFill => bowChargeBarFill;
+        Rectangle IPropState.ShieldBarFill => ShieldBarFill;
         GuideSystem ISystemState.guideSystem => guide;
 
         double IGameState.ChargeStepTime => 0.2;

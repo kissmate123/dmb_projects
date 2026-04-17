@@ -38,7 +38,10 @@ namespace ThePixelRealms
         public NpcType Type { get; }
         public NpcMode Mode { get; }
 
+        private readonly Canvas canvas;
+
         public Image Visual;
+        public ScaleTransform Scale { get; }
 
         public BitmapImage[] IdleFrames;
         public BitmapImage[] WalkFrames;
@@ -57,32 +60,27 @@ namespace ThePixelRealms
         public double VelocityX;
         public double VelocityY;
 
-        public double TargetX;
-        public bool ReachedTarget = false;
-
         public double WalkSpeed;
-
-        public double InteractCooldown = 0;
 
         public double LeftLimit;
         public double RightLimit;
         public bool OnGround;
 
-        public string DialogueFile { get; set; } = null;
-        public string DisplayName { get; set; } = "";
-        public string InteractionHintText { get; set; } = "Press (E) to talk";
-
-        public double PatrolWaitTime { get; set; } = 4.0;
-        public double PatrolWaitTimer { get; set; } = 0.0;
-
-        public double WanderTimer { get; set; } = 0.0;
+        public double TargetX;
+        public bool ReachedTarget = false;
 
         public int MoveDir { get; set; } = 1;
         public bool IsWaiting { get; set; } = false;
 
-        public ScaleTransform Scale { get; }
+        public double PatrolWaitTime { get; set; } = 4.0;
+        public double PatrolWaitTimer { get; set; } = 0.0;
+        public double WanderTimer { get; set; } = 0.0;
 
-        private readonly Canvas canvas;
+        public double InteractCooldown = 0;
+
+        public string DialogueFile { get; set; } = null;
+        public string DisplayName { get; set; } = "";
+        public string InteractionHintText { get; set; } = "Press (E) to talk";
 
         public Npc(
             Canvas canvas,
@@ -349,7 +347,7 @@ namespace ThePixelRealms
                         );
 
                         npc.IdleFrames = LoadFrames("Assets/Sprites/Civilians/Civilian1_Stand", 4);
-                        npc.WalkFrames = LoadFrames("Assets/Sprites/Civilians/Civilian1_Walk", 4); 
+                        npc.WalkFrames = LoadFrames("Assets/Sprites/Civilians/Civilian1_Walk", 4);
 
                         npc.CurrentAnimState = "Idle";
                         npc.FrameIndex = 0;

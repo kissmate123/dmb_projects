@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ThePixelRealms
 {
@@ -34,6 +32,7 @@ namespace ThePixelRealms
             bmp.CacheOption = BitmapCacheOption.OnLoad;
             bmp.EndInit();
             bmp.Freeze();
+
             return bmp;
         }
 
@@ -67,6 +66,7 @@ namespace ThePixelRealms
                 if (playerRect.IntersectsWith(itemRect))
                 {
                     map.currentHp += map.appleHealAmount;
+
                     if (map.currentHp > map.maxHp)
                         map.currentHp = map.maxHp;
 

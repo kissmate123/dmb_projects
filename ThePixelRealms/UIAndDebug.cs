@@ -11,9 +11,9 @@ namespace ThePixelRealms
 {
     public class UIAndDebug
     {
-        private readonly dynamic map;
+        public IGameState map;
 
-        public UIAndDebug(dynamic map)
+        public UIAndDebug(IGameState map)
         {
             this.map = map;
         }
@@ -53,7 +53,6 @@ namespace ThePixelRealms
             map.GameCanvas.Children.Add(map.npcBubbleLeft);
             map.GameCanvas.Children.Add(map.npcBubbleMiddle);
             map.GameCanvas.Children.Add(map.npcBubbleRight);
-
             map.GameCanvas.Children.Add(map.npcSpeech);
             map.GameCanvas.Children.Add(map.interactionHint);
         }
@@ -134,9 +133,7 @@ namespace ThePixelRealms
                 return;
 
             if (map.currentHp <= 0)
-            {
                 Die();
-            }
         }
 
         public void Die()
@@ -154,7 +151,9 @@ namespace ThePixelRealms
 
         public void DrawBubble(Image left, Image middle, Image right, TextBlock text, double centerX, double worldY)
         {
-            const double side = 12, height = 44, padding = 20;
+            const double side = 12;
+            const double height = 44;
+            const double padding = 20;
 
             text.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             double textWidth = Math.Ceiling(text.DesiredSize.Width);
@@ -180,25 +179,28 @@ namespace ThePixelRealms
             Canvas.SetLeft(text, centerX - map.cameraX - textWidth / 2);
             Canvas.SetTop(text, worldY - 61);
 
-            left.Visibility = middle.Visibility = right.Visibility = text.Visibility = Visibility.Visible;
+            left.Visibility =
+            middle.Visibility =
+            right.Visibility =
+            text.Visibility = Visibility.Visible;
         }
 
         public void UpdateSpeech()
         {
             if (map.dialogueSystem != null && map.dialogueSystem.IsActive)
             {
-                map.npcSpeech.Visibility = Visibility.Hidden;
-                map.npcBubbleLeft.Visibility = Visibility.Hidden;
-                map.npcBubbleMiddle.Visibility = Visibility.Hidden;
+                map.npcSpeech.Visibility =
+                map.npcBubbleLeft.Visibility =
+                map.npcBubbleMiddle.Visibility =
                 map.npcBubbleRight.Visibility = Visibility.Hidden;
                 return;
             }
 
             if (!map.isGreetingActive || map.currentNpc == null)
             {
-                map.npcSpeech.Visibility = Visibility.Hidden;
-                map.npcBubbleLeft.Visibility = Visibility.Hidden;
-                map.npcBubbleMiddle.Visibility = Visibility.Hidden;
+                map.npcSpeech.Visibility =
+                map.npcBubbleLeft.Visibility =
+                map.npcBubbleMiddle.Visibility =
                 map.npcBubbleRight.Visibility = Visibility.Hidden;
                 return;
             }
@@ -217,9 +219,7 @@ namespace ThePixelRealms
             );
 
             if (map.npcSpeechTimer <= 0)
-            {
                 map.isGreetingActive = false;
-            }
         }
 
         public List<string> LoadGreetings()
@@ -249,7 +249,8 @@ namespace ThePixelRealms
         public void StartGreeting(Npc npc)
         {
             var lines = LoadGreetings();
-            if (lines.Count < 12) return;
+            if (lines.Count < 12)
+                return;
 
             map.npcSpeech.Text = lines[new Random().Next(6, 12)];
 
@@ -285,6 +286,7 @@ namespace ThePixelRealms
             bool hasDialogue =
                 map.talkSequence.ContainsKey(map.story.CurrentStep) &&
                 map.talkSequence[map.story.CurrentStep] == nearest.Type;
+
             bool canGreet = map.greetingAllowedTypes.Contains(nearest.Type);
 
             if (hasDialogue)
@@ -295,10 +297,13 @@ namespace ThePixelRealms
                 map.interactionHint.Text = "";
 
             map.interactionHint.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
             double npcCenterX = nearest.WorldX + (nearest.Visual.Width / 2.0);
 
-            Canvas.SetLeft(map.interactionHint,
-                npcCenterX - map.cameraX - (map.interactionHint.DesiredSize.Width / 2.0));
+            Canvas.SetLeft(
+                map.interactionHint,
+                npcCenterX - map.cameraX - (map.interactionHint.DesiredSize.Width / 2.0)
+            );
 
             Canvas.SetTop(map.interactionHint, nearest.WorldY - 28);
 
@@ -369,7 +374,8 @@ namespace ThePixelRealms
 
         public void UpdateShieldBar()
         {
-            double percent = map.currentShield / Level1.maxShield;
+            double percent = map.currentShield / map.maxShield;
+
             if (percent < 0) percent = 0;
             if (percent > 1) percent = 1;
 
@@ -388,23 +394,10 @@ namespace ThePixelRealms
             }
         }
 
-        public void UpdateDebugInfo()
-        {
-            List<string> debugInfo = map.debugInfo;
-
-            //debugInfo.Add($"FPS: {map.fps:F1}");
-            //debugInfo.Add($"Position: ({System.Windows.Controls.Canvas.GetLeft(map.Player):F0}, {System.Windows.Controls.Canvas.GetTop(map.Player):F0})");
-            //debugInfo.Add($"On Ground: {map.isOnGround}");
-            //debugInfo.Add($"Jumping: {map.isJumping}");
-            //debugInfo.Add($"Facing: {(map.isFacingRight ? "Right" : "Left")}");
-            //debugInfo.Add($"Keys: A/D={map.leftPressed}/{map.rightPressed}, Space={map.spacePressed}");
-
-            //map.DebugText.Text = string.Join("\n", debugInfo);
-        }
-
         public void ToggleDebugVisibility()
         {
-            map.DebugText.Visibility = map.DebugText.Visibility == Visibility.Visible
+            map.DebugText.Visibility =
+                map.DebugText.Visibility == Visibility.Visible
                 ? Visibility.Hidden
                 : Visibility.Visible;
         }

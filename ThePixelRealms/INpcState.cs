@@ -16,14 +16,14 @@ namespace ThePixelRealms
         bool isGreetingActive { get; set; }
         double npcSpeechTimer { get; set; }
 
-        TextBlock npcSpeech { get; }
-        Image npcBubbleLeft { get; }
-        Image npcBubbleMiddle { get; }
-        Image npcBubbleRight { get; }
+        TextBlock npcSpeech { get; set; }
+        Image npcBubbleLeft { get; set; }
+        Image npcBubbleMiddle { get; set; }
+        Image npcBubbleRight { get; set; }
 
-        TextBlock interactionHint { get; }
+        TextBlock interactionHint { get; set; }
 
-        Dictionary<int, NpcType> talkSequence { get; }
-        HashSet<NpcType> greetingAllowedTypes { get; }
+        Dictionary<int, NpcType> talkSequence { get; set; }
+        HashSet<NpcType> greetingAllowedTypes { get; set; }
     }
 }

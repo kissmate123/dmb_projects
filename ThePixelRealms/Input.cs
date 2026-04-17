@@ -7,13 +7,12 @@ namespace ThePixelRealms
     {
         public IGameState map;
 
+        public bool EPressed = false;
+
         public Input(IGameState map)
         {
             this.map = map;
         }
-
-        public bool EPressed = false;
-
 
         public void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -43,12 +42,6 @@ namespace ThePixelRealms
                     map.shiftPressed = true;
                     break;
 
-                case Key.H:
-                    map.currentHp -= 10;
-                    if (map.currentHp < 0)
-                        map.currentHp = 0;
-                    break;
-
                 case Key.A:
                 case Key.Left:
                     map.leftPressed = true;
@@ -73,16 +66,15 @@ namespace ThePixelRealms
                     break;
 
                 case Key.F1:
-                    map.DebugText.Visibility = map.DebugText.Visibility == Visibility.Visible
-                        ? Visibility.Hidden
-                        : Visibility.Visible;
+                    map.DebugText.Visibility =
+                        map.DebugText.Visibility == Visibility.Visible
+                            ? Visibility.Hidden
+                            : Visibility.Visible;
                     break;
             }
 
             if (e.Key == Key.Space)
-            {
                 e.Handled = true;
-            }
         }
 
         public void Window_KeyUp(object sender, KeyEventArgs e)

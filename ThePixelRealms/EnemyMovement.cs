@@ -44,6 +44,7 @@ namespace ThePixelRealms
                     if (enemy.IsAggro)
                     {
                         Rect pr = map.GetPlayerHitboxRect();
+
                         double playerCenterX = pr.X + pr.Width / 2.0;
                         double playerCenterY = pr.Y + pr.Height / 2.0;
 
@@ -88,6 +89,7 @@ namespace ThePixelRealms
 
                     Canvas.SetLeft(enemy.AggroAlertIcon,
                         enemy.WorldX - map.cameraX + enemy.Visual.Width / 2 - 7);
+
                     Canvas.SetTop(enemy.AggroAlertIcon,
                         enemy.WorldY - 60);
 
@@ -162,6 +164,7 @@ namespace ThePixelRealms
                 if (enemy.HitFlashTimer > 0)
                 {
                     enemy.HitFlashTimer -= map.deltaTime;
+
                     if (enemy.HitFlashTimer <= 0)
                     {
                         enemy.HitFlashTimer = 0;
@@ -170,9 +173,7 @@ namespace ThePixelRealms
                 }
 
                 if (enemy.StunTimer <= 0)
-                {
                     UpdateEnemyFacing(enemy);
-                }
 
                 enemy.UpdateHpBar(map.cameraX);
                 UpdateEnemyAnimation(enemy);
@@ -280,10 +281,7 @@ namespace ThePixelRealms
                 }
 
                 enemy.ReachedTarget = false;
-
                 enemy.VelocityX = dx > 0 ? speed : -speed;
-
-                return;
             }
         }
 
@@ -387,23 +385,16 @@ namespace ThePixelRealms
                 double dx = Math.Abs(other.WorldX - enemy.WorldX);
 
                 if (dx <= r)
-                {
                     EnterAggro(other, propagate: false);
-                }
             }
         }
-
 
         private void UpdateEnemyFacing(Enemy enemy)
         {
             if (enemy.VelocityX > 1)
-            {
                 enemy.Scale.ScaleX = 1;
-            }
             else if (enemy.VelocityX < -1)
-            {
                 enemy.Scale.ScaleX = -1;
-            }
         }
 
         private void UpdateEnemyAnimation(Enemy enemy)
@@ -411,14 +402,17 @@ namespace ThePixelRealms
             BitmapImage[] frames;
             string nextState;
 
-            bool alwaysUseWalkAnimation = enemy.Type == EnemyType.Grivak || enemy.Type == EnemyType.CarryGrivak;
+            bool alwaysUseWalkAnimation =
+                enemy.Type == EnemyType.Grivak ||
+                enemy.Type == EnemyType.CarryGrivak;
 
             if (enemy.IsAttacking && enemy.AttackFrames != null && enemy.AttackFrames.Length > 0)
             {
                 frames = enemy.AttackFrames;
                 nextState = "Attack";
             }
-            else if ((alwaysUseWalkAnimation || Math.Abs(enemy.VelocityX) > 1) && enemy.WalkFrames != null && enemy.WalkFrames.Length > 0)
+            else if ((alwaysUseWalkAnimation || Math.Abs(enemy.VelocityX) > 1)
+                     && enemy.WalkFrames != null && enemy.WalkFrames.Length > 0)
             {
                 frames = enemy.WalkFrames;
                 nextState = "Walk";
@@ -446,13 +440,9 @@ namespace ThePixelRealms
             double currentDuration;
 
             if (nextState == "Attack")
-            {
                 currentDuration = enemy.AttackFrameDuration;
-            }
             else if (nextState == "Walk")
-            {
                 currentDuration = enemy.WalkFrameDuration;
-            }
             else
             {
                 if (enemy.IdleFrameDurations != null && enemy.IdleFrameDurations.Length > 0)

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ThePixelRealms.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4744dba9faffd036ecb3da264eaf442191f8f76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+405e5d9e4ba464e4cd1dbd1f4cfa263a020ad899")]
 [assembly: System.Reflection.AssemblyProductAttribute("ThePixelRealms.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ThePixelRealms.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

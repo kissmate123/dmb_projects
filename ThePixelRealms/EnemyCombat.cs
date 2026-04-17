@@ -62,9 +62,7 @@ namespace ThePixelRealms
         public void KillEnemy(Enemy enemy)
         {
             if (enemy.CountsForKill)
-            {
                 map.enemiesKilled++;
-            }
 
             map.GameCanvas.Children.Remove(enemy.Visual);
             map.GameCanvas.Children.Remove(enemy.HpBarBackground);
@@ -89,13 +87,10 @@ namespace ThePixelRealms
                 enemy.VelocityX = -map.enemyKnockbackX;
 
             enemy.VelocityY = -map.enemyKnockbackY;
-
             enemy.StunTimer = Enemy.StunDuration;
 
             if (enemy.CurrentHp <= 0)
-            {
                 KillEnemy(enemy);
-            }
         }
 
         public void DamageEnemy(Enemy enemy, double damage)
@@ -104,9 +99,7 @@ namespace ThePixelRealms
                 return;
 
             if (!enemy.IsAggro)
-            {
                 enemy.IsAggro = true;
-            }
 
             enemy.CurrentHp -= damage;
 
@@ -116,9 +109,7 @@ namespace ThePixelRealms
             enemy.StunTimer = Enemy.StunDuration;
 
             if (enemy.CurrentHp <= 0)
-            {
                 KillEnemy(enemy);
-            }
         }
     }
 }

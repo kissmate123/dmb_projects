@@ -17,9 +17,9 @@
     <None Remove="Assets\Cutscenes\Cutscene2\Cutscene2_1.png" />
     <None Remove="Assets\Cutscenes\Cutscene2\Cutscene2_2.png" />
     <None Remove="Assets\Cutscenes\Cutscene2\Cutscene2_3.png" />
-    <None Remove="Assets\Cutscenes\Cutscene2\Cutscene2_4.png" />
     <None Remove="Assets\Cutscenes\Cutscene3\Cutscene3_1.png" />
     <None Remove="Assets\Cutscenes\Cutscene3\Cutscene3_2.png" />
+    <None Remove="Assets\Cutscenes\Cutscene3\Cutscene3_3.png" />
     <None Remove="Assets\HUD\Border\Border_bottomleft.png" />
     <None Remove="Assets\HUD\Border\Border_bottomright.png" />
     <None Remove="Assets\HUD\Border\Border_topleft.png" />
@@ -35,6 +35,7 @@
     <None Remove="Assets\HUD\keymapping.png" />
     <None Remove="Assets\Map\Blacksmith.png" />
     <None Remove="Assets\Map\Castle.png" />
+    <None Remove="Assets\Map\CastleBoard.png" />
     <None Remove="Assets\Map\Clouds.png" />
     <None Remove="Assets\Map\FinalWall.png" />
     <None Remove="Assets\Map\Ground_Grass.png" />
@@ -100,13 +101,13 @@
     <Content Include="Assets\Cutscenes\Cutscene2\Cutscene2_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Cutscenes\Cutscene2\Cutscene2_4.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Assets\Cutscenes\Cutscene3\Cutscene3_1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Cutscenes\Cutscene3\Cutscene3_2.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Cutscenes\Cutscene3\Cutscene3_3.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\HUD\Border\Border_bottomleft.png">
@@ -152,6 +153,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Map\Castle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Map\CastleBoard.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Map\Clouds.png">
@@ -653,6 +657,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\Sprites\Enemy\Grivak\Grivak.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Grivak\Grivak_Attack1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sprites\Enemy\Grivak\Grivak_Attack2.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Assets\Sprites\Enemy\Grivak\Grivak_Fly1.png">

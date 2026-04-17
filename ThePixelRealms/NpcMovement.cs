@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection.Emit;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -148,7 +147,6 @@ namespace ThePixelRealms
                     npc.WorldX = npc.TargetX;
                     npc.VelocityX = 0;
                     npc.ReachedTarget = true;
-
                     return;
                 }
 
@@ -243,7 +241,9 @@ namespace ThePixelRealms
             BitmapImage[] frames;
             string nextState;
 
-            if (Math.Abs(npc.VelocityX) > 1 && npc.WalkFrames != null && npc.WalkFrames.Length > 0)
+            if (Math.Abs(npc.VelocityX) > 1 &&
+                npc.WalkFrames != null &&
+                npc.WalkFrames.Length > 0)
             {
                 frames = npc.WalkFrames;
                 nextState = "Walk";

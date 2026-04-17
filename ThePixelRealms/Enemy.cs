@@ -28,13 +28,18 @@ namespace ThePixelRealms
 
     public class Enemy
     {
+        // Core
         public EnemyType Type { get; }
         public EnemyMode Mode { get; }
+        private readonly Canvas canvas;
 
+        // Visual
         public Image Visual;
         public Rectangle HpBarBackground;
         public Rectangle HpBarFill;
+        public Image AggroAlertIcon { get; private set; }
 
+        // Animation
         public BitmapImage[] IdleFrames;
         public BitmapImage[] WalkFrames;
         public BitmapImage[] AttackFrames;
@@ -49,23 +54,20 @@ namespace ThePixelRealms
         public bool IsAttacking = false;
         public string CurrentAnimState = "";
 
+        public ScaleTransform Scale { get; }
+
+        // Position / Movement
         public double WorldX;
         public double WorldY;
         public double VelocityX;
         public double VelocityY;
-
-        public bool AggroOnSight = true;
-
-        public double TargetX;
-        public bool ReachedTarget = false;
-
-        public double HpBarWidth;
 
         public double WalkSpeed;
         public double AggroSpeed;
 
         public double LeftLimit;
         public double RightLimit;
+
         public bool OnGround;
         public bool IgnoresGravity { get; set; } = false;
 
@@ -74,59 +76,59 @@ namespace ThePixelRealms
 
         public double FlySpeed { get; set; } = 15;
         public int VerticalMoveDir { get; set; } = 1;
-
         public double VerticalChangeTimer { get; set; } = 0;
-        public bool IsInvulnerable = false;
 
+        public int MoveDir { get; set; } = 1;
+        public bool IsWaiting { get; set; } = false;
 
-
-        public double MeleeCooldown { get; }
-        public double MeleeCooldownTimer { get; set; } = 0;
-
-        public double MaxHp;
-        public double CurrentHp;
-
-        public double ContactDamage;
-
-        public double DamageCooldownTimer = 0;
-        public double DamageCooldown = 1.0;
-
-        public double HitFlashTimer = 0;
-        public Brush OriginalBrush;
-
+        // AI / Behavior
+        public bool AggroOnSight = true;
         public bool IsAggro = false;
         public double AggroRange;
+        public double AggroShareRadius { get; }
 
-        public double StunTimer = 0;
-        public const double StunDuration = 0.5;
+        public bool IsInAggroAlert { get; set; } = false;
+        public double AggroAlertTimer { get; set; } = 0;
+        public const double AggroAlertDuration = 1.0;
 
-        public double HitFlashOpacity { get; set; } = 0.5;
-        public double NormalOpacity { get; set; } = 1.0;
-
-        private readonly Canvas canvas;
-
-        public double AttackRange { get; }
-        public double StopDistance { get; }
-
-        public bool CountsForKill = true;
+        public double TargetX;
+        public bool ReachedTarget = false;
 
         public double PatrolWaitTime { get; set; } = 4.0;
         public double PatrolWaitTimer { get; set; } = 0.0;
 
         public double WanderTimer { get; set; } = 0.0;
 
-        public ScaleTransform Scale { get; }
+        // Combat
+        public double MaxHp;
+        public double CurrentHp;
 
-        public int MoveDir { get; set; } = 1;
-        public bool IsWaiting { get; set; } = false;
+        public double ContactDamage;
 
-        public bool IsInAggroAlert { get; set; } = false;
-        public double AggroAlertTimer { get; set; } = 0;
+        public double AttackRange { get; }
+        public double StopDistance { get; }
 
-        public const double AggroAlertDuration = 1.0;
-        public Image AggroAlertIcon { get; private set; }
-        public double AggroShareRadius { get; }
+        public double MeleeCooldown { get; }
+        public double MeleeCooldownTimer { get; set; } = 0;
 
+        public double DamageCooldown = 1.0;
+        public double DamageCooldownTimer = 0;
+
+        public double StunTimer = 0;
+        public const double StunDuration = 0.5;
+
+        public bool IsInvulnerable = false;
+
+        // Visual Effects
+        public double HitFlashTimer = 0;
+        public Brush OriginalBrush;
+
+        public double HitFlashOpacity { get; set; } = 0.5;
+        public double NormalOpacity { get; set; } = 1.0;
+
+        // Misc
+        public double HpBarWidth;
+        public bool CountsForKill = true;
         public Enemy(
             Canvas canvas,
             EnemyType type,
@@ -350,7 +352,7 @@ namespace ThePixelRealms
                         var enemy = new Enemy(
                             canvas, type, mode,
                             startX, startY, leftLimit, rightLimit,
-                            width: 62,
+                            width: 76,
                             height: 78,
                             fill: brush,
                             maxHp: 200,
@@ -367,7 +369,7 @@ namespace ThePixelRealms
 
                         enemy.IdleFrames = LoadFrames("Assets/Sprites/Enemy/Grivak/Grivak_Fly", 4);
                         enemy.WalkFrames = LoadFrames("Assets/Sprites/Enemy/Grivak/Grivak_Fly", 4);
-                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Enemy/Grivak/Grivak_Attack", 3);
+                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Enemy/Grivak/Grivak_Attack", 2);
 
                         enemy.CurrentAnimState = "Idle";
                         enemy.FrameIndex = 0;
@@ -467,7 +469,7 @@ namespace ThePixelRealms
 
                         enemy.IdleFrames = LoadFrames("Assets/Sprites/Enemy/Brogur_Heavy/Brogur_Heavy_Stand", 4);
                         enemy.WalkFrames = LoadFrames("Assets/Sprites/Enemy/Brogur_Heavy/Brogur_Heavy_Walk", 4);
-                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Enemy/Brogur_Medium/Brogur_Heavy_Attack", 2);
+                        enemy.AttackFrames = LoadFrames("Assets/Sprites/Enemy/Brogur_Heavy/Brogur_Heavy_Attack", 2);
 
                         enemy.CurrentAnimState = "Idle";
                         enemy.FrameIndex = 0;

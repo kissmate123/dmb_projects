@@ -14,8 +14,6 @@ namespace ThePixelRealms
 {
     public partial class TestMap : Window, IGameState
     {
-
-
         public Input input { get; set; }
         private PlayerMovement playerMovement { get; set; }
         private GamePhysics gamePhysics { get; set; }
@@ -153,7 +151,7 @@ namespace ThePixelRealms
 
         public const double PlayerHitboxWidth = 48;
         public const double PlayerHitboxHeight = 60;
-        public const double PlayerHitboxOffsetX = 30;
+        public double PlayerHitboxOffsetX { get; } = 30;
 
         public List<Enemy> enemies { get; set; } = new();
         public List<Npc> npcs { get; set; } = new();
@@ -385,7 +383,6 @@ namespace ThePixelRealms
             gamePhysics.UpdateCamera();
             playerMovement.UpdatePlayerFacingDirection();
 
-            uiAndDebug.UpdateDebugInfo();
             uiAndDebug.UpdateHpBar();
 
             enemyMovement.UpdateEnemies();
@@ -479,12 +476,10 @@ namespace ThePixelRealms
             playerCombat.ReleaseArrow();
         }
 
-        // ================= IWorldState =================
         Canvas IWorldState.GameCanvas => GameCanvas;
         Grid IWorldState.RootGrid => RootGrid;
         Rectangle IWorldState.Ground => Ground;
 
-        // ================= IUIState =================
         Image IUIState.Player => Player;
         UIElement IUIState.Dead => Dead;
         TextBlock IUIState.DebugText => DebugText;
@@ -492,13 +487,10 @@ namespace ThePixelRealms
         UIElement IUIState.PauseOverlay => PauseOverlay;
         ScaleTransform IUIState.PlayerScaleTransform => (ScaleTransform)Player.RenderTransform;
 
-        // ================= IPropState =================
-        Rectangle IPropState.ShieldBarFill => bowChargeBarFill;
+        Rectangle IPropState.ShieldBarFill => ShieldBarFill;
 
-        // ================= ISystemState =================
         GuideSystem ISystemState.guideSystem => guide;
 
-        // ================= IGameState (maradékok) =================
         double IGameState.ChargeStepTime => 0.2;
         int IGameState.MaxChargeSteps => 5;
         double IGameState.maxShield => 100;

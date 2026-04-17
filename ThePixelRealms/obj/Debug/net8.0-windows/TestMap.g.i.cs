@@ -172,7 +172,7 @@ namespace ThePixelRealms {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ThePixelRealms;V1.0.0.0;component/testmap.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ThePixelRealms;component/testmap.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\TestMap.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

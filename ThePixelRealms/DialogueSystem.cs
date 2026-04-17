@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ThePixelRealms;
 
 namespace ThePixelRealms
 {
@@ -246,16 +245,8 @@ namespace ThePixelRealms
 
             double contWidth = continueText.DesiredSize.Width;
 
-            Canvas.SetLeft(
-                continueText,
-                x + sideWidth + middleWidth - contWidth - 20
-            );
-
-            Canvas.SetTop(
-                continueText,
-                y + 88
-            );
-
+            Canvas.SetLeft(continueText, x + sideWidth + middleWidth - contWidth - 20);
+            Canvas.SetTop(continueText, y + 88);
         }
 
         private void ShowUI()

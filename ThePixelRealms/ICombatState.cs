@@ -40,18 +40,18 @@ namespace ThePixelRealms
         double invulnerableVisualTime { get; }
 
         double playerStunTimer { get; set; }
-        double playerStunDuration { get; }
+        double playerStunDuration { get; set; }
 
-        double playerKnockbackX { get; }
-        double playerKnockbackY { get; }
+        double playerKnockbackX { get; set; }
+        double playerKnockbackY { get; set; }
 
-        double attackRange { get; }
+        double attackRange { get; set; }
 
-        Rectangle bowChargeBarBg { get; }
-        Rectangle bowChargeBarFill { get; }
+        Rectangle bowChargeBarBg { get; set; }
+        Rectangle bowChargeBarFill { get; set; }
 
-        Line aimLineLeft { get; }
-        Line aimLineRight { get; }
-        Ellipse aimDot { get; }
+        Line aimLineLeft { get; set; }
+        Line aimLineRight { get; set; }
+        Ellipse aimDot { get; set; }
     }
 }

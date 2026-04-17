@@ -20,7 +20,8 @@ namespace ThePixelRealms
                 map.playerVelocityY += map.gravity * map.deltaTime;
             }
 
-            if (map.playerVelocityY > 800) map.playerVelocityY = 800;
+            if (map.playerVelocityY > 800)
+                map.playerVelocityY = 800;
         }
 
         public void CheckCollisions()
@@ -40,6 +41,7 @@ namespace ThePixelRealms
             }
 
             ResolvePlatformCollision(map.Ground, map.GroundX);
+
             foreach (var platform in map.platforms)
             {
                 double worldX = (double)platform.Tag;
@@ -70,13 +72,12 @@ namespace ThePixelRealms
 
             bool horizOverlapCurr = curr.Right > plat.Left && curr.Left < plat.Right;
             bool horizOverlapNext = next.Right > plat.Left && next.Left < plat.Right;
-
             bool vertOverlapNext = next.Bottom > plat.Top && next.Top < plat.Bottom;
 
             if (dx > 0 && vertOverlapNext && curr.Right <= plat.Left && next.Right >= plat.Left)
             {
                 double hitboxLeftTarget = plat.Left - curr.Width;
-                map.playerWorldX = hitboxLeftTarget - Level1.PlayerHitboxOffsetX;
+                map.playerWorldX = hitboxLeftTarget - map.PlayerHitboxOffsetX;
                 map.playerVelocityX = 0;
                 return;
             }
@@ -84,7 +85,7 @@ namespace ThePixelRealms
             if (dx < 0 && vertOverlapNext && curr.Left >= plat.Right && next.Left <= plat.Right)
             {
                 double hitboxLeftTarget = plat.Right;
-                map.playerWorldX = hitboxLeftTarget - Level1.PlayerHitboxOffsetX;
+                map.playerWorldX = hitboxLeftTarget - map.PlayerHitboxOffsetX;
                 map.playerVelocityX = 0;
                 return;
             }
@@ -106,8 +107,10 @@ namespace ThePixelRealms
 
             const double groundEpsilon = 6.0;
 
-            if (dy == 0 && horizOverlapCurr &&
-                curr.Bottom >= plat.Top && curr.Bottom <= plat.Top + groundEpsilon)
+            if (dy == 0 &&
+                horizOverlapCurr &&
+                curr.Bottom >= plat.Top &&
+                curr.Bottom <= plat.Top + groundEpsilon)
             {
                 map.playerWorldY = plat.Top - curr.Height;
                 map.playerVelocityY = 0;
