@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Feb 02. 09:18
+-- Létrehozás ideje: 2026. Ápr 17. 12:01
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -115,7 +115,8 @@ CREATE TABLE `aspnetusers` (
 --
 
 INSERT INTO `aspnetusers` (`Id`, `UserName`, `NormalizedUserName`, `Email`, `NormalizedEmail`, `EmailConfirmed`, `PasswordHash`, `SecurityStamp`, `ConcurrencyStamp`, `PhoneNumber`, `PhoneNumberConfirmed`, `TwoFactorEnabled`, `LockoutEnd`, `LockoutEnabled`, `AccessFailedCount`) VALUES
-('958bc1b2-95a1-410a-9c3d-347b01d9f618', 'teszt', 'TESZT', 'tamasbence5750@gmail.com', 'TAMASBENCE5750@GMAIL.COM', 0, 'AQAAAAIAAYagAAAAEAV0b2HecqgDA2hKUeBMWBr2Vp+waDSGasAlhvin0ojHD/Yo2XlpSkIcTd7XO5kUMw==', 'N4HTJKLOQQYGROEORMX5V6MLIIQERHFQ', '87fd99b8-1959-432e-a812-fef418aa7598', NULL, 0, 0, NULL, 1, 0);
+('083f0928-847a-4f44-8fb9-8004651b0a77', 'admin', 'ADMIN', 'admin44@gmail.com', 'ADMIN44@GMAIL.COM', 0, 'AQAAAAIAAYagAAAAED63sWTX+TSLLW+ZcWBwRrKK3RLjtmUlnjep46eO7IIM8i4JWSgT6M9cpohxV5Vcsw==', '4JUU4E7HDK3LCM7OZ7B44X2ECXKBNT4W', 'c41f7f44-a2a8-407f-bb3e-cca8c18bc744', NULL, 0, 0, NULL, 1, 0),
+('4874427a-d028-4a84-b8b2-0525c80fe31e', 'teszt', 'TESZT', 'tamasbence5750@gmail.com', 'TAMASBENCE5750@GMAIL.COM', 0, 'AQAAAAIAAYagAAAAEOg1Q97dALdPXDOdFYSYapuKsbL/sX0fPUL53Bwt+cbuFr9RRDTGIPgxNMpAeOKC9Q==', 'DEURVZZ52IFRVLAMFS7BA3R3AJGQKOX5', 'a8205569-7539-4ce7-8007-b748e1eaf330', NULL, 0, 0, NULL, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -129,6 +130,29 @@ CREATE TABLE `aspnetusertokens` (
   `Name` varchar(255) NOT NULL,
   `Value` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `news_items`
+--
+
+CREATE TABLE `news_items` (
+  `Id` int(11) NOT NULL,
+  `Title` varchar(140) NOT NULL,
+  `Content` varchar(4000) NOT NULL,
+  `CreatedAtUtc` datetime(6) NOT NULL,
+  `CreatedByUserId` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- A tábla adatainak kiíratása `news_items`
+--
+
+INSERT INTO `news_items` (`Id`, `Title`, `Content`, `CreatedAtUtc`, `CreatedByUserId`) VALUES
+(2, 'Várfal', 'A játék első szintjén a történet alapján várfal veszi körül a várost.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', '2026-04-14 08:56:46.079707', '083f0928-847a-4f44-8fb9-8004651b0a77'),
+(3, 'Új ellenségek', 'Csontvázak az új ellenséges lények.', '2026-04-14 08:59:10.876081', '083f0928-847a-4f44-8fb9-8004651b0a77'),
+(4, 'asd', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est lab', '2026-04-15 09:48:49.963011', '083f0928-847a-4f44-8fb9-8004651b0a77');
 
 -- --------------------------------------------------------
 
@@ -160,7 +184,9 @@ CREATE TABLE `__efmigrationshistory` (
 --
 
 INSERT INTO `__efmigrationshistory` (`MigrationId`, `ProductVersion`) VALUES
-('20260126154812_InitialAuth', '8.0.10');
+('20260126154812_InitialAuth', '8.0.10'),
+('20260317080722_AddNewsItems', '8.0.10'),
+('20260317103054_FixNewsItemSchema', '8.0.10');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -216,6 +242,12 @@ ALTER TABLE `aspnetusertokens`
   ADD PRIMARY KEY (`UserId`,`LoginProvider`,`Name`);
 
 --
+-- A tábla indexei `news_items`
+--
+ALTER TABLE `news_items`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- A tábla indexei `users`
 --
 ALTER TABLE `users`
@@ -243,6 +275,12 @@ ALTER TABLE `aspnetroleclaims`
 --
 ALTER TABLE `aspnetuserclaims`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `news_items`
+--
+ALTER TABLE `news_items`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT a táblához `users`
