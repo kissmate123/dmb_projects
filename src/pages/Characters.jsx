@@ -86,13 +86,13 @@ const Characters = () => {
       </div>
     </div>
 
-    <div className="elvalaszto"></div>
+    <div className="gap"></div>
 
     <div className="tartalom1">
         <h2 className="title">Ellenséges lények</h2>
       </div>
 
-      <div className="elvalaszto"></div>
+      <div className="gap"></div>
 
     <div className="tartalom1">
       <h2 className="title">BROGUR</h2>

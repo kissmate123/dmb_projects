@@ -116,11 +116,6 @@ body::-webkit-scrollbar {
   text-shadow: 0 0 15px #ff3333;
 }
 
-#felhn {
-  min-width: 100px;
-  text-align: center;
-}
-
 /* ------------------ FOOTER ------------------ */
 footer {
   background-color: black;
@@ -176,7 +171,7 @@ footer {
 .footer-img{
   width: 20%;
 }
-/* ------------------- FŐOLDAL TARTALOM ------------------- */
+/* ------------------- HOME ------------------- */
 .tartalom1 {
   position: relative;
   border-radius: 5px;
@@ -198,7 +193,7 @@ footer {
   margin: 2%;
   margin-left: 10%;
 }
-/* ------------------ STORY CARDS (TÖRTÉNET) ------------------ */
+/* ------------------ STORY ------------------ */
 .epizode-row{
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -271,8 +266,8 @@ footer {
   }
 }
 
-/* ------------------ ELVÁLASZTÓ ------------------ */
-.elvalaszto {
+/* ------------------ GAP ------------------ */
+.gap{
   width: 100%;
   height: 100px;
   /*background-image: url("/assets/images/border.png");*/

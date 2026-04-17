@@ -33,12 +33,12 @@ const Navbar = () => {
   };
 
   const handleAdminClick = () => {
-  const link = document.createElement("a");
-  link.href = "/assets/apps/mysetup.exe";
-  link.setAttribute("download", "mysetup.exe");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const driveFileUrl =
+    "https://drive.google.com/file/d/17P3tpOEmwxn4gwpiLae7VUkAiDszk-Fo/view?usp=sharing";
+
+  window.open(driveFileUrl, "_blank", "noopener,noreferrer");
+  setOpen(false);
+
 
   setOpen(false);
 };

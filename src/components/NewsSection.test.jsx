@@ -69,8 +69,6 @@ test("törlés meghívja a deleteNews szolgáltatást", async () => {
   await waitFor(() => expect(newsService.deleteNews).toHaveBeenCalledWith("test-token", 42));
 });
 
-// --- additional tests (at least 10) ---
-
 test("admin badge látható ha isAdmin igaz", async () => {
   useAuth.mockReturnValue({ token: "t", isAdmin: true });
   newsService.getNews.mockResolvedValue([]);
@@ -112,7 +110,6 @@ test("maximum 4 elem jelenik meg ha több hír érkezik", async () => {
   newsService.getNews.mockResolvedValue(mockNews);
   render(<NewsSection />);
   await waitFor(() => {
-    // top 4 newest should appear (News 6..News 3)
     expect(screen.queryByText("News 2")).not.toBeInTheDocument();
     expect(screen.getByText("News 6")).toBeInTheDocument();
     expect(screen.getByText("News 3")).toBeInTheDocument();

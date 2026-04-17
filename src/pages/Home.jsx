@@ -40,7 +40,7 @@ const Home = () => {
         </p>
       </div>
 
-      <div className="elvalaszto"></div>
+      <div className="gap"></div>
 
       <div className="tartalom1">
         <h2 className="title">The Pixel Realms története</h2>
@@ -81,7 +81,7 @@ const Home = () => {
               íját adja át, és a hercegnő megmentésére sürgeti.
             </p>
 
-            <p className="end">A nagy kapu átlépésével a fejezet véget ér.</p>
+            <p>A nagy kapu átlépésével a fejezet véget ér.</p>
           </div>
 
           <div className="epizode-media">
@@ -122,11 +122,11 @@ const Home = () => {
               <strong>egy szeme árán</strong>.
             </p>
 
-            <p className="dramatic">
+            <p>
               Borien elfogadja az alkut. Fél szemét elveszítve, de eltökélten folytatja útját.
             </p>
 
-            <p className="end">
+            <p>
               Borien nem messze, egy sziklaperem alatt ver tábort, felkészülve az előtte álló
               veszélyekre.
             </p>
@@ -166,12 +166,12 @@ const Home = () => {
               és terveiről.
             </p>
 
-            <p className="dramatic">
+            <p>
               Elárulja, hogy Elira hercegnő ereiben anyai ágon mágikus vér folyik, amelyre Vathryxnak
               szüksége van.
             </p>
 
-            <p className="end">A fejezet itt véget ér.</p>
+            <p>A fejezet itt véget ér.</p>
           </div>
 
           <div className="epizode-media">
@@ -180,7 +180,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="elvalaszto"></div>
+      <div className="gap"></div>
 
       <div className="tartalom1">
         <NewsSection />
