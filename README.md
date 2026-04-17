@@ -1,16 +1,19 @@
-# React + Vite
+# dmb-projects – react branch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
+### Elérhető branchek:
+* [**Főoldal (Main)**](https://github.com/kissmate123/dmb_projects/tree/main)
+* [**Adatbazis**](https://github.com/kissmate123/dmb_projects/tree/Adatbazis)
+* [**GameAssets**](https://github.com/kissmate123/dmb_projects/tree/GameAssets)
+* [**WPF-Admin**](https://github.com/kissmate123/dmb_projects/tree/WPF-Admin)
+* [**asztali**](https://github.com/kissmate123/dmb_projects/tree/asztali)
+* [**backend**](https://github.com/kissmate123/dmb_projects/tree/backend)
+* [**dokumentacio**](https://github.com/kissmate123/dmb_projects/tree/dokumentacio)
+* [**frontend**](https://github.com/kissmate123/dmb_projects/tree/frontend)
 
-Currently, two official plugins are available:
+---
+A projektről és annak ismertetéséről a **the_pixel_realms_final2 dokumentáció** nevű fájl tartalmaz bővebb információkat.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+### Trello link:
+[https://trello.com/b/Pw91BBMI/dmb-projects](https://trello.com/b/Pw91BBMI/dmb-projects)
